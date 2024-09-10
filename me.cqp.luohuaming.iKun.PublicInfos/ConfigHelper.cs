@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos
 {
@@ -13,13 +9,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
     /// </summary>
     public static class ConfigHelper
     {
-        /// <summary>
-        /// 配置文件路径
-        /// </summary>
-        public static string ConfigFileName = @"conf/Config.json";
-
-        public static object ReadLock { get; set; } = new object();
-        public static object WriteLock { get; set; } = new object();
+        public static string ConfigPath { get; set; } = @"conf/Config.json";
 
         /// <summary>
         /// 读取配置
@@ -29,59 +19,64 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         /// <returns>目标类型的配置</returns>
         public static T GetConfig<T>(string sectionName, T defaultValue = default)
         {
-            lock (ReadLock)
+            if (Directory.Exists(Path.GetDirectoryName(ConfigPath)) is false)
             {
-                if (File.Exists(ConfigFileName) is false)
-                    File.WriteAllText(ConfigFileName, "{}");
-                var o = JObject.Parse(File.ReadAllText(ConfigFileName));
-                if (o.ContainsKey(sectionName))
-                    return o[sectionName].ToObject<T>();
-                if (defaultValue != null)
-                {
-                    SetConfig<T>(sectionName, defaultValue);
-                    return defaultValue;
-                }
-
-                if (typeof(T) == typeof(string))
-                    return (T)(object)"";
-                if (typeof(T) == typeof(int))
-                    return (T)(object)0;
-                if (typeof(T) == typeof(long))
-                    return default;
-                if (typeof(T) == typeof(bool))
-                    return (T)(object)false;
-                if (typeof(T) == typeof(object))
-                    return (T)(object)new { };
-                throw new Exception("无法默认返回");
+                Directory.CreateDirectory(Path.GetDirectoryName(ConfigPath));
             }
+
+            if (File.Exists(ConfigPath) is false)
+            {
+                File.WriteAllText(ConfigPath, "{}");
+            }
+
+            var o = JObject.Parse(File.ReadAllText(ConfigPath));
+            if (o.ContainsKey(sectionName))
+            {
+                return o[sectionName]!.ToObject<T>();
+            }
+
+            if (defaultValue != null)
+            {
+                SetConfig<T>(sectionName, defaultValue);
+                return defaultValue;
+            }
+            if (typeof(T) == typeof(string))
+            {
+                return (T)(object)"";
+            }
+
+            if (typeof(T) == typeof(int))
+            {
+                return (T)(object)0;
+            }
+
+            if (typeof(T) == typeof(long))
+            {
+                return default;
+            }
+
+            return typeof(T) == typeof(bool)
+                ? (T)(object)false
+                : typeof(T) == typeof(object) ? (T)(object)new { } : throw new Exception("无法默认返回");
         }
 
         public static void SetConfig<T>(string sectionName, T value)
         {
-            lock (WriteLock)
+            if (File.Exists(ConfigPath) is false)
             {
-                if (File.Exists(ConfigFileName) is false)
-                    File.WriteAllText(ConfigFileName, "{}");
-                var o = JObject.Parse(File.ReadAllText(ConfigFileName));
-                if (o.ContainsKey(sectionName))
-                {
-                    o[sectionName] = JToken.FromObject(value);
-                }
-                else
-                {
-                    o.Add(sectionName, JToken.FromObject(value));
-                }
-
-                File.WriteAllText(ConfigFileName, o.ToString(Newtonsoft.Json.Formatting.Indented));
+                File.WriteAllText(ConfigPath, "{}");
             }
-        }
 
-        public static bool ConfigHasKey(string sectionName)
-        {
-            if (File.Exists(ConfigFileName) is false)
-                File.WriteAllText(ConfigFileName, "{}");
-            var o = JObject.Parse(File.ReadAllText(ConfigFileName));
-            return o.ContainsKey(sectionName);
+            var o = JObject.Parse(File.ReadAllText(ConfigPath));
+            if (o.ContainsKey(sectionName))
+            {
+                o[sectionName] = JToken.FromObject(value);
+            }
+            else
+            {
+                o.Add(sectionName, JToken.FromObject(value));
+            }
+            File.WriteAllText(ConfigPath, o.ToString(Newtonsoft.Json.Formatting.Indented));
         }
     }
 }
