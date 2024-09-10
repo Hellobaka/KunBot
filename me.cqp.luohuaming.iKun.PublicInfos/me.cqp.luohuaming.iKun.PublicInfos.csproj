@@ -70,10 +70,11 @@
     <Compile Include="Enums\ActionType.cs" />
     <Compile Include="Enums\AttackType.cs" />
     <Compile Include="FunctionResult.cs" />
+    <Compile Include="Items\Coin.cs" />
     <Compile Include="Items\IItem.cs" />
     <Compile Include="MainSave.cs" />
     <Compile Include="IOrderModel.cs" />
-    <Compile Include="Models\Items.cs" />
+    <Compile Include="Models\InventoryItem.cs" />
     <Compile Include="Models\Kun.cs" />
     <Compile Include="PetAttribute\IPetAttribute.cs" />
     <Compile Include="Models\Player.cs" />
@@ -90,6 +91,8 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Actions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

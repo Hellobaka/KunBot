@@ -20,6 +20,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public double Weight { get; set; }
 
+        public bool Abandoned { get; set; }
+
+        public bool Alive { get; set; }
+
         [SugarColumn(IsIgnore = true)]
         public IPetAttribute PetAttribute { get; set; }
 
