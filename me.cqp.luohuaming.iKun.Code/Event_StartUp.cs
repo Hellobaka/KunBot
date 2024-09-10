@@ -15,7 +15,7 @@ namespace me.cqp.luohuaming.iKun.Code
             MainSave.CQApi = e.CQApi;
             MainSave.CQLog = e.CQLog;
             MainSave.ImageDirectory = CommonHelper.GetAppImageDirectory();
-            ConfigHelper.ConfigFileName = Path.Combine(MainSave.AppDirectory, "Config.json");
+            ConfigHelper.ConfigPath = Path.Combine(MainSave.AppDirectory, "Config.json");
             foreach (var item in Assembly.GetAssembly(typeof(Event_GroupMessage)).GetTypes())
             {
                 if (item.IsInterface)
