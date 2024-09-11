@@ -8,10 +8,56 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
     public class Player
     {
         [SugarColumn(IsPrimaryKey = true)]
-        public int Id { get; set; }
-
         public long QQ { get; set; }
 
         public DateTime CreateAt { get; set; }
+
+        public static bool Exists(long qq) => SQLHelper.GetInstance().Queryable<Player>().Any(p => p.QQ == qq);
+
+        public static Player? Create(long qq)
+        {
+            var db = SQLHelper.GetInstance();
+            var player = new Player()
+            {
+                QQ = qq,
+                CreateAt = DateTime.Now,
+            };
+            if (db.Insertable(player).ExecuteCommand() > 0)
+            {
+                return player;
+            }
+            return null;
+        }
+
+        public void GiveItem(List<Items> items)
+        {
+            var db = SQLHelper.GetInstance();
+            foreach (var item in items) 
+            {
+                var query = db.Queryable<InventoryItem>().First(x => x.Id == item.ID && x.PlayerID == QQ);
+                if (query == null || !item.Stackable)
+                {
+                    db.Insertable(new InventoryItem
+                    {
+                        Count = item.Count,
+                        ItemID = item.ID,
+                        PlayerID = QQ
+                    }).ExecuteCommand();
+                    return;
+                }
+
+                if (item.Stackable)
+                {
+                    query.Count += item.Count;
+                    db.Updateable(item).ExecuteCommand();
+                }
+            }
+        }
+
+        public static Player? GetPlayer(long qq)
+        {
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<Player>().First(x=> x.QQ == qq);
+        }
     }
 }
