@@ -63,6 +63,24 @@
     <Compile Include="Event_PrivateMessage.cs" />
     <Compile Include="Event_GroupMessage.cs" />
     <Compile Include="Event_StartUp.cs" />
+    <Compile Include="OrderFunctions\OpenBlindBox.cs" />
+    <Compile Include="OrderFunctions\OpenEgg.cs" />
+    <Compile Include="OrderFunctions\BuyEgg.cs" />
+    <Compile Include="OrderFunctions\Strike.cs" />
+    <Compile Include="OrderFunctions\Attack.cs" />
+    <Compile Include="OrderFunctions\Devour.cs" />
+    <Compile Include="OrderFunctions\ReleaseKun.cs" />
+    <Compile Include="OrderFunctions\Resurrect.cs" />
+    <Compile Include="OrderFunctions\Ascend.cs" />
+    <Compile Include="OrderFunctions\Transmogrify.cs" />
+    <Compile Include="OrderFunctions\Upgrade.cs" />
+    <Compile Include="OrderFunctions\Feed.cs" />
+    <Compile Include="OrderFunctions\Hatch.cs" />
+    <Compile Include="OrderFunctions\Inventory.cs" />
+    <Compile Include="OrderFunctions\Ranking.cs" />
+    <Compile Include="OrderFunctions\Menu.cs" />
+    <Compile Include="OrderFunctions\Login.cs" />
+    <Compile Include="OrderFunctions\Register.cs" />
     <Compile Include="OrderFunctions\ExampleFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

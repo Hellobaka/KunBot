@@ -31,6 +31,8 @@ namespace me.cqp.luohuaming.iKun.Code
                     }
                 }
             }
+
+            AppConfig.EnableAutoReload();
         }
     }
 }

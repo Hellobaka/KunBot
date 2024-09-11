@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos
@@ -9,7 +10,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
     /// </summary>
     public static class ConfigHelper
     {
+        /// <summary>
+        /// 配置文件路径
+        /// </summary>
         public static string ConfigPath { get; set; } = @"conf/Config.json";
+
+        public static object ReadLock { get; set; } = new object();
+
+        public static object WriteLock { get; set; } = new object();
+
+        public static JObject CurrentJObject { get; set; }
 
         /// <summary>
         /// 读取配置
@@ -19,64 +29,91 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         /// <returns>目标类型的配置</returns>
         public static T GetConfig<T>(string sectionName, T defaultValue = default)
         {
-            if (Directory.Exists(Path.GetDirectoryName(ConfigPath)) is false)
+            lock (ReadLock)
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(ConfigPath));
-            }
+                if (CurrentJObject != null && CurrentJObject.ContainsKey(sectionName))
+                {
+                    return CurrentJObject[sectionName].ToObject<T>();
+                }
 
-            if (File.Exists(ConfigPath) is false)
-            {
-                File.WriteAllText(ConfigPath, "{}");
-            }
+                if (CurrentJObject == null && defaultValue != null)
+                {
+                    return defaultValue;
+                }
 
-            var o = JObject.Parse(File.ReadAllText(ConfigPath));
-            if (o.ContainsKey(sectionName))
-            {
-                return o[sectionName]!.ToObject<T>();
-            }
+                if (defaultValue != null)
+                {
+                    SetConfig<T>(sectionName, defaultValue);
+                    return defaultValue;
+                }
 
-            if (defaultValue != null)
-            {
-                SetConfig<T>(sectionName, defaultValue);
-                return defaultValue;
-            }
-            if (typeof(T) == typeof(string))
-            {
-                return (T)(object)"";
-            }
+                if (typeof(T) == typeof(string))
+                {
+                    return (T)(object)"";
+                }
 
-            if (typeof(T) == typeof(int))
-            {
-                return (T)(object)0;
-            }
+                if (typeof(T) == typeof(int))
+                {
+                    return (T)(object)0;
+                }
 
-            if (typeof(T) == typeof(long))
-            {
-                return default;
-            }
+                if (typeof(T) == typeof(long))
+                {
+                    return default;
+                }
 
-            return typeof(T) == typeof(bool)
-                ? (T)(object)false
-                : typeof(T) == typeof(object) ? (T)(object)new { } : throw new Exception("无法默认返回");
+                if (typeof(T) == typeof(bool))
+                {
+                    return (T)(object)false;
+                }
+
+                if (typeof(T) == typeof(object))
+                {
+                    return (T)(object)new { };
+                }
+
+                return typeof(T) == typeof(List<long>) ? (T)(object)new List<long>() : throw new Exception("无法默认返回");
+            }
         }
 
         public static void SetConfig<T>(string sectionName, T value)
         {
-            if (File.Exists(ConfigPath) is false)
+            lock (WriteLock)
             {
-                File.WriteAllText(ConfigPath, "{}");
-            }
+                if (CurrentJObject == null)
+                {
+                    CurrentJObject = new JObject();
+                }
+                if (CurrentJObject.ContainsKey(sectionName))
+                {
+                    CurrentJObject[sectionName] = JToken.FromObject(value);
+                }
+                else
+                {
+                    CurrentJObject.Add(sectionName, JToken.FromObject(value));
+                }
 
-            var o = JObject.Parse(File.ReadAllText(ConfigPath));
-            if (o.ContainsKey(sectionName))
-            {
-                o[sectionName] = JToken.FromObject(value);
+                File.WriteAllText(ConfigPath, CurrentJObject.ToString(Newtonsoft.Json.Formatting.Indented));
             }
-            else
+        }
+
+        public static bool Load()
+        {
+            try
             {
-                o.Add(sectionName, JToken.FromObject(value));
+                if (File.Exists(ConfigPath) is false)
+                {
+                    File.WriteAllText(ConfigPath, "{}");
+                }
+                CurrentJObject = JObject.Parse(File.ReadAllText(ConfigPath));
+                MainSave.CQLog.Debug("配置热重载", "OK");
+                return true;
             }
-            File.WriteAllText(ConfigPath, o.ToString(Newtonsoft.Json.Formatting.Indented));
+            catch (Exception e)
+            {
+                MainSave.CQLog.Debug("配置热重载", $"LoadFail: {e.Message}");
+                return false;
+            }
         }
     }
 }
