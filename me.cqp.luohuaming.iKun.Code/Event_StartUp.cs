@@ -40,9 +40,6 @@ namespace me.cqp.luohuaming.iKun.Code
             e.CQLog.Info("初始化", "创建数据库");
             SQLHelper.CreateDB();
 
-            e.CQLog.Info("初始化", "创建物资池");
-            SQLHelper.CreateItems();
-
             e.CQLog.Info("初始化", "初始化完成");
         }
     }

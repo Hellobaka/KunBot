@@ -43,29 +43,5 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
                 return false;
             }
         }
-
-        public static void CreateItems()
-        {
-            string path = Path.Combine(MainSave.AppDirectory, "items.json");
-            if (!File.Exists(path))
-            {
-                File.WriteAllText(path, "[]");
-            }
-            List<Items> items = JsonConvert.DeserializeObject<List<Items>>(File.ReadAllText(path));
-            if (items == null || items.Count == 0)
-            {
-                MainSave.CQLog.Error("创建物资池", "物资文件内容为空或无效，请检查 items.json 文件内容");
-                return;
-            }
-            var db = GetInstance();
-
-            foreach (var item in items)
-            {
-                if (!db.Queryable<Items>().Any(x => x.ID == item.ID))
-                {
-                    db.Insertable(item).ExecuteCommand();
-                }
-            }
-        }
     }
 }
