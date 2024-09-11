@@ -71,8 +71,7 @@
     <Compile Include="Enums\ActionType.cs" />
     <Compile Include="Enums\AttackType.cs" />
     <Compile Include="FunctionResult.cs" />
-    <Compile Include="Items\Coin.cs" />
-    <Compile Include="Items\IItem.cs" />
+    <Compile Include="Models\Items.cs" />
     <Compile Include="MainSave.cs" />
     <Compile Include="IOrderModel.cs" />
     <Compile Include="Models\InventoryItem.cs" />

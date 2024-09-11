@@ -81,7 +81,6 @@
     <Compile Include="OrderFunctions\Menu.cs" />
     <Compile Include="OrderFunctions\Login.cs" />
     <Compile Include="OrderFunctions\Register.cs" />
-    <Compile Include="OrderFunctions\ExampleFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
