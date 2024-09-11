@@ -16,7 +16,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
 
-        public FunctionResult Progress(CQGroupMessageEventArgs e)
+        public FunctionResult Execute(CQGroupMessageEventArgs e)
         {
             FunctionResult result = new FunctionResult
             {
@@ -33,7 +33,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             return result;
         }
 
-        public FunctionResult Progress(CQPrivateMessageEventArgs e)
+        public FunctionResult Execute(CQPrivateMessageEventArgs e)
         {
             FunctionResult result = new FunctionResult
             {

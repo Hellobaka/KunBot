@@ -11,11 +11,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         
         public string Description { get; set; }
 
-        public void BeforeAction(ActionType action, Kun kun);
+        public bool BeforeAction(ActionType action, Kun kun, out string msg);
 
         public void AfterAction(ActionType action, Kun kun);
 
-        public void BeforeAttack(AttackType action, Kun origin, Kun target);
+        public bool BeforeAttack(AttackType action, Kun origin, Kun target, out string msg);
 
         public void AfterAttack(AttackType action, Kun origin, Kun target);
     }

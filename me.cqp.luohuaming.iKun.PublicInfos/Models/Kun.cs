@@ -14,7 +14,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
         public int Id { get; set; }
 
-        public int AttributeID { get; set; }
+        public int AttributeAID { get; set; }
+
+        public int AttributeBID { get; set; }
 
         public int PlayerID { get; set; }
 
@@ -25,7 +27,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public bool Alive { get; set; }
 
         [SugarColumn(IsIgnore = true)]
-        public IPetAttribute PetAttribute { get; set; }
+        public IPetAttribute PetAttributeA { get; set; }
+
+        [SugarColumn(IsIgnore = true)]
+        public IPetAttribute PetAttributeB { get; set; }
 
         public void Initialize()
         {

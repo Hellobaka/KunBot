@@ -9,7 +9,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         bool ImplementFlag { get; set; }
         string GetOrderStr();
         bool Judge(string destStr);
-        FunctionResult Progress(CQGroupMessageEventArgs e);
-        FunctionResult Progress(CQPrivateMessageEventArgs e);
+        FunctionResult Execute(CQGroupMessageEventArgs e);
+        FunctionResult Execute(CQPrivateMessageEventArgs e);
     }
 }
