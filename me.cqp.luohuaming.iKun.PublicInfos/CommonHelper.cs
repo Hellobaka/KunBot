@@ -26,7 +26,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             var ImageDirectory = Path.Combine(Environment.CurrentDirectory, "data", "image\\");
             return ImageDirectory;
         }
-        
+
+        public static Random Random { get; set; } = new Random();
 
         public static string ParseLongNumber(int num)
         {

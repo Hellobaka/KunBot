@@ -76,6 +76,14 @@
     <Compile Include="IOrderModel.cs" />
     <Compile Include="Models\InventoryItem.cs" />
     <Compile Include="Models\Kun.cs" />
+    <Compile Include="PetAttribute\AttributeA\Du.cs" />
+    <Compile Include="PetAttribute\AttributeA\Nu.cs" />
+    <Compile Include="PetAttribute\AttributeA\Duo.cs" />
+    <Compile Include="PetAttribute\AttributeA\Tan.cs" />
+    <Compile Include="PetAttribute\AttributeA\Chan.cs" />
+    <Compile Include="PetAttribute\AttributeA\Yin.cs" />
+    <Compile Include="PetAttribute\AttributeA\Bei.cs" />
+    <Compile Include="PetAttribute\AttributeA\Ao.cs" />
     <Compile Include="PetAttribute\IPetAttribute.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,7 +100,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Actions\" />
+    <Folder Include="Items\" />
+    <Folder Include="PetAttribute\AttributeB\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

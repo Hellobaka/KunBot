@@ -54,6 +54,54 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string CommandOpenBlindBox { get; set; } = "";
 
+        public static string ReplyDuplicateRegister { get; set; } = "";
+
+        public static string ReplyNewRegister { get; set; } = "";
+
+        public static string ReplyRegisterFailed { get; set; } = "";
+
+        public static string ReplyMenu { get; set; } = "";
+
+        public static string ReplyNoPlayer { get; set; } = "";
+
+        public static string ReplyLoginReward { get; set; } = "";
+
+        public static string ReplyItemLeak { get; set; } = "";
+
+        public static string ReplyHatchKun { get; set; } = "";
+
+        public static string ReplyBuyEgg { get; set; } = "";
+
+        public static string ReplyHatchFail { get; set; } = "";
+
+        public static double ProbablityAo { get; set; }
+       
+        public static double ProbablityDu { get; set; }
+       
+        public static double ProbablityNu { get; set; }
+       
+        public static double ProbablityDuo { get; set; }
+       
+        public static double ProbablityTan { get; set; }
+       
+        public static double ProbablityChan { get; set; }
+       
+        public static double ProbablityYin { get; set; }
+       
+        public static double ProbablityBei { get; set; }
+
+        public static List<double> ProbablityHatchLevel { get; set; } = [];
+
+        public static int ValueHatchProbablityMin { get; set; }
+
+        public static int ValueHatchProbablityMax { get; set; }
+
+        public static int ValueHatchWeightMin { get; set; }
+
+        public static int ValueHatchWeightMax { get; set; }
+
+        public static int ValueEggValue { get; set; }
+
         public static List<long> Groups { get; set; } = [];
 
         public static List<long> Admins { get; set; } = [];
@@ -80,6 +128,33 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandTransmogrify = ConfigHelper.GetConfig("CommandTransmogrify", "");
             CommandUpgrade = ConfigHelper.GetConfig("CommandUpgrade", "");
             CommandRegister = ConfigHelper.GetConfig("CommandRegister", "");
+
+            ReplyDuplicateRegister = ConfigHelper.GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
+            ReplyNewRegister = ConfigHelper.GetConfig("ReplyNewRegister", "注册成功，赠送%1枚金币以及%2枚鲲蛋");
+            ReplyRegisterFailed = ConfigHelper.GetConfig("ReplyRegisterFailed", "注册失败了");
+            ReplyMenu = ConfigHelper.GetConfig("ReplyMenu", "菜单：");
+            ReplyNoPlayer = ConfigHelper.GetConfig("ReplyNoPlayer", "请先注册");
+            ReplyLoginReward = ConfigHelper.GetConfig("ReplyLoginReward", "签到成功，赠送%1枚金币以及%2枚鲲蛋");
+            ReplyItemLeak = ConfigHelper.GetConfig("ReplyItemLeak", "道具数量不足，需要%1个，现有%2个");
+            ReplyHatchFail = ConfigHelper.GetConfig("ReplyHatchFail", "孵化失败\n-------------------\n剩余 %1 颗鲲蛋");
+            ReplyHatchKun = ConfigHelper.GetConfig("ReplyHatchKun", "恭喜你获得一只%1\n体重 %2 千克\n-------------------\n剩余 %3 颗鲲蛋");
+            ReplyBuyEgg = ConfigHelper.GetConfig("ReplyBuyEgg", "购买成功，消耗金币 %1 枚，获得 %2 枚鲲蛋\n-------------------\n剩余金币 %3 枚，鲲蛋 %4 枚");
+
+            ProbablityAo = ConfigHelper.GetConfig("ProbablityAo", 1);
+            ProbablityBei = ConfigHelper.GetConfig("ProbablityBei", 1);
+            ProbablityChan = ConfigHelper.GetConfig("ProbablityChan", 1);
+            ProbablityDuo = ConfigHelper.GetConfig("ProbablityDuo", 1);
+            ProbablityDu = ConfigHelper.GetConfig("ProbablityDu", 1);
+            ProbablityNu = ConfigHelper.GetConfig("ProbablityNu", 1);
+            ProbablityTan = ConfigHelper.GetConfig("ProbablityTan", 1);
+            ProbablityYin = ConfigHelper.GetConfig("ProbablityYin", 1);
+            ProbablityHatchLevel = ConfigHelper.GetConfig("ProbablityHatchLevel", new List<double>() { 1, 1, 1, 1, 1, 1, 1, 1 });
+
+            ValueHatchProbablityMin = ConfigHelper.GetConfig("ValueHatchProbablityMin", 1);
+            ValueHatchProbablityMax = ConfigHelper.GetConfig("ValueHatchProbablityMax", 1);
+            ValueHatchWeightMin = ConfigHelper.GetConfig("ValueHatchWeightMin", 1);
+            ValueHatchWeightMax = ConfigHelper.GetConfig("ValueHatchWeightMax", 1);
+            ValueEggValue = ConfigHelper.GetConfig("ValueEggValue", 100);
 
             Groups = ConfigHelper.GetConfig("Groups", new List<long>());
             Admins = ConfigHelper.GetConfig("Admins", new List<long>());
