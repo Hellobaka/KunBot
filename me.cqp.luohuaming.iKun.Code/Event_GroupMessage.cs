@@ -18,6 +18,10 @@ namespace me.cqp.luohuaming.iKun.Code
             };
             try
             {
+                if (AppConfig.Groups.Any(x => x == e.FromGroup) is false)
+                {
+                    return result;
+                }
                 foreach (var item in MainSave.Instances.Where(item => item.Judge(e.Message.Text)))
                 {
                     return item.Progress(e);
