@@ -31,22 +31,19 @@ namespace me.cqp.luohuaming.iKun.Code
                 }
             }
 
-            e.CQLog.Info("³õÊ¼»¯", "¼ÓÔØÅäÖÃ");
+            e.CQLog.Info("åˆå§‹åŒ–", "åŠ è½½é…ç½®");
             ConfigHelper.ConfigPath = Path.Combine(MainSave.AppDirectory, "Config.json");
             ConfigHelper.Load();
             AppConfig.LoadConfig();
             AppConfig.EnableAutoReload();
 
-            if (File.Exists(Path.Combine(MainSave.AppDirectory, "data.db")) is false)
-            {
-                e.CQLog.Info("³õÊ¼»¯", "´´½¨Êı¾İ¿â");
-                SQLHelper.CreateDB();
-            }
+            e.CQLog.Info("åˆå§‹åŒ–", "åˆ›å»ºæ•°æ®åº“");
+            SQLHelper.CreateDB();
 
-            e.CQLog.Info("³õÊ¼»¯", "´´½¨Îï×Ê³Ø");
+            e.CQLog.Info("åˆå§‹åŒ–", "åˆ›å»ºç‰©èµ„æ± ");
             SQLHelper.CreateItems();
 
-            e.CQLog.Info("³õÊ¼»¯", "³õÊ¼»¯Íê³É");
+            e.CQLog.Info("åˆå§‹åŒ–", "åˆå§‹åŒ–å®Œæˆ");
         }
     }
 }

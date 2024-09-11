@@ -9,7 +9,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 {
     public static class SQLHelper
     {
-        private static string DBPath => Path.Combine(MainSave.AppDirectory, "data.db");
+        public static string DBPath => Path.Combine(MainSave.AppDirectory, "data.db");
 
         public static SqlSugarClient GetInstance()
         {
@@ -24,6 +24,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static bool CreateDB()
         {
+            if (File.Exists(DBPath)) 
+            {
+                return true;
+            }
             try
             {
                 using var db = GetInstance();
@@ -45,9 +49,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             string path = Path.Combine(MainSave.AppDirectory, "items.json");
             if (!File.Exists(path))
             {
-                throw new FileNotFoundException("物品列表未找到，请放置 items.json 至数据目录");
+                File.WriteAllText(path, "[]");
             }
             List<Items> items = JsonConvert.DeserializeObject<List<Items>>(File.ReadAllText(path));
+            if (items == null || items.Count == 0)
+            {
+                MainSave.CQLog.Error("创建物资池", "物资文件内容为空或无效，请检查 items.json 文件内容");
+                return;
+            }
             var db = GetInstance();
 
             foreach (var item in items)
