@@ -15,7 +15,6 @@ namespace me.cqp.luohuaming.iKun.Code
             MainSave.CQApi = e.CQApi;
             MainSave.CQLog = e.CQLog;
             MainSave.ImageDirectory = CommonHelper.GetAppImageDirectory();
-            ConfigHelper.ConfigPath = Path.Combine(MainSave.AppDirectory, "Config.json");
             foreach (var item in Assembly.GetAssembly(typeof(Event_GroupMessage)).GetTypes())
             {
                 if (item.IsInterface)
@@ -32,7 +31,22 @@ namespace me.cqp.luohuaming.iKun.Code
                 }
             }
 
+            e.CQLog.Info("初始化", "加载配置");
+            ConfigHelper.ConfigPath = Path.Combine(MainSave.AppDirectory, "Config.json");
+            ConfigHelper.Load();
+            AppConfig.LoadConfig();
             AppConfig.EnableAutoReload();
+
+            if (File.Exists(Path.Combine(MainSave.AppDirectory, "data.db")) is false)
+            {
+                e.CQLog.Info("初始化", "创建数据库");
+                SQLHelper.CreateDB();
+            }
+
+            e.CQLog.Info("初始化", "创建物资池");
+            SQLHelper.CreateItems();
+
+            e.CQLog.Info("初始化", "初始化完成");
         }
     }
 }
