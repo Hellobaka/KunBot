@@ -130,15 +130,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandRegister = ConfigHelper.GetConfig("CommandRegister", "");
 
             ReplyDuplicateRegister = ConfigHelper.GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
-            ReplyNewRegister = ConfigHelper.GetConfig("ReplyNewRegister", "注册成功，赠送%1枚金币以及%2枚鲲蛋");
+            ReplyNewRegister = ConfigHelper.GetConfig("ReplyNewRegister", "注册成功，赠送 {0} 枚金币以及 {1} 枚鲲蛋");
             ReplyRegisterFailed = ConfigHelper.GetConfig("ReplyRegisterFailed", "注册失败了");
             ReplyMenu = ConfigHelper.GetConfig("ReplyMenu", "菜单：");
             ReplyNoPlayer = ConfigHelper.GetConfig("ReplyNoPlayer", "请先注册");
-            ReplyLoginReward = ConfigHelper.GetConfig("ReplyLoginReward", "签到成功，赠送%1枚金币以及%2枚鲲蛋");
-            ReplyItemLeak = ConfigHelper.GetConfig("ReplyItemLeak", "道具数量不足，需要%1个，现有%2个");
-            ReplyHatchFail = ConfigHelper.GetConfig("ReplyHatchFail", "孵化失败\n-------------------\n剩余 %1 颗鲲蛋");
-            ReplyHatchKun = ConfigHelper.GetConfig("ReplyHatchKun", "恭喜你获得一只%1\n体重 %2 千克\n-------------------\n剩余 %3 颗鲲蛋");
-            ReplyBuyEgg = ConfigHelper.GetConfig("ReplyBuyEgg", "购买成功，消耗金币 %1 枚，获得 %2 枚鲲蛋\n-------------------\n剩余金币 %3 枚，鲲蛋 %4 枚");
+            ReplyLoginReward = ConfigHelper.GetConfig("ReplyLoginReward", "签到成功，赠送 {0} 枚金币以及 {1} 枚鲲蛋");
+            ReplyItemLeak = ConfigHelper.GetConfig("ReplyItemLeak", "道具数量不足，需要{0}个，现有{1}个");
+            ReplyHatchFail = ConfigHelper.GetConfig("ReplyHatchFail", "孵化失败\n-------------------\n剩余 {0} 颗鲲蛋");
+            ReplyHatchKun = ConfigHelper.GetConfig("ReplyHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n剩余 {2} 颗鲲蛋");
+            ReplyBuyEgg = ConfigHelper.GetConfig("ReplyBuyEgg", "购买成功，消耗金币 {0} 枚，获得 {1} 枚鲲蛋\n-------------------\n剩余金币 {2} 枚，鲲蛋 {3} 枚");
 
             ProbablityAo = ConfigHelper.GetConfig("ProbablityAo", 1);
             ProbablityBei = ConfigHelper.GetConfig("ProbablityBei", 1);
