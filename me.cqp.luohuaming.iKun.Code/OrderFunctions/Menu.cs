@@ -28,7 +28,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 SendID = e.FromGroup,
             };
 
-            sendText.MsgToSend.Add("这里输入需要发送的文本");
+            sendText.MsgToSend.Add(AppConfig.ReplyMenu);
             result.SendObject.Add(sendText);
             return result;
         }

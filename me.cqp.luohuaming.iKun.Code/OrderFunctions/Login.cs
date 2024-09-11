@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.PublicInfos;
+using me.cqp.luohuaming.iKun.PublicInfos.Models;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
@@ -27,9 +28,24 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 SendID = e.FromGroup,
             };
-
-            sendText.MsgToSend.Add("这里输入需要发送的文本");
             result.SendObject.Add(sendText);
+
+            var player = Player.GetPlayer(e.FromQQ);
+            if (player == null)
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyNoPlayer);
+                return result;
+            }
+
+            int coinCount = 100;
+            int eggCount = 5;
+            player.GiveItem([
+                Items.Coin(coinCount),
+                Items.KunEgg(eggCount)
+            ]);
+
+            sendText.MsgToSend.Add(string.Format(AppConfig.ReplyLoginReward, coinCount, eggCount));
+
             return result;
         }
 
