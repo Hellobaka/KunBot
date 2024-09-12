@@ -50,8 +50,9 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
 
             var kun = Kun.RandomCreate(player);
-            Kun.SaveKun(kun);
+            int id = Kun.SaveKun(kun);
 
+            Record.AddRecord(new Record { Group = e.FromGroup, QQ = e.FromQQ, KunID = id });
             sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchKun, kun.ToString(), kun.Weight, currentCount - hatchComsume));
             return result;
         }

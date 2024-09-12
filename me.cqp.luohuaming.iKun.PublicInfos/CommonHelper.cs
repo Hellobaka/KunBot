@@ -70,5 +70,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             }
             return false;
         }
+
+        public static void RemoveNewLine(this StringBuilder stringBuilder)
+        {
+            stringBuilder.Remove(stringBuilder.Length - Environment.NewLine.Length, Environment.NewLine.Length);
+        }
     }
 }

@@ -64,6 +64,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyNoPlayer { get; set; } = "";
 
+        public static string ReplyNoKun { get; set; } = "";
+
         public static string ReplyLoginReward { get; set; } = "";
 
         public static string ReplyItemLeak { get; set; } = "";
@@ -102,6 +104,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueEggValue { get; set; }
 
+        public static int ValueFeedCoinConsume { get; set; }
+
+        public static int ValueFeedKunEggConsume { get; set; }
+
+        public static int ValueFeedWeightMinimumIncrement { get; set; }
+
+        public static int ValueFeedWeightMaximumIncrement { get; set; }
+
+        public static int ValueRankingCount { get; set; }
+
         public static List<long> Groups { get; set; } = [];
 
         public static List<long> Admins { get; set; } = [];
@@ -134,8 +146,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyRegisterFailed = ConfigHelper.GetConfig("ReplyRegisterFailed", "注册失败了");
             ReplyMenu = ConfigHelper.GetConfig("ReplyMenu", "菜单：");
             ReplyNoPlayer = ConfigHelper.GetConfig("ReplyNoPlayer", "请先注册");
+            ReplyNoKun = ConfigHelper.GetConfig("ReplyNoKun", "未持有鲲");
             ReplyLoginReward = ConfigHelper.GetConfig("ReplyLoginReward", "签到成功，赠送 {0} 枚金币以及 {1} 枚鲲蛋");
-            ReplyItemLeak = ConfigHelper.GetConfig("ReplyItemLeak", "道具数量不足，需要{0}个，现有{1}个");
+            ReplyItemLeak = ConfigHelper.GetConfig("ReplyItemLeak", "{0}数量不足，需要{1}个，现有{2}个");
             ReplyHatchFail = ConfigHelper.GetConfig("ReplyHatchFail", "孵化失败\n-------------------\n剩余 {0} 颗鲲蛋");
             ReplyHatchKun = ConfigHelper.GetConfig("ReplyHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n剩余 {2} 颗鲲蛋");
             ReplyBuyEgg = ConfigHelper.GetConfig("ReplyBuyEgg", "购买成功，消耗金币 {0} 枚，获得 {1} 枚鲲蛋\n-------------------\n剩余金币 {2} 枚，鲲蛋 {3} 枚");
@@ -155,6 +168,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueHatchWeightMin = ConfigHelper.GetConfig("ValueHatchWeightMin", 1);
             ValueHatchWeightMax = ConfigHelper.GetConfig("ValueHatchWeightMax", 1);
             ValueEggValue = ConfigHelper.GetConfig("ValueEggValue", 100);
+            ValueFeedCoinConsume = ConfigHelper.GetConfig("ValueFeedCoinConsume", 100);
+            ValueFeedKunEggConsume = ConfigHelper.GetConfig("ValueFeedKunEggConsume", 10);
+            ValueFeedWeightMinimumIncrement = ConfigHelper.GetConfig("ValueFeedWeightMinimumIncrement", 10);
+            ValueFeedWeightMaximumIncrement = ConfigHelper.GetConfig("ValueFeedWeightMaximumIncrement", 40);
+            ValueRankingCount = ConfigHelper.GetConfig("ValueRankingCount", 10);
 
             Groups = ConfigHelper.GetConfig("Groups", new List<long>());
             Admins = ConfigHelper.GetConfig("Admins", new List<long>());

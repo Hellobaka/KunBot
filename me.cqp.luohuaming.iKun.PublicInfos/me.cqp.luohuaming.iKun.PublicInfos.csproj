@@ -71,11 +71,18 @@
     <Compile Include="Enums\ActionType.cs" />
     <Compile Include="Enums\AttackType.cs" />
     <Compile Include="FunctionResult.cs" />
+    <Compile Include="Items\BlindBox.cs" />
+    <Compile Include="Items\Coin.cs" />
+    <Compile Include="Items\KunEgg.cs" />
+    <Compile Include="Items\ResurrectPill.cs" />
+    <Compile Include="Items\TransmogrifyPill.cs" />
+    <Compile Include="Items\UpgradePill.cs" />
     <Compile Include="Models\Items.cs" />
     <Compile Include="MainSave.cs" />
     <Compile Include="IOrderModel.cs" />
     <Compile Include="Models\InventoryItem.cs" />
     <Compile Include="Models\Kun.cs" />
+    <Compile Include="Models\Record.cs" />
     <Compile Include="PetAttribute\AttributeA\Du.cs" />
     <Compile Include="PetAttribute\AttributeA\Nu.cs" />
     <Compile Include="PetAttribute\AttributeA\Duo.cs" />
@@ -100,7 +107,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Items\" />
     <Folder Include="PetAttribute\AttributeB\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

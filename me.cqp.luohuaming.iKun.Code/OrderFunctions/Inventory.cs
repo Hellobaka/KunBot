@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.PublicInfos;
+using me.cqp.luohuaming.iKun.PublicInfos.Models;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
@@ -27,9 +28,44 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 SendID = e.FromGroup,
             };
-
-            sendText.MsgToSend.Add("这里输入需要发送的文本");
             result.SendObject.Add(sendText);
+            var player = Player.GetPlayer(e.FromQQ);
+            if (player == null)
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyNoPlayer);
+                return result;
+            }
+            StringBuilder stringBuilder = new();
+            var kun = Kun.GetKunByQQ(player.QQ);
+            if(kun == null)
+            {
+                stringBuilder.AppendLine(AppConfig.ReplyNoKun);
+            }
+            else
+            {
+                stringBuilder.AppendLine(kun.ToString() + $" {kun.Weight:f2}千克");
+            }
+            stringBuilder.AppendLine("=============");
+            var list = InventoryItem.GetItemsByQQ(e.FromQQ);
+            if (list == null || list.Count == 0)
+            {
+                sendText.MsgToSend.Add("仓库为空");
+            }
+            else
+            {
+                foreach (var item in list)
+                {
+                    var items = Items.GetItemByID(item.Id);
+                    if (items == null)
+                    {
+                        continue;
+                    }
+                    stringBuilder.AppendLine(item.ToString());
+                }
+                stringBuilder.RemoveNewLine();
+
+                sendText.MsgToSend.Add(stringBuilder.ToString());
+            }
             return result;
         }
 
