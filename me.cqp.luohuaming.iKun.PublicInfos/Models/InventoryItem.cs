@@ -1,4 +1,5 @@
 ﻿using SqlSugar;
+using System.Collections.Generic;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 {
@@ -19,7 +20,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public static int GetItemCount(Player player, int itemID)
         {
             var db = SQLHelper.GetInstance();
-            var item = db.Queryable<Items>().First(x => x.ID == itemID);
+            var item = Items.GetItemByID(itemID);
             if (item == null)
             {
                 MainSave.CQLog.Error("获取物资信息", $"无法查询到ID为 {itemID} 的物资");
@@ -38,7 +39,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public static bool TryRemoveItem(Player player, int itemID, int count, out int currentCount)
         {
             var db = SQLHelper.GetInstance();
-            var item = db.Queryable<Items>().First(x => x.ID == itemID);
+            var item = Items.GetItemByID(itemID);
             currentCount = 0;
             if (item == null)
             {
@@ -78,6 +79,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     return false;
                 }
             }
+        }
+
+        public static List<InventoryItem> GetItemsByQQ(long qq)
+        {
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<InventoryItem>().Where(x => x.PlayerID == qq && !x.Deleted).ToList();
         }
     }
 }
