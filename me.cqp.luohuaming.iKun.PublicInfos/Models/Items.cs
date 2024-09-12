@@ -7,7 +7,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 {
     public class Items
     {
-        public int ID { get; set; }
+        public Enums.Items ID { get; set; }
         
         public string Name { get; set; }
         
@@ -21,21 +21,24 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public static Items KunEgg(int count = 1) => new PublicInfos.Items.KunEgg(count);
 
-        public static Items GetItemByID(int id)
+        public static Items GetItemByID(Enums.Items id)
         {
-            foreach (var item in Assembly.GetAssembly(typeof(PublicInfos.Items.Coin)).GetTypes())
+            switch (id)
             {
-                if (item.IsInterface)
-                    continue;
-                if(item.Namespace != "me.cqp.luohuaming.iKun.PublicInfos.Items")
-                {
-                    continue;
-                }
-                var attribute = item.GetCustomAttribute<ItemAttribute>();
-                if(attribute != null && attribute.ID == id)
-                {
-                    return (Items)Activator.CreateInstance(item, args: 1);
-                }
+                case Enums.Items.Coin:
+                    return new PublicInfos.Items.Coin();
+                case Enums.Items.KunEgg:
+                    return new PublicInfos.Items.KunEgg();
+                case Enums.Items.BlindBox:
+                    return new PublicInfos.Items.BlindBox();
+                case Enums.Items.ResurrectPill:
+                    return new PublicInfos.Items.ResurrectPill();
+                case Enums.Items.TransmogrifyPill:
+                    return new PublicInfos.Items.TransmogrifyPill();
+                case Enums.Items.UpgradePill:
+                    return new PublicInfos.Items.UpgradePill();
+                default:
+                    break;
             }
 
             return null;
@@ -44,12 +47,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public override string ToString()
         {
             return $"{Name} {Count}";
-        }
-
-        [AttributeUsage(AttributeTargets.Class)]
-        public class ItemAttribute(int id) : Attribute
-        {
-            public int ID { get; set; } = id;
         }
     }
 }

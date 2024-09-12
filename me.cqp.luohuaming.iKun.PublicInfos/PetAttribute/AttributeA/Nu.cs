@@ -8,33 +8,18 @@ using System.Threading.Tasks;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
 {
-    [Pet(6)]
     public class Nu : IPetAttribute
     {
-        public int ID => ((PetAttribute)Attribute.GetCustomAttribute(GetType(), typeof(PetAttribute))).ID;
-
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public void AfterAction(ActionType action, Kun kun)
+        public Nu()
         {
-            throw new NotImplementedException();
+            ID = Attributes.Nu;
+            Name = "";
+            Description = "";
         }
 
-        public void AfterAttack(AttackType action, Kun origin, Kun target)
+        public override void Upgrade()
         {
-            throw new NotImplementedException();
-        }
-
-        public bool BeforeAction(ActionType action, Kun kun, out string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool BeforeAttack(AttackType action, Kun origin, Kun target, out string msg)
-        {
-            throw new NotImplementedException();
+            base.Upgrade();
         }
     }
 }

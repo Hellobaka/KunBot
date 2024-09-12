@@ -34,13 +34,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             var db = SQLHelper.GetInstance();
             foreach (var item in items) 
             {
-                var query = db.Queryable<InventoryItem>().First(x => x.Id == item.ID && x.PlayerID == QQ);
+                var query = db.Queryable<InventoryItem>().First(x => x.Id == (int)item.ID && x.PlayerID == QQ);
                 if (query == null || !item.Stackable)
                 {
                     db.Insertable(new InventoryItem
                     {
                         Count = item.Count,
-                        ItemID = item.ID,
+                        ItemID = (int)item.ID,
                         PlayerID = QQ
                     }).ExecuteCommand();
                     return;

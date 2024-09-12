@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
 {
-    public class Bei : IPetAttribute
+    public class None : IPetAttribute
     {
-        public Bei()
+        public None()
         {
-            ID = Attributes.Bei;
+            ID = Attributes.None;
             Name = "";
             Description = "";
         }

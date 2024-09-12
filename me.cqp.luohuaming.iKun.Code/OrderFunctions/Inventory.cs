@@ -55,7 +55,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 foreach (var item in list)
                 {
-                    var items = Items.GetItemByID(item.Id);
+                    var items = Items.GetItemByID((PublicInfos.Enums.Items)item.Id);
                     if (items == null)
                     {
                         continue;

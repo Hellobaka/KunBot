@@ -17,7 +17,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public bool Deleted { get; set; }
 
-        public static int GetItemCount(Player player, int itemID)
+        public static int GetItemCount(Player player, Enums.Items itemID)
         {
             var db = SQLHelper.GetInstance();
             var item = Items.GetItemByID(itemID);
@@ -28,15 +28,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             }
             if (item.Stackable)
             {
-                return db.Queryable<InventoryItem>().First(x => x.PlayerID == player.QQ && x.ItemID == itemID && !x.Deleted).Count;
+                return db.Queryable<InventoryItem>().First(x => x.PlayerID == player.QQ && x.ItemID == (int)itemID && !x.Deleted).Count;
             }
             else
             {
-                return db.Queryable<InventoryItem>().Count(x => x.PlayerID == player.QQ && x.ItemID == itemID && !x.Deleted);
+                return db.Queryable<InventoryItem>().Count(x => x.PlayerID == player.QQ && x.ItemID == (int)itemID && !x.Deleted);
             }
         }
 
-        public static bool TryRemoveItem(Player player, int itemID, int count, out int currentCount)
+        public static bool TryRemoveItem(Player player, Enums.Items itemID, int count, out int currentCount)
         {
             var db = SQLHelper.GetInstance();
             var item = Items.GetItemByID(itemID);
@@ -48,7 +48,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             }
             if (item.Stackable)
             {
-                var query = db.Queryable<InventoryItem>().Where(x => x.PlayerID == player.QQ && x.ItemID == itemID && !x.Deleted).First();
+                var query = db.Queryable<InventoryItem>().Where(x => x.PlayerID == player.QQ && x.ItemID == (int)itemID && !x.Deleted).First();
                 currentCount = query.Count;
                 if (query.Count >= count)
                 {
@@ -63,7 +63,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             }
             else
             {
-                var items = db.Queryable<InventoryItem>().Where(x => x.PlayerID == player.QQ && x.ItemID == itemID && !x.Deleted).ToList();
+                var items = db.Queryable<InventoryItem>().Where(x => x.PlayerID == player.QQ && x.ItemID == (int)itemID && !x.Deleted).ToList();
                 currentCount = items.Count;
                 if (items.Count >= count)
                 {

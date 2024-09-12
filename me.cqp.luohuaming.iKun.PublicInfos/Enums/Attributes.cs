@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.Enums
 {
-    public enum ActionType
+    public enum Attributes
     {
+        Ao = 1,
+        Bei,
+        Chan,
+        Du,
+        Duo,
+        None,
+        Nu,
+        Tan,
+        Yin
     }
 }

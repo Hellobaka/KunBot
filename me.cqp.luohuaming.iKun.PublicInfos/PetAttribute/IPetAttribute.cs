@@ -1,32 +1,24 @@
 ﻿using me.cqp.luohuaming.iKun.PublicInfos.Enums;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
+using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
 {
-    public interface IPetAttribute
+    public abstract class IPetAttribute
     {
-        public int ID { get; }
+        public Attributes ID { get; set; }
         
         public string Name { get; set; }
         
         public string Description { get; set; }
 
-        public bool BeforeAction(ActionType action, Kun kun, out string msg);
+        public virtual void Upgrade()
+        {
 
-        public void AfterAction(ActionType action, Kun kun);
-
-        public bool BeforeAttack(AttackType action, Kun origin, Kun target, out string msg);
-
-        public void AfterAttack(AttackType action, Kun origin, Kun target);
-    }
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public class PetAttribute(int id) : Attribute
-    {
-        public int ID { get; set; } = id;
+        }
     }
 
     public class PetAttributeRandomInsatantiator
@@ -57,15 +49,20 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             throw new InvalidOperationException("No implementation selected. This should never happen.");
         }
 
-        public IPetAttribute GetInstanceByID(int id)
+        public IPetAttribute GetInstanceByID(Attributes id)
         {
-            var item = Implementations.FirstOrDefault(x => ((PetAttribute)Attribute.GetCustomAttribute(x.Key, typeof(PetAttribute))).ID == id);
-            if (item.Key == null)
+            return id switch
             {
-                return null;
-            }
-
-            return (IPetAttribute)Activator.CreateInstance(item.Key);
+                Attributes.Ao => new Ao(),
+                Attributes.Bei => new Bei(),
+                Attributes.Chan => new Chan(),
+                Attributes.Du => new Du(),
+                Attributes.Duo => new Duo(),
+                Attributes.Nu => new Nu(),
+                Attributes.Tan => new Tan(),
+                Attributes.Yin => new Yin(),
+                _ => new None(),
+            };
         }
     }
 }

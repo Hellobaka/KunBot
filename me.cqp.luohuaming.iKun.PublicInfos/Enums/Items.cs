@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.Enums
 {
-    public enum AttackType
+    public enum Items
     {
+        Coin = 1,
+        KunEgg,
+        BlindBox,
+        ResurrectPill,
+        TransmogrifyPill,
+        UpgradePill
     }
 }

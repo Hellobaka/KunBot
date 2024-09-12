@@ -41,8 +41,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public void Initialize()
         {
-            PetAttributeA = RandomInsatantiatorA.GetInstanceByID(AttributeAID);
-            PetAttributeB = RandomInsatantiatorB.GetInstanceByID(AttributeBID);
+            PetAttributeA = RandomInsatantiatorA.GetInstanceByID((Enums.Attributes)AttributeAID);
+            PetAttributeB = RandomInsatantiatorB.GetInstanceByID((Enums.Attributes)AttributeBID);
         }
 
         public void Update()
@@ -75,7 +75,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             IPetAttribute attributeB = RandomInsatantiatorA.GetRandomInstance();
             Kun kun = new()
             {
-                AttributeBID = attributeB.ID,
+                AttributeBID = (int)attributeB.ID,
                 PlayerID = player.QQ,
                 Weight = CommonHelper.Random.Next(AppConfig.ValueHatchWeightMin, AppConfig.ValueHatchWeightMax),
                 Abandoned = false,
