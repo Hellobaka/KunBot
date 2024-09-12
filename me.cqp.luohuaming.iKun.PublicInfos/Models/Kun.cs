@@ -23,7 +23,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public double Weight { get; set; }
 
-        public int Level {  get; set; }
+        public int Level { get; set; }
 
         public bool Abandoned { get; set; }
 
@@ -45,14 +45,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             PetAttributeB = RandomInsatantiatorB.GetInstanceByID(AttributeBID);
         }
 
-        public double AddWeight(double weight)
+        public void Update()
         {
-            return Weight + weight;
+            var db = SQLHelper.GetInstance();
+            db.Updateable(this).ExecuteCommand();
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            return $"[{PetAttributeA.Name}] {PetAttributeB.Name}鲲 {new string('★', Level)}";
         }
 
         public static void InitiazlizeRandom()
@@ -71,25 +72,47 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public static Kun RandomCreate(Player player)
         {
-            IPetAttribute attributeA = RandomInsatantiatorA.GetRandomInstance();
             IPetAttribute attributeB = RandomInsatantiatorA.GetRandomInstance();
             Kun kun = new()
             {
-                AttributeAID = attributeA.ID,
                 AttributeBID = attributeB.ID,
                 PlayerID = player.QQ,
                 Weight = CommonHelper.Random.Next(AppConfig.ValueHatchWeightMin, AppConfig.ValueHatchWeightMax),
-                Level = RandomLevel(),
                 Abandoned = false,
                 Alive = true,
             };
             return kun;
         }
 
-        public static void SaveKun(Kun kun)
+        public static int SaveKun(Kun kun)
         {
             var db = SQLHelper.GetInstance();
-            db.Insertable(kun).ExecuteCommand();
+            return db.Insertable(kun).ExecuteReturnIdentity();
+        }
+
+        public static void UpdateKun(Kun kun)
+        {
+            var db = SQLHelper.GetInstance();
+            db.Updateable(kun).ExecuteCommand();
+        }
+
+        public static Kun GetKunByID(int id)
+        {
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<Kun>().First(x => x.Id == id);
+        }
+
+        public static Kun GetKunByQQ(long qq)
+        {
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<Kun>().First(x => x.PlayerID == qq && !x.Abandoned && x.Alive);
+        }
+
+        public static List<Kun> GetKunByRecords(List<Record> records)
+        {
+            var db = SQLHelper.GetInstance();
+            var ls = records.Select(x => x.KunID).ToList();
+            return db.Queryable<Kun>().Where(x => ls.Any(o => x.Id == o)).ToList();
         }
 
         private static int RandomLevel()

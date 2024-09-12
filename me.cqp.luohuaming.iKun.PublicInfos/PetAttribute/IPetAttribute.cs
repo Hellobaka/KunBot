@@ -24,14 +24,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
     }
 
     [AttributeUsage(AttributeTargets.Class)]
-    public class PetAttribute : Attribute
+    public class PetAttribute(int id) : Attribute
     {
-        public int ID { get; set; }
-
-        public PetAttribute(int id)
-        {
-            ID = id;
-        }
+        public int ID { get; set; } = id;
     }
 
     public class PetAttributeRandomInsatantiator
