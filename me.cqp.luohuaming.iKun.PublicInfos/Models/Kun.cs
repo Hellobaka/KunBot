@@ -39,6 +39,66 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         private static PetAttributeRandomInsatantiator RandomInsatantiatorB { get; set; } = null;
 
+        #region 数值实例
+        public void Upgrade(int count)
+        {
+            PetAttributeA.Upgrade(count);
+            PetAttributeB.Upgrade(count);
+        }
+
+        public void Ascend()
+        {
+            PetAttributeA.Ascend();
+            PetAttributeB.Ascend();
+        }
+
+        public void Devour()
+        {
+            PetAttributeA.Devour();
+            PetAttributeB.Devour();
+        }
+
+        public void Feed()
+        {
+            PetAttributeA.Feed();
+            PetAttributeB.Feed();
+        }
+
+        public void Release()
+        {
+            PetAttributeA.Release();
+            PetAttributeB.Release();
+        }
+
+        public void Resurrect()
+        {
+            PetAttributeA.Resurrect();
+            PetAttributeB.Resurrect();
+        }
+
+        public void Transmogrify()
+        {
+            PetAttributeA.Transmogrify();
+            PetAttributeB.Transmogrify();
+        }
+
+        public void Strike(Kun target)
+        {
+            PetAttributeA.Strike(target);
+            PetAttributeB.Strike(target);
+        }
+
+        public void Attack(Kun target)
+        {
+            PetAttributeA.Attack(target);
+            PetAttributeB.Attack(target);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 使用数值方法前调用初始化
+        /// </summary>
         public void Initialize()
         {
             PetAttributeA = RandomInsatantiatorA.GetInstanceByID((Enums.Attributes)AttributeAID);

@@ -4,6 +4,7 @@ using me.cqp.luohuaming.iKun.PublicInfos;
 using System;
 using System.IO;
 using System.Reflection;
+using me.cqp.luohuaming.iKun.PublicInfos.Models;
 
 namespace me.cqp.luohuaming.iKun.Code
 {
@@ -40,6 +41,7 @@ namespace me.cqp.luohuaming.iKun.Code
             e.CQLog.Info("初始化", "创建数据库");
             SQLHelper.CreateDB();
 
+            Kun.InitiazlizeRandom();
             e.CQLog.Info("初始化", "初始化完成");
         }
     }
