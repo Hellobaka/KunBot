@@ -65,7 +65,6 @@
     <Compile Include="OrderFunctions\OpenBlindBox.cs" />
     <Compile Include="OrderFunctions\OpenEgg.cs" />
     <Compile Include="OrderFunctions\BuyEgg.cs" />
-    <Compile Include="OrderFunctions\Strike.cs" />
     <Compile Include="OrderFunctions\Attack.cs" />
     <Compile Include="OrderFunctions\Devour.cs" />
     <Compile Include="OrderFunctions\ReleaseKun.cs" />

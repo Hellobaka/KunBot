@@ -46,8 +46,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string CommandAttack { get; set; } = "";
 
-        public static string CommandStrike { get; set; } = "";
-
         public static string CommandBuyEgg { get; set; } = "";
 
         public static string CommandOpenEgg { get; set; } = "";
@@ -140,7 +138,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandRanking = ConfigHelper.GetConfig("CommandRanking", "");
             CommandReleaseKun = ConfigHelper.GetConfig("CommandReleaseKun", "");
             CommandResurrect = ConfigHelper.GetConfig("CommandResurrect", "");
-            CommandStrike = ConfigHelper.GetConfig("CommandStrike", "");
             CommandTransmogrify = ConfigHelper.GetConfig("CommandTransmogrify", "");
             CommandUpgrade = ConfigHelper.GetConfig("CommandUpgrade", "");
             CommandRegister = ConfigHelper.GetConfig("CommandRegister", "");
