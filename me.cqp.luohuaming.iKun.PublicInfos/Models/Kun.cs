@@ -23,8 +23,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public double Weight { get; set; }
 
-        public int Level { get; set; }
-
         public bool Abandoned { get; set; }
 
         public bool Alive { get; set; }
@@ -34,6 +32,20 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         [SugarColumn(IsIgnore = true)]
         public IPetAttribute PetAttributeB { get; set; }
+
+        [SugarColumn(IsIgnore = true)]
+        public int Level => Weight switch
+        {
+            < 400 => 1,
+            < 1100 => 2,
+            < 2100 => 3,
+            < 3400 => 4,
+            < 5100 => 5,
+            < 7300 => 6,
+            < 9900 => 7,
+            < 13000 => 8,
+            _ => 9,
+        };
 
         private static PetAttributeRandomInsatantiator RandomInsatantiatorA { get; set; } = null;
 
@@ -48,50 +60,109 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public void Ascend()
         {
-            PetAttributeA.Ascend();
-            PetAttributeB.Ascend();
         }
 
         public void Devour()
         {
-            PetAttributeA.Devour();
-            PetAttributeB.Devour();
         }
 
         public void Feed()
         {
-            PetAttributeA.Feed();
-            PetAttributeB.Feed();
         }
 
         public void Release()
         {
-            PetAttributeA.Release();
-            PetAttributeB.Release();
         }
 
         public void Resurrect()
         {
-            PetAttributeA.Resurrect();
-            PetAttributeB.Resurrect();
         }
 
         public void Transmogrify()
         {
-            PetAttributeA.Transmogrify();
-            PetAttributeB.Transmogrify();
-        }
-
-        public void Strike(Kun target)
-        {
-            PetAttributeA.Strike(target);
-            PetAttributeB.Strike(target);
         }
 
         public void Attack(Kun target)
         {
-            PetAttributeA.Attack(target);
-            PetAttributeB.Attack(target);
+            double baseAttackRate = CalcBaseAttackRate(PetAttributeA, target.PetAttributeA);
+            var weightDiff = PetAttributeA.Attack(Weight, target.Weight, baseAttackRate);
+            weightDiff = target.PetAttributeA.BeingAttacked(target.Weight, Weight, weightDiff);
+
+            weightDiff = target.PetAttributeB.Attack(Weight, target.Weight).Multiple(weightDiff);
+            weightDiff = target.PetAttributeB.BeingAttacked(target.Weight, Weight, weightDiff).Multiple(weightDiff);
+
+            Weight *= weightDiff.Item1;
+            target.Weight *= weightDiff.Item2;
+
+            Update();
+            target.Update();
+        }
+
+        private double CalcBaseAttackRate(IPetAttribute source, IPetAttribute target)
+        {
+            double baseRate = 1;
+            if (source.ID == Enums.Attributes.Jin && target.ID == Enums.Attributes.Mu)
+            {
+                baseRate = 1.3;
+            }
+            else if (source.ID == Enums.Attributes.Jin && target.ID == Enums.Attributes.Feng)
+            {
+                baseRate = 0.7;
+            }
+            else if (source.ID == Enums.Attributes.Mu && target.ID == Enums.Attributes.Tu)
+            {
+                baseRate = 1.3;
+            }
+            else if (source.ID == Enums.Attributes.Mu && target.ID == Enums.Attributes.Feng)
+            {
+                baseRate = 0.7;
+            }
+            else if (source.ID == Enums.Attributes.Tu && target.ID == Enums.Attributes.Shui)
+            {
+                baseRate = 1.3;
+            }
+            else if (source.ID == Enums.Attributes.Tu && target.ID == Enums.Attributes.Lei)
+            {
+                baseRate = 0.7;
+            }
+            else if (source.ID == Enums.Attributes.Shui && target.ID == Enums.Attributes.Huo)
+            {
+                baseRate = 1.3;
+            }
+            else if (source.ID == Enums.Attributes.Shui && target.ID == Enums.Attributes.Feng)
+            {
+                baseRate = 0.7;
+            }
+            else if (source.ID == Enums.Attributes.Huo && target.ID == Enums.Attributes.Jin)
+            {
+                baseRate = 1.3;
+            }
+            else if (source.ID == Enums.Attributes.Huo && target.ID == Enums.Attributes.Lei)
+            {
+                baseRate = 0.7;
+            }
+            else if (source.ID == Enums.Attributes.Feng && (target.ID == Enums.Attributes.Tu || target.ID == Enums.Attributes.Huo))
+            {
+                baseRate = 1.3;
+            }
+            else if (source.ID == Enums.Attributes.Lei && target.ID == Enums.Attributes.Yin)
+            {
+                baseRate = 2;
+            }
+            else if (source.ID == Enums.Attributes.Lei && (target.ID == Enums.Attributes.Shui || target.ID == Enums.Attributes.Jin || target.ID == Enums.Attributes.Mu))
+            {
+                baseRate = 1.3;
+            }
+            else if (source.ID == Enums.Attributes.Yin && target.ID != Enums.Attributes.Yin)
+            {
+                baseRate = 1.5;
+            }
+            else if(source.ID != Enums.Attributes.Yin && target.ID == Enums.Attributes.Yin)
+            {
+                baseRate = 0.5;
+            }
+
+            return baseRate;
         }
 
         #endregion
@@ -119,15 +190,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public static void InitiazlizeRandom()
         {
             RandomInsatantiatorA = new();
-            RandomInsatantiatorA.AddImplementation<Ao>(AppConfig.ProbablityAo);
-            RandomInsatantiatorA.AddImplementation<Bei>(AppConfig.ProbablityBei);
-            RandomInsatantiatorA.AddImplementation<Chan>(AppConfig.ProbablityChan);
-            RandomInsatantiatorA.AddImplementation<Du>(AppConfig.ProbablityDu);
-            RandomInsatantiatorA.AddImplementation<Duo>(AppConfig.ProbablityDuo);
-            RandomInsatantiatorA.AddImplementation<Nu>(AppConfig.ProbablityNu);
-            RandomInsatantiatorA.AddImplementation<Tan>(AppConfig.ProbablityTan);
+            RandomInsatantiatorA.AddImplementation<Jin>(AppConfig.ProbablityJin);
+            RandomInsatantiatorA.AddImplementation<Mu>(AppConfig.ProbablityMu);
+            RandomInsatantiatorA.AddImplementation<Shui>(AppConfig.ProbablityShui);
+            RandomInsatantiatorA.AddImplementation<Huo>(AppConfig.ProbablityHuo);
+            RandomInsatantiatorA.AddImplementation<Tu>(AppConfig.ProbablityTu);
+            RandomInsatantiatorA.AddImplementation<Feng>(AppConfig.ProbablityFeng);
+            RandomInsatantiatorA.AddImplementation<Lei>(AppConfig.ProbablityLei);
             RandomInsatantiatorA.AddImplementation<Yin>(AppConfig.ProbablityYin);
-
         }
 
         public static Kun RandomCreate(Player player)
@@ -173,24 +243,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             var db = SQLHelper.GetInstance();
             var ls = records.Select(x => x.KunID).ToList();
             return db.Queryable<Kun>().Where(x => ls.Any(o => x.Id == o)).ToList();
-        }
-
-        private static int RandomLevel()
-        {
-            double sumProbablity = AppConfig.ProbablityHatchLevel.Sum();
-            double randomValue = CommonHelper.Random.NextDouble() * sumProbablity;
-
-            double value = 0;
-            for (int i = 1; i <= AppConfig.ProbablityHatchLevel.Count; i++)
-            {
-                value += AppConfig.ProbablityHatchLevel[i];
-                if (value <= randomValue)
-                {
-                    return i;
-                }
-            }
-
-            return -1;
         }
     }
 }

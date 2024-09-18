@@ -76,23 +76,21 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyHatchFail { get; set; } = "";
 
-        public static double ProbablityAo { get; set; }
+        public static double ProbablityJin { get; set; }
        
-        public static double ProbablityDu { get; set; }
+        public static double ProbablityHuo { get; set; }
        
-        public static double ProbablityNu { get; set; }
+        public static double ProbablityFeng { get; set; }
        
-        public static double ProbablityDuo { get; set; }
+        public static double ProbablityTu { get; set; }
        
-        public static double ProbablityTan { get; set; }
+        public static double ProbablityLei { get; set; }
        
-        public static double ProbablityChan { get; set; }
+        public static double ProbablityShui { get; set; }
        
         public static double ProbablityYin { get; set; }
        
-        public static double ProbablityBei { get; set; }
-
-        public static List<double> ProbablityHatchLevel { get; set; } = [];
+        public static double ProbablityMu { get; set; }
 
         public static int ValueHatchProbablityMin { get; set; }
 
@@ -113,6 +111,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static int ValueFeedWeightMaximumIncrement { get; set; }
 
         public static int ValueRankingCount { get; set; }
+
+        public static int ValueDevourDrawPercentage { get; set; }
+
+        public static int ValueAttackWeightMinimumDecrement { get; set; }
+
+        public static int ValueAttackWeightMaximumDecrement { get; set; }
 
         public static List<long> Groups { get; set; } = [];
 
@@ -153,15 +157,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyHatchKun = ConfigHelper.GetConfig("ReplyHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n剩余 {2} 颗鲲蛋");
             ReplyBuyEgg = ConfigHelper.GetConfig("ReplyBuyEgg", "购买成功，消耗金币 {0} 枚，获得 {1} 枚鲲蛋\n-------------------\n剩余金币 {2} 枚，鲲蛋 {3} 枚");
 
-            ProbablityAo = ConfigHelper.GetConfig("ProbablityAo", 1);
-            ProbablityBei = ConfigHelper.GetConfig("ProbablityBei", 1);
-            ProbablityChan = ConfigHelper.GetConfig("ProbablityChan", 1);
-            ProbablityDuo = ConfigHelper.GetConfig("ProbablityDuo", 1);
-            ProbablityDu = ConfigHelper.GetConfig("ProbablityDu", 1);
-            ProbablityNu = ConfigHelper.GetConfig("ProbablityNu", 1);
-            ProbablityTan = ConfigHelper.GetConfig("ProbablityTan", 1);
+            ProbablityJin = ConfigHelper.GetConfig("ProbablityJin", 1);
+            ProbablityMu = ConfigHelper.GetConfig("ProbablityMu", 1);
+            ProbablityShui = ConfigHelper.GetConfig("ProbablityShui", 1);
+            ProbablityTu = ConfigHelper.GetConfig("ProbablityTu", 1);
+            ProbablityHuo = ConfigHelper.GetConfig("ProbablityHuo", 1);
+            ProbablityFeng = ConfigHelper.GetConfig("ProbablityFeng", 1);
+            ProbablityLei = ConfigHelper.GetConfig("ProbablityLei", 1);
             ProbablityYin = ConfigHelper.GetConfig("ProbablityYin", 1);
-            ProbablityHatchLevel = ConfigHelper.GetConfig("ProbablityHatchLevel", new List<double>() { 1, 1, 1, 1, 1, 1, 1, 1 });
 
             ValueHatchProbablityMin = ConfigHelper.GetConfig("ValueHatchProbablityMin", 1);
             ValueHatchProbablityMax = ConfigHelper.GetConfig("ValueHatchProbablityMax", 1);
@@ -172,7 +175,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueFeedKunEggConsume = ConfigHelper.GetConfig("ValueFeedKunEggConsume", 10);
             ValueFeedWeightMinimumIncrement = ConfigHelper.GetConfig("ValueFeedWeightMinimumIncrement", 10);
             ValueFeedWeightMaximumIncrement = ConfigHelper.GetConfig("ValueFeedWeightMaximumIncrement", 40);
+            ValueAttackWeightMinimumDecrement = ConfigHelper.GetConfig("ValueAttackWeightMinimumDecrement", 5);
+            ValueAttackWeightMaximumDecrement = ConfigHelper.GetConfig("ValueAttackWeightMaximumDecrement", 10);
             ValueRankingCount = ConfigHelper.GetConfig("ValueRankingCount", 10);
+            ValueDevourDrawPercentage = ConfigHelper.GetConfig("ValueDevourDrawPercentage", 10);
 
             Groups = ConfigHelper.GetConfig("Groups", new List<long>());
             Admins = ConfigHelper.GetConfig("Admins", new List<long>());

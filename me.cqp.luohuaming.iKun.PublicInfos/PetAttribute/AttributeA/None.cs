@@ -13,13 +13,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
         public None()
         {
             ID = Attributes.None;
-            Name = "";
-            Description = "";
-        }
-
-        public override void Upgrade()
-        {
-            base.Upgrade();
+            Name = "无属性";
+            Description = [];
         }
     }
 }

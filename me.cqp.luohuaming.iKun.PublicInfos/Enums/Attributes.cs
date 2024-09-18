@@ -8,14 +8,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Enums
 {
     public enum Attributes
     {
-        Ao = 1,
-        Bei,
-        Chan,
-        Du,
-        Duo,
-        None,
-        Nu,
-        Tan,
-        Yin
+        None = 0,
+        Jin,
+        Mu,
+        Shui,
+        Huo,
+        Tu,
+        Feng,
+        Lei,
+        Yin,
     }
 }

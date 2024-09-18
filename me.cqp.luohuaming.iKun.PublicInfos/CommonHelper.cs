@@ -75,5 +75,22 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         {
             stringBuilder.Remove(stringBuilder.Length - Environment.NewLine.Length, Environment.NewLine.Length);
         }
+
+        /// <summary>
+        /// 随机范围小数
+        /// </summary>
+        /// <param name="random"></param>
+        /// <param name="lower">0.x</param>
+        /// <param name="upper">0.x</param>
+        /// <returns></returns>
+        public static double NextDouble(this Random random, double lower, double upper)
+        {
+            return random.Next((int)(lower * 100000), (int)(upper * 100000)) / 100000.0;
+        }
+
+        public static (double, double) Multiple(this (double, double) item1, (double, double) item2)
+        {
+            return (item1.Item1 * item2.Item1, item1.Item2 * item2.Item2);
+        }
     }
 }
