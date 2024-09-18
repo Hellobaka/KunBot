@@ -10,7 +10,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
     {
         public Yin()
         {
-            ID = Enums.Attributes.Yin;
+            ID = Enums.AttributeA.Yin;
             Name = "阴";
             Description = [
                 "◆攻击时 30% 的几率造成 200% 的伤害",

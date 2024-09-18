@@ -4,7 +4,7 @@
     {
         public Huo()
         {
-            ID = Enums.Attributes.Huo;
+            ID = Enums.AttributeA.Huo;
             Name = "火";
             Description = [
                 "◆攻击时 25% 的几率造成额外 10%~30% 伤害",

@@ -16,7 +16,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
     /// </summary>
     public abstract class IPetAttribute
     {
-        public Attributes ID { get; set; }
+        public Enums.AttributeA ID { get; set; }
         
         public string Name { get; set; }
         
@@ -50,12 +50,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         /// 默认完成了道具扣除
         /// 成功增加50%，失败扣除50%
         /// </summary>
-        /// <param name="success">基础成功率(%)</param>
+        /// <param name="success">基础成功率(0.x)</param>
         /// <param name="diff">最终值变化附加数值(%)(乘算)</param>
         /// <returns>体重变化(0.x)</returns>
         public virtual double Ascend(double success, double diff = 1)
         {
-            return (CommonHelper.Random.Next(0, 100) <= success ? 1.5 : 0.5) * diff;
+            return (CommonHelper.Random.NextDouble() <= success ? 1.5 : 0.5) * diff;
         }
 
         /// <summary>
@@ -177,20 +177,30 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             throw new InvalidOperationException("No implementation selected. This should never happen.");
         }
 
-        public IPetAttribute GetInstanceByID(Attributes id)
+        public IPetAttribute GetInstanceByID(bool attrbuteA, int id)
         {
-            return id switch
+            if (attrbuteA) 
             {
-                Attributes.Jin => new Jin(),
-                Attributes.Mu => new Mu(),
-                Attributes.Shui => new Shui(),
-                Attributes.Huo => new Huo(),
-                Attributes.Tu => new Tu(),
-                Attributes.Feng => new Feng(),
-                Attributes.Lei => new Lei(),
-                Attributes.Yin => new Yin(),
-                _ => new None(),
-            };
+                return (Enums.AttributeA)id switch
+                {
+                    Enums.AttributeA.Jin => new Jin(),
+                    Enums.AttributeA.Mu => new Mu(),
+                    Enums.AttributeA.Shui => new Shui(),
+                    Enums.AttributeA.Huo => new Huo(),
+                    Enums.AttributeA.Tu => new Tu(),
+                    Enums.AttributeA.Feng => new Feng(),
+                    Enums.AttributeA.Lei => new Lei(),
+                    Enums.AttributeA.Yin => new Yin(),
+                    _ => new None(),
+                };
+            }
+            else
+            {
+                return (Enums.AttributeB)id switch
+                {
+                    _ => new None(),
+                };
+            }            
         }
     }
 }

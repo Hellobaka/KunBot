@@ -10,7 +10,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
     {
         public Lei()
         {
-            ID = Enums.Attributes.Lei;
+            ID = Enums.AttributeA.Lei;
             Name = "雷";
             Description = [
                 "◆攻击时 25% 的几率造成额外 10%~30% 伤害",

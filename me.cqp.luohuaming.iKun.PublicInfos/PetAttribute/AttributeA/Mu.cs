@@ -10,7 +10,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
     {
         public Mu()
         {
-            ID = Enums.Attributes.Mu;
+            ID = Enums.AttributeA.Mu;
             Name = "木";
             Description = [
                 "◆成功吞噬后额外增加 10%~30% 体重",

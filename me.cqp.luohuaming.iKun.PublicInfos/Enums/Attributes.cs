@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.Enums
 {
-    public enum Attributes
+    public enum AttributeA
     {
         None = 0,
         Jin,
@@ -17,5 +17,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Enums
         Feng,
         Lei,
         Yin,
+    }
+
+    public enum AttributeB
+    {
+        None = 0,
     }
 }

@@ -10,7 +10,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
     {
         public Feng()
         {
-            ID = Enums.Attributes.Feng;
+            ID = Enums.AttributeA.Feng;
             Name = "风";
             Description = [
                 "◆攻击时 15% 的几率造成 200% 的伤害",

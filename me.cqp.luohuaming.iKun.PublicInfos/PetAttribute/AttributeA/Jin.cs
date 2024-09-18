@@ -4,7 +4,7 @@
     {
         public Jin()
         {
-            ID = Enums.Attributes.Jin;
+            ID = Enums.AttributeA.Jin;
             Name = "金";
             Description = [
                 "◆攻击或吞噬时 20% 的几率增加或受到 10%~30% 伤害",

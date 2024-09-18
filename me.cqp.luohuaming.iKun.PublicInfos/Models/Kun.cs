@@ -1,4 +1,5 @@
-﻿using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute;
+﻿using me.cqp.luohuaming.iKun.PublicInfos.Items;
+using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute;
 using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA;
 using SqlSugar;
 using System;
@@ -52,39 +53,105 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         private static PetAttributeRandomInsatantiator RandomInsatantiatorB { get; set; } = null;
 
         #region 数值实例
+        /// <summary>
+        /// 强化
+        /// 在词缀中有基础实现
+        /// </summary>
         public void Upgrade(int count)
         {
-            PetAttributeA.Upgrade(count);
-            PetAttributeB.Upgrade(count);
+            double diff = PetAttributeA.Upgrade(count);
+            diff *= PetAttributeB.Upgrade(count);
+
+            Weight *= diff;
+            Update();
         }
 
+        /// <summary>
+        /// 渡劫
+        /// 在词缀中有基础实现
+        /// </summary>
         public void Ascend()
         {
+            double success = Level switch
+            {
+                1 => 0.7,
+                2 => 0.65,
+                3 => 0.6,
+                4 => 0.55,
+                5 => 0.5,
+                6 => 0.45,
+                7 => 0.4,
+                8 => 0.35,
+                _ => 0.3,
+            };
+            double diff = PetAttributeA.Ascend(success);
+            diff *= PetAttributeB.Ascend(success);
+
+            Weight *= diff;
+            Update();
         }
 
-        public void Devour()
+        /// <summary>
+        /// 吞噬
+        /// 在词缀中有基础实现
+        /// </summary>
+        public void Devour(Kun target)
         {
+            double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
+            var weightDiff = PetAttributeA.Devour(Weight, target.Weight, baseAttackRate);
+            weightDiff = target.PetAttributeA.BeingDevoured(target.Weight, Weight, weightDiff);
+
+            weightDiff = target.PetAttributeB.Devour(Weight, target.Weight).Multiple(weightDiff);
+            weightDiff = target.PetAttributeB.BeingDevoured(target.Weight, Weight, weightDiff).Multiple(weightDiff);
+
+            Weight *= weightDiff.Item1;
+            target.Weight *= weightDiff.Item2;
+
+            Update();
+            target.Update();
         }
 
-        public void Feed()
+        /// <summary>
+        /// 喂养
+        /// 在词缀中有基础实现
+        /// </summary>
+        public void Feed(int count)
         {
+            double diff = PetAttributeA.Feed(count);
+            diff *= PetAttributeB.Feed(count);
+
+            Weight *= diff;
+            Update();
         }
 
+        /// <summary>
+        /// 放生
+        /// </summary>
         public void Release()
         {
         }
 
+        /// <summary>
+        /// 复活
+        /// </summary>
         public void Resurrect()
         {
         }
 
+        /// <summary>
+        /// 幻化
+        /// </summary>
         public void Transmogrify()
         {
         }
 
+        /// <summary>
+        /// 攻击
+        /// 在词缀中有基础实现
+        /// </summary>
         public void Attack(Kun target)
         {
-            double baseAttackRate = CalcBaseAttackRate(PetAttributeA, target.PetAttributeA);
+            double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
             var weightDiff = PetAttributeA.Attack(Weight, target.Weight, baseAttackRate);
             weightDiff = target.PetAttributeA.BeingAttacked(target.Weight, Weight, weightDiff);
 
@@ -98,66 +165,66 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             target.Update();
         }
 
-        private double CalcBaseAttackRate(IPetAttribute source, IPetAttribute target)
+        private double GetBaseAttackRate(IPetAttribute source, IPetAttribute target)
         {
             double baseRate = 1;
-            if (source.ID == Enums.Attributes.Jin && target.ID == Enums.Attributes.Mu)
+            if (source.ID == Enums.AttributeA.Jin && target.ID == Enums.AttributeA.Mu)
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.Attributes.Jin && target.ID == Enums.Attributes.Feng)
+            else if (source.ID == Enums.AttributeA.Jin && target.ID == Enums.AttributeA.Feng)
             {
                 baseRate = 0.7;
             }
-            else if (source.ID == Enums.Attributes.Mu && target.ID == Enums.Attributes.Tu)
+            else if (source.ID == Enums.AttributeA.Mu && target.ID == Enums.AttributeA.Tu)
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.Attributes.Mu && target.ID == Enums.Attributes.Feng)
+            else if (source.ID == Enums.AttributeA.Mu && target.ID == Enums.AttributeA.Feng)
             {
                 baseRate = 0.7;
             }
-            else if (source.ID == Enums.Attributes.Tu && target.ID == Enums.Attributes.Shui)
+            else if (source.ID == Enums.AttributeA.Tu && target.ID == Enums.AttributeA.Shui)
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.Attributes.Tu && target.ID == Enums.Attributes.Lei)
+            else if (source.ID == Enums.AttributeA.Tu && target.ID == Enums.AttributeA.Lei)
             {
                 baseRate = 0.7;
             }
-            else if (source.ID == Enums.Attributes.Shui && target.ID == Enums.Attributes.Huo)
+            else if (source.ID == Enums.AttributeA.Shui && target.ID == Enums.AttributeA.Huo)
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.Attributes.Shui && target.ID == Enums.Attributes.Feng)
+            else if (source.ID == Enums.AttributeA.Shui && target.ID == Enums.AttributeA.Feng)
             {
                 baseRate = 0.7;
             }
-            else if (source.ID == Enums.Attributes.Huo && target.ID == Enums.Attributes.Jin)
+            else if (source.ID == Enums.AttributeA.Huo && target.ID == Enums.AttributeA.Jin)
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.Attributes.Huo && target.ID == Enums.Attributes.Lei)
+            else if (source.ID == Enums.AttributeA.Huo && target.ID == Enums.AttributeA.Lei)
             {
                 baseRate = 0.7;
             }
-            else if (source.ID == Enums.Attributes.Feng && (target.ID == Enums.Attributes.Tu || target.ID == Enums.Attributes.Huo))
+            else if (source.ID == Enums.AttributeA.Feng && (target.ID == Enums.AttributeA.Tu || target.ID == Enums.AttributeA.Huo))
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.Attributes.Lei && target.ID == Enums.Attributes.Yin)
+            else if (source.ID == Enums.AttributeA.Lei && target.ID == Enums.AttributeA.Yin)
             {
                 baseRate = 2;
             }
-            else if (source.ID == Enums.Attributes.Lei && (target.ID == Enums.Attributes.Shui || target.ID == Enums.Attributes.Jin || target.ID == Enums.Attributes.Mu))
+            else if (source.ID == Enums.AttributeA.Lei && (target.ID == Enums.AttributeA.Shui || target.ID == Enums.AttributeA.Jin || target.ID == Enums.AttributeA.Mu))
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.Attributes.Yin && target.ID != Enums.Attributes.Yin)
+            else if (source.ID == Enums.AttributeA.Yin && target.ID != Enums.AttributeA.Yin)
             {
                 baseRate = 1.5;
             }
-            else if(source.ID != Enums.Attributes.Yin && target.ID == Enums.Attributes.Yin)
+            else if(source.ID != Enums.AttributeA.Yin && target.ID == Enums.AttributeA.Yin)
             {
                 baseRate = 0.5;
             }
@@ -172,8 +239,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         /// </summary>
         public void Initialize()
         {
-            PetAttributeA = RandomInsatantiatorA.GetInstanceByID((Enums.Attributes)AttributeAID);
-            PetAttributeB = RandomInsatantiatorB.GetInstanceByID((Enums.Attributes)AttributeBID);
+            PetAttributeA = RandomInsatantiatorA.GetInstanceByID(true, AttributeAID);
+            PetAttributeB = RandomInsatantiatorB.GetInstanceByID(false, AttributeBID);
         }
 
         public void Update()
@@ -198,6 +265,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             RandomInsatantiatorA.AddImplementation<Feng>(AppConfig.ProbablityFeng);
             RandomInsatantiatorA.AddImplementation<Lei>(AppConfig.ProbablityLei);
             RandomInsatantiatorA.AddImplementation<Yin>(AppConfig.ProbablityYin);
+
+            RandomInsatantiatorB = new();
+            RandomInsatantiatorB.AddImplementation<PetAttribute.AttributeB.None>(1);
         }
 
         public static Kun RandomCreate(Player player)

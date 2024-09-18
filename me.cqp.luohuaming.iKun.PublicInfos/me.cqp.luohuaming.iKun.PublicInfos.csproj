@@ -92,6 +92,7 @@
     <Compile Include="PetAttribute\AttributeA\Shui.cs" />
     <Compile Include="PetAttribute\AttributeA\Tu.cs" />
     <Compile Include="PetAttribute\AttributeA\Yin.cs" />
+    <Compile Include="PetAttribute\AttributeB\None.cs" />
     <Compile Include="PetAttribute\IPetAttribute.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,8 +108,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PetAttribute\AttributeB\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
