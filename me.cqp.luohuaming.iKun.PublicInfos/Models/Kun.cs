@@ -26,27 +26,19 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public bool Abandoned { get; set; }
 
+        public int Level { get; set; }
+
         public bool Alive { get; set; }
+
+        public int ResurrectCount { get; set; }
+
+        public bool CanResurrect { get; set; }
 
         [SugarColumn(IsIgnore = true)]
         public IPetAttribute PetAttributeA { get; set; }
 
         [SugarColumn(IsIgnore = true)]
         public IPetAttribute PetAttributeB { get; set; }
-
-        [SugarColumn(IsIgnore = true)]
-        public int Level => Weight switch
-        {
-            < 400 => 1,
-            < 1100 => 2,
-            < 2100 => 3,
-            < 3400 => 4,
-            < 5100 => 5,
-            < 7300 => 6,
-            < 9900 => 7,
-            < 13000 => 8,
-            _ => 9,
-        };
 
         private static PetAttributeRandomInsatantiator RandomInsatantiatorA { get; set; } = null;
 
@@ -63,11 +55,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             diff *= PetAttributeB.Upgrade(count);
 
             Weight *= diff;
+            Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
             Update();
         }
 
         /// <summary>
         /// 渡劫
+        /// 前置要求体重达到上限
+        /// 进行渡劫成功之后，体重才能突破上限，等级加一
         /// 在词缀中有基础实现
         /// </summary>
         public void Ascend()
@@ -88,6 +83,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             diff *= PetAttributeB.Ascend(success);
 
             Weight *= diff;
+            if (diff > 1)
+            {
+                Level++;
+            }
+            Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
             Update();
         }
 
@@ -106,6 +106,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
             Weight *= weightDiff.Item1;
             target.Weight *= weightDiff.Item2;
+            
+            Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
+            target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
 
             Update();
             target.Update();
@@ -121,6 +124,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             diff *= PetAttributeB.Feed(count);
 
             Weight *= diff;
+            Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
             Update();
         }
 
@@ -160,6 +164,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
             Weight *= weightDiff.Item1;
             target.Weight *= weightDiff.Item2;
+
+            Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
+            target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
 
             Update();
             target.Update();
@@ -232,6 +239,18 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return baseRate;
         }
 
+        public static int GetLevelWeightLimit(int level) => level switch
+        {
+            1 => 300,
+            2 => 800,
+            3 => 1600,
+            4 => 2600,
+            5 => 3900,
+            6 => 5500,
+            7 => 7500,
+            8 => 10000,
+            _ => int.MaxValue,
+        };
         #endregion
 
         /// <summary>
