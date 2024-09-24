@@ -47,6 +47,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         #region 数值实例
         /// <summary>
         /// 强化
+        /// 次数可以叠加成功率
+        /// 成功率大于1时提升强化效果
         /// 在词缀中有基础实现
         /// </summary>
         public void Upgrade(int count)
@@ -93,6 +95,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         /// <summary>
         /// 吞噬
+        /// 体重相近时概率胜利
+        /// 吞噬成功增加对方部分体重
+        /// 吞噬失败减少自身体重并概率死亡
         /// 在词缀中有基础实现
         /// </summary>
         public void Devour(Kun target)
@@ -117,6 +122,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         /// <summary>
         /// 喂养
         /// 在词缀中有基础实现
+        /// 每个次数可增加5%~10%的体重
         /// </summary>
         public void Feed(int count)
         {
@@ -133,24 +139,57 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         /// </summary>
         public void Release()
         {
+            Abandoned = true;
+            Update();
         }
 
         /// <summary>
         /// 复活
+        /// 默认完成道具扣除并满足条件
+        /// 每复活一次，消耗的资源翻倍
         /// </summary>
         public void Resurrect()
         {
+            Alive = true;
+            ResurrectCount++;
+            Update();
         }
 
         /// <summary>
         /// 幻化
+        /// 默认实现了道具扣除并满足条件
+        /// 随机主词缀与副词缀
+        /// 每次扣除95%体重
+        /// 小于10kg时死亡
+        /// 10%概率失败，失败时死亡
         /// </summary>
         public void Transmogrify()
         {
+            bool success = CommonHelper.Random.NextDouble() > 0.1;
+            Weight *= 0.05;
+            if (Weight < 10)
+            {
+                Alive = false;
+                Update();
+            }
+            if (!success)
+            {
+                Alive = false;
+            }
+            else
+            {
+                PetAttributeA = RandomInsatantiatorA.GetRandomInstance();
+                PetAttributeB = RandomInsatantiatorB.GetRandomInstance();
+
+                AttributeAID = (int)PetAttributeA.ID;
+                AttributeBID = (int)PetAttributeB.ID;
+            }
+            Update();
         }
 
         /// <summary>
         /// 攻击
+        /// 被攻击方损失概率体重，攻击方增加对应体重
         /// 在词缀中有基础实现
         /// </summary>
         public void Attack(Kun target)
@@ -286,9 +325,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public static Kun RandomCreate(Player player)
         {
-            IPetAttribute attributeB = RandomInsatantiatorA.GetRandomInstance();
+            IPetAttribute attributeA = RandomInsatantiatorA.GetRandomInstance();
+            IPetAttribute attributeB = RandomInsatantiatorB.GetRandomInstance();
+
             Kun kun = new()
             {
+                AttributeAID = (int)attributeA.ID,
                 AttributeBID = (int)attributeB.ID,
                 PlayerID = player.QQ,
                 Weight = CommonHelper.Random.Next(AppConfig.ValueHatchWeightMin, AppConfig.ValueHatchWeightMax),
