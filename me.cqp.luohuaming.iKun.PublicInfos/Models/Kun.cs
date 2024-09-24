@@ -104,8 +104,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             weightDiff = target.PetAttributeB.Devour(Weight, target.Weight).Multiple(weightDiff);
             weightDiff = target.PetAttributeB.BeingDevoured(target.Weight, Weight, weightDiff).Multiple(weightDiff);
 
-            Weight *= weightDiff.Item1;
-            target.Weight *= weightDiff.Item2;
+            Weight += weightDiff.Item1;
+            target.Weight += weightDiff.Item2;
             
             Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
             target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
