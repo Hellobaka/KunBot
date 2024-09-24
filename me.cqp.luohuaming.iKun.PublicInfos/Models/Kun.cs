@@ -69,15 +69,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         {
             double success = Level switch
             {
-                1 => 0.7,
-                2 => 0.65,
-                3 => 0.6,
-                4 => 0.55,
-                5 => 0.5,
-                6 => 0.45,
-                7 => 0.4,
-                8 => 0.35,
-                _ => 0.3,
+                1 => 0.95,
+                2 => 0.90,
+                3 => 0.85,
+                4 => 0.75,
+                5 => 0.65,
+                6 => 0.50,
+                7 => 0.35,
+                8 => 0.20,
+                _ => 0.10,
             };
             double diff = PetAttributeA.Ascend(success);
             diff *= PetAttributeB.Ascend(success);
@@ -175,82 +175,77 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         private double GetBaseAttackRate(IPetAttribute source, IPetAttribute target)
         {
             double baseRate = 1;
+            // 基础克制
             if (source.ID == Enums.AttributeA.Jin && target.ID == Enums.AttributeA.Mu)
             {
                 baseRate = 1.3;
-            }
-            else if (source.ID == Enums.AttributeA.Jin && target.ID == Enums.AttributeA.Feng)
-            {
-                baseRate = 0.7;
             }
             else if (source.ID == Enums.AttributeA.Mu && target.ID == Enums.AttributeA.Tu)
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.AttributeA.Mu && target.ID == Enums.AttributeA.Feng)
-            {
-                baseRate = 0.7;
-            }
             else if (source.ID == Enums.AttributeA.Tu && target.ID == Enums.AttributeA.Shui)
             {
                 baseRate = 1.3;
-            }
-            else if (source.ID == Enums.AttributeA.Tu && target.ID == Enums.AttributeA.Lei)
-            {
-                baseRate = 0.7;
             }
             else if (source.ID == Enums.AttributeA.Shui && target.ID == Enums.AttributeA.Huo)
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.AttributeA.Shui && target.ID == Enums.AttributeA.Feng)
-            {
-                baseRate = 0.7;
-            }
             else if (source.ID == Enums.AttributeA.Huo && target.ID == Enums.AttributeA.Jin)
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.AttributeA.Huo && target.ID == Enums.AttributeA.Lei)
+            // 风
+            else if (source.ID == Enums.AttributeA.Feng && (target.ID == Enums.AttributeA.Shui || target.ID == Enums.AttributeA.Jin || target.ID == Enums.AttributeA.Mu))
             {
                 baseRate = 0.7;
             }
-            else if (source.ID == Enums.AttributeA.Feng && (target.ID == Enums.AttributeA.Tu || target.ID == Enums.AttributeA.Huo))
+            else if ((source.ID == Enums.AttributeA.Tu || source.ID == Enums.AttributeA.Huo) && target.ID == Enums.AttributeA.Feng)
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.AttributeA.Lei && target.ID == Enums.AttributeA.Yin)
-            {
-                baseRate = 2;
-            }
+            // 雷
             else if (source.ID == Enums.AttributeA.Lei && (target.ID == Enums.AttributeA.Shui || target.ID == Enums.AttributeA.Jin || target.ID == Enums.AttributeA.Mu))
             {
                 baseRate = 1.3;
             }
-            else if (source.ID == Enums.AttributeA.Yin && target.ID != Enums.AttributeA.Yin)
+            else if ((source.ID == Enums.AttributeA.Tu || source.ID == Enums.AttributeA.Huo) && target.ID == Enums.AttributeA.Lei)
             {
-                baseRate = 1.5;
+                baseRate = 0.7;
             }
-            else if(source.ID != Enums.AttributeA.Yin && target.ID == Enums.AttributeA.Yin)
+            // 阴
+            else if (source.ID == Enums.AttributeA.Yin && target.ID == Enums.AttributeA.Yang)
+            {
+                baseRate = 3;
+            }
+            else if ((source.ID == Enums.AttributeA.Jin || source.ID == Enums.AttributeA.Mu || source.ID == Enums.AttributeA.Shui || source.ID == Enums.AttributeA.Huo || source.ID == Enums.AttributeA.Tu || source.ID == Enums.AttributeA.Feng) && target.ID == Enums.AttributeA.Yin)
             {
                 baseRate = 0.5;
             }
+            else if (source.ID == Enums.AttributeA.Yin && (target.ID == Enums.AttributeA.Jin || target.ID == Enums.AttributeA.Mu || target.ID == Enums.AttributeA.Shui || target.ID == Enums.AttributeA.Huo || target.ID == Enums.AttributeA.Tu || target.ID == Enums.AttributeA.Feng))
+            {
+                baseRate = 2;
+            }
+            // 阳
+            else if (source.ID == Enums.AttributeA.Yang && target.ID == Enums.AttributeA.Yin)
+            {
+                baseRate = 3;
+            }
+            else if ((source.ID == Enums.AttributeA.Jin || source.ID == Enums.AttributeA.Mu || source.ID == Enums.AttributeA.Shui || source.ID == Enums.AttributeA.Huo || source.ID == Enums.AttributeA.Tu || source.ID == Enums.AttributeA.Feng) && target.ID == Enums.AttributeA.Yang)
+            {
+                baseRate = 0.5;
+            }
+            else if (source.ID == Enums.AttributeA.Yang && (target.ID == Enums.AttributeA.Jin || target.ID == Enums.AttributeA.Mu || target.ID == Enums.AttributeA.Shui || target.ID == Enums.AttributeA.Huo || target.ID == Enums.AttributeA.Tu || target.ID == Enums.AttributeA.Feng))
+            {
+                baseRate = 2;
+            }
+
 
             return baseRate;
         }
 
-        public static int GetLevelWeightLimit(int level) => level switch
-        {
-            1 => 300,
-            2 => 800,
-            3 => 1600,
-            4 => 2600,
-            5 => 3900,
-            6 => 5500,
-            7 => 7500,
-            8 => 10000,
-            _ => int.MaxValue,
-        };
+        public static int GetLevelWeightLimit(int level) => (int)Math.Pow(10, level);
         #endregion
 
         /// <summary>

@@ -17,6 +17,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Enums
         Feng,
         Lei,
         Yin,
+        Yang
     }
 
     public enum AttributeB

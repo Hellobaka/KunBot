@@ -12,6 +12,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
     /// 通常情况下，攻击与吞噬操作不可重复进行，防止更改既定结果
     /// 所有增加体重操作在原始结果上进行乘算
     /// 所有单独增加伤害操作需要计算出双方增减量之后，进行加成乘算，再计算出倍率
+    /// 降低伤害时，进行乘算
     /// 同时造成与受到伤害的可直接再次进行伤害计算操作
     /// </summary>
     public abstract class IPetAttribute
@@ -48,27 +49,28 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
 
         /// <summary>
         /// 默认完成了道具扣除
-        /// 成功增加50%，失败扣除50%
+        /// 成功增加500%，失败扣除50%，10%概率死亡
         /// </summary>
         /// <param name="success">基础成功率(0.x)</param>
         /// <param name="diff">最终值变化附加数值(%)(乘算)</param>
         /// <returns>体重变化(0.x)</returns>
         public virtual double Ascend(double success, double diff = 1)
         {
-            return (CommonHelper.Random.NextDouble() <= success ? 1.5 : 0.5) * diff;
+            return (CommonHelper.Random.NextDouble() <= success ? 5 : 0.5) * diff;
         }
 
         /// <summary>
         /// 目标方体重在攻击方的±百分比范围内时，双方50%胜负
-        /// 目标方体重大于攻击方，攻击失败
-        /// 目标方体重小于攻击方，攻击成功
-        /// 成功时攻击方增加目标方失去的体重，目标方失去10%~50%体重
-        /// 失败时目标方增加攻击方失去的体重，攻击方失去10%~50%体重
+        /// 不满足上述条件时:
+        /// - 若目标方体重大于攻击方，吞噬失败
+        /// - 目标方体重小于攻击方，吞噬成功
+        /// 成功时攻击方增加目标方的 50%~100% 体重，目标方死亡
+        /// 失败时目标方增加攻击方的 50%~70% 体重，攻击方概率死亡
         /// </summary>
         /// <param name="source">攻击方体重</param>
         /// <param name="target">目标方体重</param>
         /// <param name="diff">最终值变化附加数值(%)(乘算)</param>
-        /// <returns>攻击方体重变化(0.x)，目标方体重变化(0.x)</returns>
+        /// <returns>攻击方体重变化(值)，目标方体重变化(值)</returns>
         public virtual (double, double) Devour(double source, double target, double diff = 1)
         {
             bool attackSuccess = false;
@@ -85,14 +87,17 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
                 attackSuccess = false;
             }
 
-            double loss = CommonHelper.Random.Next(10, 50) / 100 * diff;
             if (attackSuccess)
             {
-                return (1 + loss, 1 - loss);
+                double loss = CommonHelper.Random.NextDouble(0.5, 1) * diff;
+                double increment = target * loss;
+                return (increment, -1 * increment);
             }
             else
             {
-                return (1 - loss, 1 + loss);
+                double loss = CommonHelper.Random.NextDouble(0.5, 0.7) * diff;
+                double decrement = source * loss;
+                return (-1 * decrement, decrement);
             }
         }
 

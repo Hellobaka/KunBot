@@ -91,6 +91,7 @@
     <Compile Include="PetAttribute\AttributeA\None.cs" />
     <Compile Include="PetAttribute\AttributeA\Shui.cs" />
     <Compile Include="PetAttribute\AttributeA\Tu.cs" />
+    <Compile Include="PetAttribute\AttributeA\Yang.cs" />
     <Compile Include="PetAttribute\AttributeA\Yin.cs" />
     <Compile Include="PetAttribute\AttributeB\None.cs" />
     <Compile Include="PetAttribute\IPetAttribute.cs" />

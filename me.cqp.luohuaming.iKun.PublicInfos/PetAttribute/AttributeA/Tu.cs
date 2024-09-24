@@ -13,14 +13,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
             ID = Enums.AttributeA.Tu;
             Name = "土";
             Description = [
-                "◆成功吞噬后额外增加 10%~30% 体重",
-                "◆被攻击时 30% 的几率逃脱",
-                "◇对“水”属性的对手有额外 30% 的攻击加成",
+                "◆成功吞噬后大量提升体重",
+                "◆被攻击时减少巨量伤害",
+                "◆渡劫时大幅提高成功概率",
+                "◇对「水」属性的对手有额外攻击加成",
             ];
         }
 
         public override (double, double) Devour(double source, double target, double diff = 1)
         {
+            // 成功 吞噬 额外增加敌人体重 10~30%体重
             var baseDevour = base.Devour(source, target, diff);
             if (baseDevour.Item1 > 1)
             {
@@ -31,11 +33,23 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
 
         public override (double, double) BeingAttacked(double source, double target, (double, double) baseAttack)
         {
-            if (CommonHelper.Random.NextDouble() < 0.3)
+            // 被攻击时减少 50% 的伤害
+            if (baseAttack.Item2 < 1)
             {
-                return (1, 1);
+                double change = 0.5;
+                double decrement = target * (1 - baseAttack.Item2);
+
+                decrement *= change;
+
+                return (baseAttack.Item1, 1 - (decrement / target));
             }
-            return baseAttack;
+            return base.BeingAttacked(source, target, baseAttack);
+        }
+
+        public override double Ascend(double success, double diff = 1)
+        {
+            // 渡劫时 提升 30% 概率
+            return base.Ascend(success * 1.3, diff);
         }
     }
 }
