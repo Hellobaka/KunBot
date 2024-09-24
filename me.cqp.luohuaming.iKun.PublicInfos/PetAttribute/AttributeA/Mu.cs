@@ -4,7 +4,7 @@
     {
         public Mu()
         {
-            ID = Enums.AttributeA.Mu;
+            ID = Enums.Attribute.Mu;
             Name = "木";
             Description = [
                 "◆成功吞噬后超巨量增加体重",
@@ -35,10 +35,10 @@
             return baseAttack;
         }
 
-        public override double Ascend(double success, double diff = 1)
+        public override double GetAscendSuccessRate(double value)
         {
             // 渡劫时 提升 30% 概率
-            return base.Ascend(success * 1.3, diff);
+            return value * 1.3;
         }
     }
 }

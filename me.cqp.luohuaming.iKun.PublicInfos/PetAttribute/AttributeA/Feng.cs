@@ -4,7 +4,7 @@
     {
         public Feng()
         {
-            ID = Enums.AttributeA.Feng;
+            ID = Enums.Attribute.Feng;
             Name = "风";
             Description = [
                 "◆攻击时有大概率额外追击一次",
@@ -15,11 +15,11 @@
             ];
         }
 
-        public override (double, double) Attack(double source, double target, double diff = 1)
+        public override (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
         {
             // 攻击时 30% 概率 造成 200% 的攻击
             // 成功 攻击或吞噬 额外增加敌人失去体重 30~50%
-            var baseAttack = base.Attack(source, target, diff);
+            baseAttack = base.Attack(source, target, baseAttack, diff);
             if (baseAttack.Item1 > 1)
             {
                 double change = 0;
@@ -50,6 +50,12 @@
                 return (baseDevour.Item1 * (1 + CommonHelper.Random.NextDouble(0.3, 0.5)), baseDevour.Item2);
             }
             return baseDevour;
+        }
+
+        public override double GetAscendSuccessRate(double value)
+        {
+            // 渡劫时 提升 50%概率
+            return value * 1.5;
         }
     }
 }

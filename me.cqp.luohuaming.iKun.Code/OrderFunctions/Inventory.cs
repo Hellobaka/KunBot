@@ -43,7 +43,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             else
             {
-                stringBuilder.AppendLine(kun.ToString() + $" {kun.Weight:f2}千克");
+                stringBuilder.AppendLine(kun.ToStringFull());
             }
             stringBuilder.AppendLine("=============");
             var list = InventoryItem.GetItemsByQQ(e.FromQQ);

@@ -4,7 +4,7 @@
     {
         public Yang()
         {
-            ID = Enums.AttributeA.Yin;
+            ID = Enums.Attribute.Yin;
             Name = "阳";
             Description = [
                 "◆被攻击时有大概率大幅度降低受到伤害",
@@ -17,10 +17,10 @@
             ];
         }
 
-        public override (double, double) Attack(double source, double target, double diff = 1)
+        public override (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
         {
             // 攻击或吞噬 临时提升30% 的体重
-            return base.Attack(source * 1.3, target, diff);
+            return base.Attack(source * 1.3, target, baseAttack, diff);
         }
 
         public override (double, double) Devour(double source, double target, double diff = 1)
@@ -43,13 +43,19 @@
         {
             // 渡劫成功时 提升 50% 体重
             // 渡劫时 提升 50% 成功概率
-            var baseRate = base.Ascend(success * 1.5, diff);
+            var baseRate = base.Ascend(success, diff);
             if (baseRate > 1)
             {
                 return baseRate * 1.5;
             }
 
             return baseRate;
+        }
+
+        public override double GetAscendSuccessRate(double value)
+        {
+            // 渡劫时 提升 30% 概率
+            return value * 1.5;
         }
     }
 }

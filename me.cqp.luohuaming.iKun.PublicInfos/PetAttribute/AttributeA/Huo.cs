@@ -4,7 +4,7 @@
     {
         public Huo()
         {
-            ID = Enums.AttributeA.Huo;
+            ID = Enums.Attribute.Huo;
             Name = "火";
             Description = [
                 "◆攻击时有大概率造成额外少量伤害",
@@ -13,10 +13,10 @@
             ];
         }
 
-        public override (double, double) Attack(double source, double target, double diff = 1)
+        public override (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
         {
             // 攻击时 50% 的概率提高 10~30%伤害
-            var baseAttack = base.Attack(source, target, diff);
+            baseAttack = base.Attack(source, target, baseAttack, diff);
             if (baseAttack.Item1 > 1 && CommonHelper.Random.NextDouble() < 0.5)
             {
                 double change = CommonHelper.Random.NextDouble(0.1, 0.3);

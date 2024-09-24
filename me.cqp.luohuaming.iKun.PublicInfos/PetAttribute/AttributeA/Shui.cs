@@ -10,7 +10,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
     {
         public Shui()
         {
-            ID = Enums.AttributeA.Shui;
+            ID = Enums.Attribute.Shui;
             Name = "水";
             Description = [
                 "◆成功攻击或吞噬后大量提升体重",
@@ -19,10 +19,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
             ];
         }
 
-        public override (double, double) Attack(double source, double target, double diff = 1)
+        public override (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
         {
             // 成功 攻击和吞噬 额外增加敌人损失体重的10~30%体重
-            var baseAttack = base.Attack(source, target, diff);
+            baseAttack = base.Attack(source, target, baseAttack, diff);
             if (baseAttack.Item1 > 1)
             {
                 double increment = source * (baseAttack.Item1 - 1);

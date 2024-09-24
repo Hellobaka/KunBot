@@ -17,7 +17,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
     /// </summary>
     public abstract class IPetAttribute
     {
-        public Enums.AttributeA ID { get; set; }
+        public Enums.Attribute ID { get; set; }
         
         public string Name { get; set; }
         
@@ -130,15 +130,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         /// <param name="target">目标方体重</param>
         /// <param name="diff">攻击附加变化(%)(乘算)</param>
         /// <returns>攻击方体重变化(0.x)，目标方体重变化(0.x)</returns>
-        public virtual (double, double) Attack(double source, double target, double diff = 1)
+        public virtual (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
         {
             double decrement = CommonHelper.Random.NextDouble(AppConfig.ValueAttackWeightMinimumDecrement / 100.0, AppConfig.ValueAttackWeightMaximumDecrement / 100.0)
-                                    * diff;
+                                        * diff;
             double value = source * decrement;
 
             double increment = value / target;
 
-            return (1 + increment, 1 - decrement);
+            return (baseAttack.Item1 + increment, baseAttack.Item2 - decrement);
         }
 
         /// <summary>
@@ -151,6 +151,21 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         public virtual (double, double) BeingAttacked(double source, double target, (double, double) baseAttack)
         {
             return baseAttack;
+        }
+
+        public virtual double GetTransmogrifyFailRate(double fail)
+        {
+            return fail;
+        }
+
+        public virtual double GetTransmogrifyFailWeightLostRate(double lost)
+        {
+            return lost;
+        }
+
+        public virtual double GetAscendSuccessRate(double value)
+        {
+            return value;
         }
     }
 
@@ -182,29 +197,26 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             throw new InvalidOperationException("No implementation selected. This should never happen.");
         }
 
-        public IPetAttribute GetInstanceByID(bool attrbuteA, int id)
+        public IPetAttribute GetInstanceByID(bool attrbuteId, int id)
         {
-            if (attrbuteA) 
+            if (attrbuteId) 
             {
-                return (Enums.AttributeA)id switch
+                return (Enums.Attribute)id switch
                 {
-                    Enums.AttributeA.Jin => new Jin(),
-                    Enums.AttributeA.Mu => new Mu(),
-                    Enums.AttributeA.Shui => new Shui(),
-                    Enums.AttributeA.Huo => new Huo(),
-                    Enums.AttributeA.Tu => new Tu(),
-                    Enums.AttributeA.Feng => new Feng(),
-                    Enums.AttributeA.Lei => new Lei(),
-                    Enums.AttributeA.Yin => new Yin(),
+                    Enums.Attribute.Jin => new Jin(),
+                    Enums.Attribute.Mu => new Mu(),
+                    Enums.Attribute.Shui => new Shui(),
+                    Enums.Attribute.Huo => new Huo(),
+                    Enums.Attribute.Tu => new Tu(),
+                    Enums.Attribute.Feng => new Feng(),
+                    Enums.Attribute.Lei => new Lei(),
+                    Enums.Attribute.Yin => new Yin(),
                     _ => new None(),
                 };
             }
             else
             {
-                return (Enums.AttributeB)id switch
-                {
-                    _ => new None(),
-                };
+                return new AttributeB.AttributeB(id);
             }            
         }
     }

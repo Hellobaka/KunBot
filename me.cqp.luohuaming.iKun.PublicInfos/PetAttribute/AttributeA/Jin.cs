@@ -4,7 +4,7 @@
     {
         public Jin()
         {
-            ID = Enums.AttributeA.Jin;
+            ID = Enums.Attribute.Jin;
             Name = "金";
             Description = [
                 "◆攻击或吞噬时有概率穿透防御",
@@ -15,10 +15,10 @@
             ];
         }
 
-        public override (double, double) Attack(double source, double target, double diff = 1)
+        public override (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
         {
             // 攻击或吞噬时 20% 概率提高10~30%伤害
-            var baseAttack = base.Attack(source, target, diff);
+            baseAttack = base.Attack(source, target, baseAttack, diff);
             if (CommonHelper.Random.NextDouble() <= 0.2)
             {
                 double change = CommonHelper.Random.NextDouble(0.1, 0.3);
@@ -73,10 +73,10 @@
             return base.BeingAttacked(source, target, baseAttack);
         }
 
-        public override double Ascend(double success, double diff = 1)
+        public override double GetAscendSuccessRate(double value)
         {
             // 渡劫 减少 30 % 成功概率
-            return base.Ascend(success * 0.7, diff);
+            return value * 0.7;
         }
     }
 }

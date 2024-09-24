@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace me.cqp.luohuaming.iKun.PublicInfos.Enums
+﻿namespace me.cqp.luohuaming.iKun.PublicInfos.Enums
 {
-    public enum AttributeA
+    public enum Attribute
     {
         None = 0,
         Jin,
@@ -17,11 +11,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Enums
         Feng,
         Lei,
         Yin,
-        Yang
-    }
-
-    public enum AttributeB
-    {
-        None = 0,
+        Yang,
+        AttributeB
     }
 }

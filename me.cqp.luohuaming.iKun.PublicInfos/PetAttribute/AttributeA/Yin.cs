@@ -4,7 +4,7 @@
     {
         public Yin()
         {
-            ID = Enums.AttributeA.Yin;
+            ID = Enums.Attribute.Yin;
             Name = "阴";
             Description = [
                 "◆攻击时有小概率造成巨量伤害",
@@ -17,11 +17,11 @@
             ];
         }
 
-        public override (double, double) Attack(double source, double target, double diff = 1)
+        public override (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
         {
             // 攻击时 10% 概率 造成 300% 的攻击
             // 成功 攻击或吞噬 额外增加敌人体重 30~50%体重
-            var baseAttack = base.Attack(source, target, diff);
+            baseAttack = base.Attack(source, target, baseAttack, diff);
             if (baseAttack.Item1 > 1)
             {
                 double change = (1 + CommonHelper.Random.NextDouble(0.3, 0.5));
@@ -71,10 +71,10 @@
             return baseDevour;
         }
 
-        public override double Ascend(double success, double diff = 1)
+        public override double GetAscendSuccessRate(double value)
         {
             // 渡劫时 减少成功 50%概率
-            return base.Ascend(success * 0.5, diff);
+            return value * 0.5;
         }
     }
 }

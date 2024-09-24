@@ -10,7 +10,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
     {
         public Tu()
         {
-            ID = Enums.AttributeA.Tu;
+            ID = Enums.Attribute.Tu;
             Name = "土";
             Description = [
                 "◆成功吞噬后大量提升体重",
@@ -46,10 +46,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
             return base.BeingAttacked(source, target, baseAttack);
         }
 
-        public override double Ascend(double success, double diff = 1)
+        public override double GetAscendSuccessRate(double value)
         {
             // 渡劫时 提升 30% 概率
-            return base.Ascend(success * 1.3, diff);
+            return value * 1.3;
         }
     }
 }

@@ -74,6 +74,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyHatchFail { get; set; } = "";
 
+        public static double ProbablityNone { get; set; }
+
         public static double ProbablityJin { get; set; }
        
         public static double ProbablityHuo { get; set; }
@@ -154,6 +156,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyHatchKun = ConfigHelper.GetConfig("ReplyHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n剩余 {2} 颗鲲蛋");
             ReplyBuyEgg = ConfigHelper.GetConfig("ReplyBuyEgg", "购买成功，消耗金币 {0} 枚，获得 {1} 枚鲲蛋\n-------------------\n剩余金币 {2} 枚，鲲蛋 {3} 枚");
 
+            ProbablityNone = ConfigHelper.GetConfig("ProbablityNone", 1);
             ProbablityJin = ConfigHelper.GetConfig("ProbablityJin", 1);
             ProbablityMu = ConfigHelper.GetConfig("ProbablityMu", 1);
             ProbablityShui = ConfigHelper.GetConfig("ProbablityShui", 1);

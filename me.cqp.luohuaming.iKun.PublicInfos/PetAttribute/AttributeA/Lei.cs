@@ -10,7 +10,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
     {
         public Lei()
         {
-            ID = Enums.AttributeA.Lei;
+            ID = Enums.Attribute.Lei;
             Name = "雷";
             Description = [
                 "◆攻击时有大概率造成额外少量伤害",
@@ -21,10 +21,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
             ];
         }
 
-        public override (double, double) Attack(double source, double target, double diff = 1)
+        public override (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
         {
             // 攻击时 50% 的几率造成额外 10~30% 伤害
-            var baseAttack = base.Attack(source, target, diff);
+            baseAttack = base.Attack(source, target, baseAttack, diff);
             if (baseAttack.Item1 > 1 && CommonHelper.Random.NextDouble() < 0.5)
             {
                 double change = CommonHelper.Random.NextDouble(0.1, 0.3);
@@ -53,10 +53,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
             return base.BeingAttacked(source, target, baseAttack);
         }
 
-        public override double Ascend(double success, double diff = 1)
+        public override double GetAscendSuccessRate(double value)
         {
             // 渡劫时 提升 100% 概率
-            return base.Ascend(success * 2, diff);
+            return value * 2;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
     {
         public None()
         {
-            ID = Enums.AttributeA.None;
+            ID = Enums.Attribute.None;
             Name = "无属性";
             Description = [];
         }
