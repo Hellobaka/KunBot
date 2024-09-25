@@ -1,11 +1,14 @@
 ﻿using me.cqp.luohuaming.iKun.PublicInfos.Items;
+using me.cqp.luohuaming.iKun.PublicInfos.Models.Results;
 using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute;
 using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA;
+using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.Models
@@ -40,25 +43,58 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         [SugarColumn(IsIgnore = true)]
         public IPetAttribute PetAttributeB { get; set; }
 
-        private static PetAttributeRandomInsatantiator RandomInsatantiatorA { get; set; } = null;
+        [SugarColumn(IsIgnore = true)]
+        public object LockObject { get; set; } = new object();
 
-        private static PetAttributeRandomInsatantiator RandomInsatantiatorB { get; set; } = null;
+        private static PetAttributeRandomInsatantiator RandomInsatantiator { get; set; } = null;
+
+        private static Logger Logger { get; set; } = new Logger("鲲");
 
         #region 数值实例
+        // 数值方法应当进行数值计算，并将实例属性更新，同步进数据库
+        // 反抛给调用方数值变化，由调用方进行文本拼接
+        // 为每种方法定义独立的结果类，包含执行结果、以及所有需要的变化数值
+        // 词缀进行计算时，在日志中记录所有的随机数并且需要在所有出口记录返回值
+        // 进行计算前需要获取对象锁，当涉及两个对象的处理时，需要获取两个对象的锁
+
         /// <summary>
         /// 强化
         /// 次数可以叠加成功率
         /// 成功率大于1时提升强化效果
         /// 在词缀中有基础实现
         /// </summary>
-        public void Upgrade(int count)
+        public UpgradeResult Upgrade(int count)
         {
-            double diff = PetAttributeA.Upgrade(count);
-            diff = PetAttributeB.Upgrade(count, diff);
+            try
+            {
+                Monitor.Enter(LockObject);
+                Logger.Info($"进入强化方法，ID={Id}，数量={count}");
+                double original = Weight;
+                double diff = PetAttributeA.Upgrade(count);
+                diff = PetAttributeB.Upgrade(count, diff);
 
-            Weight *= diff;
-            Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
-            Update();
+                Weight *= diff;
+                Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
+                Update();
+
+                bool reachLimit = Weight == GetLevelWeightLimit(Level);
+                Logger.Info($"强化方法结束，倍率={diff}，结果={Weight}，原始值={original}，变化值={Weight - original}，达到上限={reachLimit}");
+                return new UpgradeResult
+                {
+                    CurrentWeight = Weight,
+                    Increment = Weight - original,
+                    WeightLimit = reachLimit
+                };
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, "执行强化方法过程中发生异常");
+                return new UpgradeResult { Success = false };
+            }
+            finally
+            {
+                Monitor.Exit(LockObject);
+            }
         }
 
         /// <summary>
@@ -113,7 +149,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
             Weight += weightDiff.Item1;
             target.Weight += weightDiff.Item2;
-            
+
             Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
             target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
 
@@ -180,8 +216,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             }
             else
             {
-                PetAttributeA = RandomInsatantiatorA.GetRandomInstance();
-                PetAttributeB = RandomInsatantiatorB.GetRandomInstance();
+                PetAttributeA = RandomInsatantiator.GetRandomInstance();
+                PetAttributeB = AttributeB.RandomCreate();
 
                 AttributeAID = (int)PetAttributeA.ID;
                 AttributeBID = (int)PetAttributeB.ID;
@@ -294,8 +330,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         /// </summary>
         public void Initialize()
         {
-            PetAttributeA = RandomInsatantiatorA.GetInstanceByID(true, AttributeAID);
-            PetAttributeB = RandomInsatantiatorB.GetInstanceByID(false, AttributeBID);
+            PetAttributeA = RandomInsatantiator.GetInstanceByID(true, AttributeAID);
+            PetAttributeB = RandomInsatantiator.GetInstanceByID(false, AttributeBID);
         }
 
         public void Update()
@@ -312,11 +348,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         {
             StringBuilder stringBuilder = new();
             stringBuilder.AppendLine(this.ToString());
-            foreach(var item in PetAttributeA.Description)
+            foreach (var item in PetAttributeA.Description)
             {
                 stringBuilder.AppendLine(item.ToString());
             }
-            foreach(var item in PetAttributeB.Description)
+            foreach (var item in PetAttributeB.Description)
             {
                 stringBuilder.AppendLine(item.ToString());
             }
@@ -326,25 +362,22 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public static void InitiazlizeRandom()
         {
-            RandomInsatantiatorA = new();
-            RandomInsatantiatorA.AddImplementation<None>(AppConfig.ProbablityNone);
-            RandomInsatantiatorA.AddImplementation<Jin>(AppConfig.ProbablityJin);
-            RandomInsatantiatorA.AddImplementation<Mu>(AppConfig.ProbablityMu);
-            RandomInsatantiatorA.AddImplementation<Shui>(AppConfig.ProbablityShui);
-            RandomInsatantiatorA.AddImplementation<Huo>(AppConfig.ProbablityHuo);
-            RandomInsatantiatorA.AddImplementation<Tu>(AppConfig.ProbablityTu);
-            RandomInsatantiatorA.AddImplementation<Feng>(AppConfig.ProbablityFeng);
-            RandomInsatantiatorA.AddImplementation<Lei>(AppConfig.ProbablityLei);
-            RandomInsatantiatorA.AddImplementation<Yin>(AppConfig.ProbablityYin);
-
-            RandomInsatantiatorB = new();
-            RandomInsatantiatorB.AddImplementation<PetAttribute.AttributeB.AttributeB>(1);
+            RandomInsatantiator = new();
+            RandomInsatantiator.AddImplementation<None>(AppConfig.ProbablityNone);
+            RandomInsatantiator.AddImplementation<Jin>(AppConfig.ProbablityJin);
+            RandomInsatantiator.AddImplementation<Mu>(AppConfig.ProbablityMu);
+            RandomInsatantiator.AddImplementation<Shui>(AppConfig.ProbablityShui);
+            RandomInsatantiator.AddImplementation<Huo>(AppConfig.ProbablityHuo);
+            RandomInsatantiator.AddImplementation<Tu>(AppConfig.ProbablityTu);
+            RandomInsatantiator.AddImplementation<Feng>(AppConfig.ProbablityFeng);
+            RandomInsatantiator.AddImplementation<Lei>(AppConfig.ProbablityLei);
+            RandomInsatantiator.AddImplementation<Yin>(AppConfig.ProbablityYin);
         }
 
         public static Kun RandomCreate(Player player)
         {
-            IPetAttribute attributeA = RandomInsatantiatorA.GetRandomInstance();
-            IPetAttribute attributeB = RandomInsatantiatorB.GetRandomInstance();
+            IPetAttribute attributeA = RandomInsatantiator.GetRandomInstance();
+            IPetAttribute attributeB = AttributeB.RandomCreate();
 
             Kun kun = new()
             {
@@ -355,6 +388,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Abandoned = false,
                 Alive = true,
             };
+            kun.Level = (int)Math.Log10(kun.Weight) + 1;
             return kun;
         }
 

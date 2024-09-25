@@ -23,6 +23,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         
         public string[] Description { get; set; }
 
+        private Logger Logger { get; set; } = new Logger("基础词缀");
+
         /// <summary>
         /// 默认完成了道具扣除
         /// 强化目标是体重的50%
@@ -35,16 +37,30 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         /// <returns>体重变化(0.x)</returns>
         public virtual double Upgrade(int count, double diff = 1)
         {
+            Logger.Info($"进入强化词缀计算方法，数量={count}，Diff={diff}");
             int successRandom = CommonHelper.Random.Next(0, 100);
+            Logger.Info($"成功判定随机数：{successRandom}，临界：{count * 10}");
             if (successRandom >= count * 10)
             {
-                return CommonHelper.Random.Next(50, 80) / 100.0 * diff;
+                int rd = CommonHelper.Random.Next(50, 80);
+                Logger.Info($"判定失败，结果随机数：{rd}");
+                diff = rd / 100.0 * diff;
+                Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
+                return diff;
             }
+            Logger.Info($"判定成功");
             if (count <= 10)
             {
-                return 1.5 * diff;
+                Logger.Info($"基础倍率");
+
+                diff = 1.5 * diff;
+                Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
+                return diff;
             }
-            return count / 10.0 * 1.5 * diff;
+            Logger.Info($"额外倍率");
+            diff = count / 10.0 * 1.5 * diff;
+            Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
+            return diff;
         }
 
         /// <summary>
@@ -171,9 +187,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
 
     public class PetAttributeRandomInsatantiator
     {
-        private Dictionary<Type, double> Implementations { get; set; }
-
-        private Random Random { get; set; }
+        private Dictionary<Type, double> Implementations { get; set; } = [];
 
         public void AddImplementation<T>(double probability) where T : IPetAttribute
         {
@@ -183,7 +197,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         public IPetAttribute GetRandomInstance()
         {
             double totalProbability = Implementations.Values.Sum();
-            double randomValue = Random.NextDouble() * totalProbability;
+            double randomValue = CommonHelper.Random.NextDouble() * totalProbability;
 
             double cumulativeProbability = 0.0;
             for (int i = 0; i < Implementations.Count; i++)
