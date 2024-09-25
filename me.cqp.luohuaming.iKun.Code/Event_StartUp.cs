@@ -38,11 +38,35 @@ namespace me.cqp.luohuaming.iKun.Code
             AppConfig.LoadConfig();
             AppConfig.EnableAutoReload();
 
+            e.CQLog.Info("初始化", "初始化日志");
+            Logger.Init();
+
             e.CQLog.Info("初始化", "创建数据库");
             SQLHelper.CreateDB();
-
             Kun.InitiazlizeRandom();
+
+            e.CQLog.Info("初始化", "加载挂机列表");
+            AutoPlay.AutoPlayFinished -= AutoPlay_AutoPlayFinished;
+            AutoPlay.AutoPlayFinished += AutoPlay_AutoPlayFinished;
+            AutoPlay.LoadAutoPlays();
+
             e.CQLog.Info("初始化", "初始化完成");
+
+        }
+
+        private void AutoPlay_AutoPlayFinished(AutoPlay autoPlay)
+        {
+            double exp = autoPlay.CalcAutoPlayExp();
+            Kun kun = Kun.GetKunByID(autoPlay.KunID);
+            if (kun.Alive && !kun.Abandoned)
+            {
+                kun.Weight += exp;
+                kun.Update();
+            }
+            if (AppConfig.Groups.Contains(autoPlay.GroupId))
+            {
+                MainSave.CQApi.SendGroupMessage(autoPlay.GroupId, $"");
+            }
         }
     }
 }

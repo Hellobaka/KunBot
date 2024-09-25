@@ -126,23 +126,23 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         {
             RankingCount = ConfigHelper.GetConfig("RankingCount", 10);
 
-            CommandAscend = ConfigHelper.GetConfig("CommandAscend", "");
-            CommandAttack = ConfigHelper.GetConfig("CommandAttack", "");
-            CommandBuyEgg = ConfigHelper.GetConfig("CommandBuyEgg", "");
-            CommandDevour = ConfigHelper.GetConfig("CommandDevour", "");
-            CommandFeed = ConfigHelper.GetConfig("CommandFeed", "");
-            CommandHatch = ConfigHelper.GetConfig("CommandHatch", "");
-            CommandInventory = ConfigHelper.GetConfig("CommandInventory", "");
-            CommandLogin = ConfigHelper.GetConfig("CommandLogin", "");
-            CommandMenu = ConfigHelper.GetConfig("CommandMenu", "");
-            CommandOpenBlindBox = ConfigHelper.GetConfig("CommandOpenBlindBox", "");
-            CommandOpenEgg = ConfigHelper.GetConfig("CommandOpenEgg", "");
-            CommandRanking = ConfigHelper.GetConfig("CommandRanking", "");
-            CommandReleaseKun = ConfigHelper.GetConfig("CommandReleaseKun", "");
-            CommandResurrect = ConfigHelper.GetConfig("CommandResurrect", "");
-            CommandTransmogrify = ConfigHelper.GetConfig("CommandTransmogrify", "");
-            CommandUpgrade = ConfigHelper.GetConfig("CommandUpgrade", "");
-            CommandRegister = ConfigHelper.GetConfig("CommandRegister", "");
+            CommandAscend = ConfigHelper.GetConfig("CommandAscend", "#渡劫");
+            CommandAttack = ConfigHelper.GetConfig("CommandAttack", "#攻击");
+            CommandBuyEgg = ConfigHelper.GetConfig("CommandBuyEgg", "#买鲲蛋");
+            CommandDevour = ConfigHelper.GetConfig("CommandDevour", "#吞噬");
+            CommandFeed = ConfigHelper.GetConfig("CommandFeed", "#喂养");
+            CommandHatch = ConfigHelper.GetConfig("CommandHatch", "#孵蛋");
+            CommandInventory = ConfigHelper.GetConfig("CommandInventory", "#背包");
+            CommandLogin = ConfigHelper.GetConfig("CommandLogin", "#签到");
+            CommandMenu = ConfigHelper.GetConfig("CommandMenu", "#菜单");
+            CommandOpenBlindBox = ConfigHelper.GetConfig("CommandOpenBlindBox", "#开盲盒");
+            CommandOpenEgg = ConfigHelper.GetConfig("CommandOpenEgg", "#开鲲蛋");
+            CommandRanking = ConfigHelper.GetConfig("CommandRanking", "#排行");
+            CommandReleaseKun = ConfigHelper.GetConfig("CommandReleaseKun", "#放生");
+            CommandResurrect = ConfigHelper.GetConfig("CommandResurrect", "#复活");
+            CommandTransmogrify = ConfigHelper.GetConfig("CommandTransmogrify", "#幻化");
+            CommandUpgrade = ConfigHelper.GetConfig("CommandUpgrade", "#强化");
+            CommandRegister = ConfigHelper.GetConfig("CommandRegister", "#注册");
 
             ReplyDuplicateRegister = ConfigHelper.GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
             ReplyNewRegister = ConfigHelper.GetConfig("ReplyNewRegister", "注册成功，赠送 {0} 枚金币以及 {1} 枚鲲蛋");
