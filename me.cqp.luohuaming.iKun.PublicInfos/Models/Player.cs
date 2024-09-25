@@ -34,7 +34,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             var db = SQLHelper.GetInstance();
             foreach (var item in items) 
             {
-                var query = db.Queryable<InventoryItem>().First(x => x.Id == (int)item.ID && x.PlayerID == QQ);
+                var query = db.Queryable<InventoryItem>().First(x => x.ItemID == (int)item.ID && x.PlayerID == QQ);
                 if (query == null || !item.Stackable)
                 {
                     db.Insertable(new InventoryItem
@@ -43,13 +43,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                         ItemID = (int)item.ID,
                         PlayerID = QQ
                     }).ExecuteCommand();
-                    return;
+                    continue;
                 }
 
                 if (item.Stackable)
                 {
                     query.Count += item.Count;
-                    db.Updateable(item).ExecuteCommand();
+                    db.Updateable(query).ExecuteCommand();
                 }
             }
         }
