@@ -52,11 +52,16 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.5.3.4\lib\net46\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="SqlSugar, Version=5.1.4.167, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SqlSugar.5.1.4.167\lib\SqlSugar.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -78,12 +83,15 @@
     <Compile Include="Items\ResurrectPill.cs" />
     <Compile Include="Items\TransmogrifyPill.cs" />
     <Compile Include="Items\UpgradePill.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Models\AutoPlay.cs" />
     <Compile Include="Models\Items.cs" />
     <Compile Include="MainSave.cs" />
     <Compile Include="IOrderModel.cs" />
     <Compile Include="Models\InventoryItem.cs" />
     <Compile Include="Models\Kun.cs" />
     <Compile Include="Models\Record.cs" />
+    <Compile Include="Models\Results\UpgradeResult.cs" />
     <Compile Include="PetAttribute\AttributeA\Feng.cs" />
     <Compile Include="PetAttribute\AttributeA\Huo.cs" />
     <Compile Include="PetAttribute\AttributeA\Jin.cs" />
