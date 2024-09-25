@@ -105,17 +105,17 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
 
         private static Dictionary<Enums.AttributeBAction, string> ActionName { get; set; } = new()
         {
-            { Enums.AttributeBAction.UpgradeWeightGainUpper, "{0}提升洗髓时获取的体重"},
-            { Enums.AttributeBAction.AttackWeightGainUpper, "{0}提升攻击后获得的体重"},
-            { Enums.AttributeBAction.AttackDamageUpper, "{0}提升攻击时造成的伤害"},
-            { Enums.AttributeBAction.BeingAttackedDamageLower, "{0}降低攻击时受到的伤害"},
-            { Enums.AttributeBAction.AscendWeightGainUpper, "{0}增加渡劫成功时提升的体重"},
-            { Enums.AttributeBAction.AscendSuccessRateUpper, "{0}提升渡劫成功率"},
-            { Enums.AttributeBAction.AscendFailWeightLostLower, "{0}降低渡劫失败时损失的体重"},
-            { Enums.AttributeBAction.FeedWeightGainUpper, "{0}提升喂食时获得的体重"},
-            { Enums.AttributeBAction.TransmogrifySuccessRateUpper, "{0}提升蜕变成功率"},
-            { Enums.AttributeBAction.TransmogrifyFailWeightLostLower, "{0}降低蜕变失败时损失的体重" },
-            { Enums.AttributeBAction.None, "无属性" }
+            { Enums.AttributeBAction.UpgradeWeightGainUpper, "◇{0}提升洗髓时获取的体重"},
+            { Enums.AttributeBAction.AttackWeightGainUpper, "◇{0}提升攻击后获得的体重"},
+            { Enums.AttributeBAction.AttackDamageUpper, "◇{0}提升攻击时造成的伤害"},
+            { Enums.AttributeBAction.BeingAttackedDamageLower, "◇{0}降低攻击时受到的伤害"},
+            { Enums.AttributeBAction.AscendWeightGainUpper, "◇{0}增加渡劫成功时提升的体重"},
+            { Enums.AttributeBAction.AscendSuccessRateUpper, "◇{0}提升渡劫成功率"},
+            { Enums.AttributeBAction.AscendFailWeightLostLower, "◇{0}降低渡劫失败时损失的体重"},
+            { Enums.AttributeBAction.FeedWeightGainUpper, "◇{0}提升喂食时获得的体重"},
+            { Enums.AttributeBAction.TransmogrifySuccessRateUpper, "◇{0}提升蜕变成功率"},
+            { Enums.AttributeBAction.TransmogrifyFailWeightLostLower, "◇{0}降低蜕变失败时损失的体重" },
+            { Enums.AttributeBAction.None, "◇无属性" }
         };
 
         private static Dictionary<double, string> AppendValueName { get; set; } = new()
@@ -129,6 +129,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         private Enums.AttributeBAction AttributeBAction { get; set; }
 
         private double AppendValue { get; set; }
+
+        public static AttributeB RandomCreate() => new AttributeB(CommonHelper.Random.Next(1, AttributeBMap.Count + 1));
 
         public override double Ascend(double success, double diff = 1)
         {
@@ -227,7 +229,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         {
             if (AttributeBAction == Enums.AttributeBAction.TransmogrifyFailWeightLostLower)
             {
-                return fail * (1 + AppendValue);
+                return fail * (1 - AppendValue);
             }
             return fail;
         }
