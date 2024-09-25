@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using me.cqp.luohuaming.iKun.PublicInfos.Enums;
+using SqlSugar;
 using System.Collections.Generic;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.Models
@@ -85,6 +86,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         {
             var db = SQLHelper.GetInstance();
             return db.Queryable<InventoryItem>().Where(x => x.PlayerID == qq && !x.Deleted).ToList();
+        }
+
+        public override string ToString()
+        {
+            var item = Items.GetItemByID((Enums.Items)ItemID);
+            return $"{item.Name} {Count}个";
         }
     }
 }
