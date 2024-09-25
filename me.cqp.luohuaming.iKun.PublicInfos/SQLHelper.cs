@@ -35,6 +35,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
                 db.CodeFirst.InitTables(typeof(InventoryItem));
                 db.CodeFirst.InitTables(typeof(Kun));
                 db.CodeFirst.InitTables(typeof(Player));
+                db.CodeFirst.InitTables(typeof(AutoPlay));
+                db.CodeFirst.InitTables(typeof(Record));
                 return true;
             }
             catch (Exception e)
