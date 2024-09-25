@@ -43,6 +43,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             else
             {
+                kun.Initialize();
                 stringBuilder.AppendLine(kun.ToStringFull());
             }
             stringBuilder.AppendLine("=============");

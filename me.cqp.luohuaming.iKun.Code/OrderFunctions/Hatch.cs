@@ -50,6 +50,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
 
             var kun = Kun.RandomCreate(player);
+            kun.Initialize();
             int id = Kun.SaveKun(kun);
 
             Record.AddRecord(new Record { Group = e.FromGroup, QQ = e.FromQQ, KunID = id });
