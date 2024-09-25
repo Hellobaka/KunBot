@@ -64,6 +64,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyNoKun { get; set; } = "";
 
+        public static string ReplyDuplicateLogin { get; set; } = "";
+
         public static string ReplyLoginReward { get; set; } = "";
 
         public static string ReplyItemLeak { get; set; } = "";
@@ -145,6 +147,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandRegister = ConfigHelper.GetConfig("CommandRegister", "#注册");
 
             ReplyDuplicateRegister = ConfigHelper.GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
+            ReplyDuplicateLogin = ConfigHelper.GetConfig("ReplyLoginDuplicate", "你今天已经签到过了，不能重复签到");
             ReplyNewRegister = ConfigHelper.GetConfig("ReplyNewRegister", "注册成功，赠送 {0} 枚金币以及 {1} 枚鲲蛋");
             ReplyRegisterFailed = ConfigHelper.GetConfig("ReplyRegisterFailed", "注册失败了");
             ReplyMenu = ConfigHelper.GetConfig("ReplyMenu", "菜单：");

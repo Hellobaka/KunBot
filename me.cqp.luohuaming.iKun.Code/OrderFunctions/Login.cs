@@ -36,7 +36,13 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoPlayer);
                 return result;
             }
-
+            if (CommonHelper.IsSameDay(player.LoginAt, DateTime.Now))
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyDuplicateLogin);
+                return result;
+            }
+            player.LoginAt = DateTime.Now;
+            player.Update();
             int coinCount = 100;
             int eggCount = 5;
             player.GiveItem([

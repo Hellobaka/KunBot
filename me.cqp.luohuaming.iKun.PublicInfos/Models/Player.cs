@@ -12,6 +12,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public DateTime CreateAt { get; set; }
 
+        public DateTime LoginAt { get; set; }
+
         public static bool Exists(long qq) => SQLHelper.GetInstance().Queryable<Player>().Any(p => p.QQ == qq);
 
         public static Player? Create(long qq)
@@ -53,6 +55,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 }
             }
         }
+
+        public void Update()
+        {
+            var db = SQLHelper.GetInstance();
+            db.Updateable(this).ExecuteCommand();
+        }
+
 
         public static Player? GetPlayer(long qq)
         {
