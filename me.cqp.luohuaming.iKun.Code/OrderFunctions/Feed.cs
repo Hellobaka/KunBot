@@ -37,7 +37,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
             var kun = Kun.GetKunByQQ(player.QQ);
-            if (player == null)
+            if (kun == null)
             {
                 sendText.MsgToSend.Add(AppConfig.ReplyNoKun);
                 return result;
