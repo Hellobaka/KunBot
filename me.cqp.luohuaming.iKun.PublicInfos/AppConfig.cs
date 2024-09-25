@@ -72,6 +72,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyHatchKun { get; set; } = "";
 
+        public static string ReplyDuplicateHatch { get; set; } = "";
+
         public static string ReplyBuyEgg { get; set; } = "";
 
         public static string ReplyHatchFail { get; set; } = "";
@@ -148,6 +150,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
             ReplyDuplicateRegister = ConfigHelper.GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
             ReplyDuplicateLogin = ConfigHelper.GetConfig("ReplyLoginDuplicate", "你今天已经签到过了，不能重复签到");
+            ReplyDuplicateHatch = ConfigHelper.GetConfig("ReplyDuplicateHatch", "你已经有一只鲲了，不能重复孵化");
             ReplyNewRegister = ConfigHelper.GetConfig("ReplyNewRegister", "注册成功，赠送 {0} 枚金币以及 {1} 枚鲲蛋");
             ReplyRegisterFailed = ConfigHelper.GetConfig("ReplyRegisterFailed", "注册失败了");
             ReplyMenu = ConfigHelper.GetConfig("ReplyMenu", "菜单：");

@@ -36,6 +36,12 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoPlayer);
                 return result;
             }
+            var kun = Kun.GetKunByQQ(player.QQ);
+            if (kun != null)
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyDuplicateHatch);
+                return result;
+            }
             int hatchComsume = 1;
             if (!InventoryItem.TryRemoveItem(player, Items.KunEgg().ID, hatchComsume, out int currentCount))
             {
@@ -49,7 +55,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
 
-            var kun = Kun.RandomCreate(player);
+            kun = Kun.RandomCreate(player);
             kun.Initialize();
             int id = Kun.SaveKun(kun);
 
