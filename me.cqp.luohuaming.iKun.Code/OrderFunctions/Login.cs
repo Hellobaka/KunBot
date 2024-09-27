@@ -43,8 +43,8 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             player.LoginAt = DateTime.Now;
             player.Update();
-            int coinCount = 100;
-            int eggCount = 5;
+            int coinCount = AppConfig.ValueLoginCoinReward;
+            int eggCount = AppConfig.ValueLoginEggReward;
             player.GiveItem([
                 Items.Coin(coinCount),
                 Items.KunEgg(eggCount)
