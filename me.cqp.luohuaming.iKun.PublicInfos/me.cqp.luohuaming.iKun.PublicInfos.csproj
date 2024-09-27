@@ -91,6 +91,11 @@
     <Compile Include="Models\InventoryItem.cs" />
     <Compile Include="Models\Kun.cs" />
     <Compile Include="Models\Record.cs" />
+    <Compile Include="Models\Results\AscendResult.cs" />
+    <Compile Include="Models\Results\AttackResult.cs" />
+    <Compile Include="Models\Results\DevourResult.cs" />
+    <Compile Include="Models\Results\FeedResult.cs" />
+    <Compile Include="Models\Results\TransmogrifyResult.cs" />
     <Compile Include="Models\Results\UpgradeResult.cs" />
     <Compile Include="PetAttribute\AttributeA\Feng.cs" />
     <Compile Include="PetAttribute\AttributeA\Huo.cs" />

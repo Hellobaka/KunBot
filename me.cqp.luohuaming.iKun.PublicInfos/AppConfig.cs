@@ -122,6 +122,18 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueAttackWeightMaximumDecrement { get; set; }
 
+        public static int ValueLoginCoinReward {  get; set; }
+
+        public static int ValueLoginEggReward {  get; set; }
+
+        public static double ValueAscendFailDeadProbablity { get; set; } = 10;
+
+        public static double ValueDevourFailDeadProbablity { get; set; } = 10;
+
+        public static double ValueTransmoirgifyDeadWeightLimit { get; set; } = 10;
+
+        public static double ValueTransmoirgifyFailDeadProbablity { get; set; } = 10;
+
         public static List<long> Groups { get; set; } = [];
 
         public static List<long> Admins { get; set; } = [];
@@ -185,6 +197,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueAttackWeightMaximumDecrement = ConfigHelper.GetConfig("ValueAttackWeightMaximumDecrement", 10);
             ValueRankingCount = ConfigHelper.GetConfig("ValueRankingCount", 10);
             ValueDevourDrawPercentage = ConfigHelper.GetConfig("ValueDevourDrawPercentage", 10);
+            ValueLoginCoinReward = ConfigHelper.GetConfig("ValueLoginCoinReward", 100);
+            ValueLoginEggReward = ConfigHelper.GetConfig("ValueLoginEggReward", 10);
+            ValueAscendFailDeadProbablity = ConfigHelper.GetConfig("ValueAscendFailDeadProbablity", 10);
+            ValueDevourFailDeadProbablity = ConfigHelper.GetConfig("ValueDevourFailDeadProbablity", 10);
+            ValueTransmoirgifyDeadWeightLimit = ConfigHelper.GetConfig("ValueTransmoirgifyFailDeadWeightLimit", 10);
+            ValueTransmoirgifyFailDeadProbablity = ConfigHelper.GetConfig("ValueTransmoirgifyFailDeadProbablity", 10);
 
             Groups = ConfigHelper.GetConfig("Groups", new List<long>());
             Admins = ConfigHelper.GetConfig("Admins", new List<long>());

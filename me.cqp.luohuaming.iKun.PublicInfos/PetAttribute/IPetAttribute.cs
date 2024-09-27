@@ -1,6 +1,8 @@
 ﻿using me.cqp.luohuaming.iKun.PublicInfos.Enums;
+using me.cqp.luohuaming.iKun.PublicInfos.Items;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA;
+using NLog.Targets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,7 +74,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         /// <returns>体重变化(0.x)</returns>
         public virtual double Ascend(double success, double diff = 1)
         {
-            return (CommonHelper.Random.NextDouble() <= success ? 5 : 0.5) * diff;
+            Logger.Info($"进入渡劫词缀计算方法，成功率={success}，Diff={diff}");
+            double random = CommonHelper.Random.NextDouble();
+            Logger.Info($"判定随机数={random}");
+            diff = (random <= success ? 5 : 0.5) * diff;
+            Logger.Info($"退出渡劫词缀计算方法，倍率={diff}");
+            return diff;
         }
 
         /// <summary>
@@ -89,17 +96,24 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         /// <returns>攻击方体重变化(值)，目标方体重变化(值)</returns>
         public virtual (double, double) Devour(double source, double target, double diff = 1)
         {
+            Logger.Info($"进入吞噬词缀计算方法，攻击方体重={source}，目标方体重={target}，Diff={diff}");
+
             bool attackSuccess = false;
+            Logger.Info($"体重相差百分比={Math.Abs((target - source) / source * 100)}%，随机胜负临界={AppConfig.ValueDevourDrawPercentage}%");
             if (Math.Abs((target - source) / source * 100) < AppConfig.ValueDevourDrawPercentage)
             {
-                attackSuccess = CommonHelper.Random.NextDouble() < 0.5;
+                double random = CommonHelper.Random.NextDouble();
+                attackSuccess = random < 0.5;
+                Logger.Info($"判定随机数={random}，攻击是否成功={attackSuccess}");
             }
-            else if(source > target)
+            else if (source > target)
             {
+                Logger.Info($"攻击方体重大于被攻击方，攻击成功");
                 attackSuccess = true;
             }
             else
             {
+                Logger.Info($"攻击方体重小于于被攻击方，攻击失败");
                 attackSuccess = false;
             }
 
@@ -107,18 +121,22 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             {
                 double loss = CommonHelper.Random.NextDouble(0.5, 1) * diff;
                 double increment = target * loss;
+                Logger.Info($"退出吞噬词缀计算方法，攻击方增加倍率={increment}，被攻击方失去倍率={loss}");
                 return (increment, -1 * increment);
             }
             else
             {
                 double loss = CommonHelper.Random.NextDouble(0.5, 0.7) * diff;
                 double decrement = source * loss;
+                Logger.Info($"退出吞噬词缀计算方法，攻击方失去倍率={decrement}，被攻击方增加倍率={loss}");
                 return (-1 * decrement, decrement);
             }
         }
 
         public virtual (double, double) BeingDevoured(double source, double target, (double, double) baseDevour)
         {
+            Logger.Info($"进入被吞噬词缀计算方法，攻击方体重={source}，目标方体重={target}，原始倍率={baseDevour.Item1}, {baseDevour.Item2}");
+            Logger.Info($"无处理，返回原始倍率");
             return baseDevour;
         }
 
@@ -130,13 +148,18 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         /// <returns>体重变化(0.x)</returns>
         public virtual double Feed(int count, double diff = 1)
         {
-            double increasement = 0;
+            Logger.Info($"进入喂食词缀计算方法，数量={count}，Diff={diff}");
+
+            double increment = 0;
             for (int i = 0; i < count; i++)
             {
-                increasement += CommonHelper.Random.Next(5, 10) / 100.0 * diff;
+                double random = CommonHelper.Random.Next(5, 10);
+                double newIncrement = random / 100.0 * diff;
+                increment += newIncrement;
+                Logger.Info($"次数={i + 1}，随机数={random}，增量={newIncrement}，当前总增量={increment}");
             }
-
-            return increasement;
+            Logger.Info($"退出喂食词缀计算方法，倍率={increment}");
+            return increment;
         }
 
         /// <summary>
@@ -148,13 +171,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         /// <returns>攻击方体重变化(0.x)，目标方体重变化(0.x)</returns>
         public virtual (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
         {
-            double decrement = CommonHelper.Random.NextDouble(AppConfig.ValueAttackWeightMinimumDecrement / 100.0, AppConfig.ValueAttackWeightMaximumDecrement / 100.0)
-                                        * diff;
+            Logger.Info($"进入攻击词缀计算方法，攻击方体重={source}，目标方体重={target}，Diff={diff}，基础倍率={baseAttack.Item1}，{baseAttack.Item2}");
+            Logger.Info($"攻击体重损失下限={AppConfig.ValueAttackWeightMinimumDecrement}，上限={AppConfig.ValueAttackWeightMaximumDecrement}");
+            double random = CommonHelper.Random.NextDouble(AppConfig.ValueAttackWeightMinimumDecrement / 100.0, AppConfig.ValueAttackWeightMaximumDecrement / 100.0);
+            double decrement = random * diff;
             double value = source * decrement;
-
             double increment = value / target;
-
-            return (baseAttack.Item1 + increment, baseAttack.Item2 - decrement);
+            Logger.Info($"倍率随机数={random}，被攻击方损失倍率={decrement}，攻击方增量={increment}");
+            var r = (baseAttack.Item1 + increment, baseAttack.Item2 - decrement);
+            Logger.Info($"退出攻击词缀计算方法，最终倍率={r.Item1}，{r.Item2}");
+            return r;
         }
 
         /// <summary>
@@ -166,6 +192,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         /// <returns>攻击方体重变化(0.x)，目标方体重变化(0.x)</returns>
         public virtual (double, double) BeingAttacked(double source, double target, (double, double) baseAttack)
         {
+            Logger.Info($"进入被攻击词缀计算方法，攻击方体重={source}，目标方体重={target}，原始倍率={baseAttack.Item1}, {baseAttack.Item2}");
+            Logger.Info($"无处理，返回原始倍率");
+
             return baseAttack;
         }
 

@@ -56,6 +56,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         // 为每种方法定义独立的结果类，包含执行结果、以及所有需要的变化数值
         // 词缀进行计算时，在日志中记录所有的随机数并且需要在所有出口记录返回值
         // 进行计算前需要获取对象锁，当涉及两个对象的处理时，需要获取两个对象的锁
+        // 部分方法需要检查Alive与Abandoned属性是否有效
 
         /// <summary>
         /// 强化
@@ -103,58 +104,156 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         /// 进行渡劫成功之后，体重才能突破上限，等级加一
         /// 在词缀中有基础实现
         /// </summary>
-        public void Ascend()
+        public AscendResult Ascend()
         {
-            double success = Level switch
+            try
             {
-                1 => 0.95,
-                2 => 0.90,
-                3 => 0.85,
-                4 => 0.75,
-                5 => 0.65,
-                6 => 0.50,
-                7 => 0.35,
-                8 => 0.20,
-                _ => 0.10,
-            };
-            success = PetAttributeB.GetAscendSuccessRate(PetAttributeA.GetAscendSuccessRate(success));
+                Monitor.Enter(LockObject);
+                Logger.Info($"进入渡劫方法，ID={Id}");
+                double original = Weight;
+                double success = Level switch
+                {
+                    1 => 0.95,
+                    2 => 0.90,
+                    3 => 0.85,
+                    4 => 0.75,
+                    5 => 0.65,
+                    6 => 0.50,
+                    7 => 0.35,
+                    8 => 0.20,
+                    _ => 0.10,
+                };
+                Logger.Info($"基础成功率：{success * 100}%");
+                success = PetAttributeB.GetAscendSuccessRate(PetAttributeA.GetAscendSuccessRate(success));
+                Logger.Info($"词缀加成后成功率：{success * 100}%");
 
-            double diff = PetAttributeA.Ascend(success);
-            diff = PetAttributeB.Ascend(success, diff);
+                double diff = PetAttributeA.Ascend(success);
+                diff = PetAttributeB.Ascend(success, diff);
 
-            Weight *= diff;
-            if (diff > 1)
-            {
-                Level++;
+                Weight *= diff;
+                if (diff >= 1)
+                {
+                    Level++;
+                }
+                else
+                {
+                    double dead = CommonHelper.Random.NextDouble();
+                    Logger.Info($"渡劫失败，死亡随机数判定：{dead}，临界：{AppConfig.ValueAscendFailDeadProbablity / 100}");
+                    if (dead < AppConfig.ValueAscendFailDeadProbablity / 100)
+                    {
+                        Logger.Info($"判定成功，鲲触发死亡");
+                        Alive = false;
+                    }
+                    else
+                    {
+                        Logger.Info($"判定失败");
+                    }
+                }
+                Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
+                Update();
+
+                Logger.Info($"渡劫方法结束，倍率={diff}，结果={Weight}，原始值={original}，变化值={Weight - original}，当前等级={Level}，是否死亡={!Alive}");
+                return new AscendResult
+                {
+                    CurrentLevel = Level,
+                    CurrentWeight = Weight,
+                    Increment = Weight - original,
+                    Dead = !Alive
+                };
             }
-            Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
-            Update();
+            catch (Exception e)
+            {
+                Logger.Error(e, "执行渡劫方法过程中发生异常");
+                return new AscendResult { Success = false };
+            }
+            finally
+            {
+                Monitor.Exit(LockObject);
+            }
         }
 
         /// <summary>
         /// 吞噬
         /// 体重相近时概率胜利
-        /// 吞噬成功增加对方部分体重
+        /// 吞噬成功增加对方大部分体重，同时对方死亡
         /// 吞噬失败减少自身体重并概率死亡
         /// 在词缀中有基础实现
         /// </summary>
-        public void Devour(Kun target)
+        public DevourResult Devour(Kun target)
         {
-            double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
-            var weightDiff = PetAttributeA.Devour(Weight, target.Weight, baseAttackRate);
-            weightDiff = target.PetAttributeA.BeingDevoured(target.Weight, Weight, weightDiff);
+            try
+            {
+                Monitor.Enter(LockObject);
+                Monitor.Enter(target.LockObject);
+                Logger.Info($"进入吞噬方法，ID={Id}，目标ID={target.Id}");
 
-            weightDiff = target.PetAttributeB.Devour(Weight, target.Weight).Multiple(weightDiff);
-            weightDiff = target.PetAttributeB.BeingDevoured(target.Weight, Weight, weightDiff).Multiple(weightDiff);
+                double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
+                Logger.Info($"{PetAttributeA.Name}=>{PetAttributeB.Name}，基础伤害倍率={baseAttackRate}");
 
-            Weight += weightDiff.Item1;
-            target.Weight += weightDiff.Item2;
+                var weightDiff = PetAttributeA.Devour(Weight, target.Weight, baseAttackRate);
+                Logger.Info($"吞噬主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                weightDiff = target.PetAttributeA.BeingDevoured(target.Weight, Weight, weightDiff);
+                Logger.Info($"被吞噬主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
-            Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
-            target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
+                weightDiff = target.PetAttributeB.Devour(Weight, target.Weight).Multiple(weightDiff);
+                Logger.Info($"吞噬小词缀计算，变化值={weightDiff.Item1} ， {weightDiff.Item2}");
+                weightDiff = target.PetAttributeB.BeingDevoured(target.Weight, Weight, weightDiff).Multiple(weightDiff);
+                Logger.Info($"被吞噬小词缀计算，变化值={weightDiff.Item1} ， {weightDiff.Item2}");
 
-            Update();
-            target.Update();
+                Weight += weightDiff.Item1;
+                target.Weight += weightDiff.Item2;
+                Logger.Info($"攻击方变化后体重={Weight}，被攻击方变化后体重={target.Weight}");
+
+                Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
+                target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
+                Logger.Info($"体重限制管理，攻击方体重={Weight}，被攻击方体重={target.Weight}");
+
+                if (weightDiff.Item1 < 0)
+                {
+                    double dead = CommonHelper.Random.NextDouble();
+                    Logger.Info($"吞噬失败，死亡随机数判定：{dead}，临界：{AppConfig.ValueDevourFailDeadProbablity / 100}");
+                    if (dead < AppConfig.ValueDevourFailDeadProbablity / 100)
+                    {
+                        Logger.Info($"判定成功，鲲触发死亡");
+                        Alive = false;
+                    }
+                    else
+                    {
+                        Logger.Info($"判定失败");
+                    }
+                }
+                else
+                {
+                    Logger.Info($"由于吞噬成功，被攻击方鲲触发死亡");
+                    target.Alive = false;
+                }
+
+                Update();
+                target.Update();
+
+                var r = new DevourResult
+                {
+                    CurrentWeight = Weight,
+                    Dead = !Alive,
+                    Increment = weightDiff.Item1,
+                    TargetCurrentWeight = target.Weight,
+                    TargetDead = !target.Alive,
+                    TargetDecrement = weightDiff.Item2,
+                };
+                Logger.Info($"吞噬方法结束，{r}");
+                return r;
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, "执行吞噬方法过程中发生异常");
+                // 现有设计无法支持回滚操作
+                return new DevourResult { Success = false };
+            }
+            finally
+            {
+                Monitor.Exit(target.LockObject);
+                Monitor.Exit(LockObject);
+            }
         }
 
         /// <summary>
@@ -162,23 +261,62 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         /// 在词缀中有基础实现
         /// 每个次数可增加5%~10%的体重
         /// </summary>
-        public void Feed(int count)
+        public FeedResult Feed(int count)
         {
-            double diff = PetAttributeA.Feed(count);
-            diff = PetAttributeB.Feed(count, diff);
+            try
+            {
+                Monitor.Enter(LockObject);
+                double original = Weight;
+                Logger.Info($"进入喂养方法，ID={Id}，数量={count}");
+                double diff = PetAttributeA.Feed(count);
+                diff = PetAttributeB.Feed(count, diff);
 
-            Weight *= diff;
-            Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
-            Update();
+                Weight *= diff;
+                Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
+                Update();
+                bool reachLimit = Weight == GetLevelWeightLimit(Level);
+                Logger.Info($"喂养方法结束，倍率={diff}，结果={Weight}，原始值={original}，变化值={Weight - original}，达到上限={reachLimit}");
+                return new FeedResult
+                {
+                    CurrentWeight = Weight,
+                    Increment = Weight - original,
+                    WeightLimit = reachLimit
+                };
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, "执行喂养方法过程中发生异常");
+                return new FeedResult { Success = false };
+            }
+            finally
+            {
+                Monitor.Exit(LockObject);
+            }
         }
 
         /// <summary>
         /// 放生
         /// </summary>
-        public void Release()
+        public bool Release()
         {
-            Abandoned = true;
-            Update();
+            try
+            {
+                Monitor.Enter(LockObject);
+                Logger.Info($"进入放生方法，ID={Id}");
+                Abandoned = true;
+                Update();
+                Logger.Info($"退出放生方法");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, "执行放生方法过程中发生异常");
+                return false;
+            }
+            finally
+            {
+                Monitor.Exit(LockObject);
+            }
         }
 
         /// <summary>
@@ -186,11 +324,28 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         /// 默认完成道具扣除并满足条件
         /// 每复活一次，消耗的资源翻倍
         /// </summary>
-        public void Resurrect()
+        public bool Resurrect()
         {
-            Alive = true;
-            ResurrectCount++;
-            Update();
+            try
+            {
+                Monitor.Enter(LockObject);
+                Logger.Info($"进入复活方法，ID={Id}");
+                Alive = true;
+                ResurrectCount++;
+                Update();
+                Logger.Info($"退出复活方法");
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, "执行复活方法过程中发生异常");
+                return false;
+            }
+            finally
+            {
+                Monitor.Exit(LockObject);
+            }
         }
 
         /// <summary>
@@ -201,52 +356,140 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         /// 小于10kg时死亡
         /// 10%概率失败，失败时死亡
         /// </summary>
-        public void Transmogrify()
+        public TransmogrifyResult Transmogrify()
         {
-            bool success = CommonHelper.Random.NextDouble() > PetAttributeB.GetTransmogrifyFailRate(PetAttributeA.GetTransmogrifyFailRate(0.1));
-            Weight *= PetAttributeB.GetTransmogrifyFailWeightLostRate(PetAttributeA.GetTransmogrifyFailWeightLostRate(0.05));
-            if (Weight < 10)
+            try
             {
-                Alive = false;
-                Update();
-            }
-            if (!success)
-            {
-                Alive = false;
-            }
-            else
-            {
-                PetAttributeA = RandomInsatantiator.GetRandomInstance();
-                PetAttributeB = AttributeB.RandomCreate();
+                Monitor.Enter(LockObject);
+                Logger.Info($"进入幻化方法，ID={Id}");
+                var originalAttributeA = RandomInsatantiator.GetInstanceByID(true, AttributeAID);
+                var originalAttributeB = RandomInsatantiator.GetInstanceByID(false, AttributeBID);
+                var originalWeight = Weight;
 
-                AttributeAID = (int)PetAttributeA.ID;
-                AttributeBID = (int)PetAttributeB.ID;
+                double random = CommonHelper.Random.NextDouble();
+                double failRate = PetAttributeB.GetTransmogrifyFailRate(PetAttributeA.GetTransmogrifyFailRate(0.1));
+                Logger.Info($"随机数={random}，成功临界={1 - failRate}");
+                bool success = random > failRate;
+
+                double loss = PetAttributeB.GetTransmogrifyFailWeightLostRate(PetAttributeA.GetTransmogrifyFailWeightLostRate(0.05));
+                Logger.Info($"体重损失倍率={1 - loss}");
+                Weight *= loss;
+                Logger.Info($"计算后体重为={Weight}，死亡临界点={AppConfig.ValueTransmoirgifyDeadWeightLimit}");
+                if (Weight < AppConfig.ValueTransmoirgifyDeadWeightLimit)
+                {
+                    Logger.Info($"体重小于临界点，直接死亡");
+                    Alive = false;
+                }
+
+                if (!success && Alive)
+                {
+                    Logger.Info($"幻化失败，判定是否死亡");
+                    random = CommonHelper.Random.NextDouble();
+                    Logger.Info($"随机数={random}，临界={AppConfig.ValueTransmoirgifyFailDeadProbablity / 100}");
+
+                    if (random < AppConfig.ValueTransmoirgifyFailDeadProbablity / 100)
+                    {
+                        Logger.Info($"触发死亡");
+                        Alive = false;
+                    }
+                }
+                else
+                {
+                    PetAttributeA = RandomInsatantiator.GetRandomInstance();
+                    PetAttributeB = AttributeB.RandomCreate();
+
+                    AttributeAID = (int)PetAttributeA.ID;
+                    AttributeBID = (int)PetAttributeB.ID;
+                    Logger.Info($"幻化成功，主词缀与小词缀均已变化");
+                }
+                Update();
+                var r = new TransmogrifyResult
+                {
+                    CurrentAttributeA = PetAttributeA,
+                    CurrentAttributeB = PetAttributeB,
+                    CurrentWeight = Weight,
+                    Decrement = originalWeight - Weight,
+                    OriginalAttributeA = originalAttributeA,
+                    OriginalAttributeB = originalAttributeB,
+                    Dead = !Alive
+                };
+                Logger.Info($"幻化方法结束，{r}");
+                return r;
             }
-            Update();
+            catch (Exception e)
+            {
+                Logger.Error(e, "执行幻化方法过程中发生异常");
+                return new TransmogrifyResult() { Success = false };
+            }
+            finally
+            {
+                Monitor.Exit(LockObject);
+            }
         }
 
         /// <summary>
         /// 攻击
         /// 被攻击方损失概率体重，攻击方增加对应体重
+        /// 被攻击方体重小于攻击方体重的10%时死亡
         /// 在词缀中有基础实现
         /// </summary>
-        public void Attack(Kun target)
+        public AttackResult Attack(Kun target)
         {
-            double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
-            var weightDiff = PetAttributeA.Attack(Weight, target.Weight, (1, 1), baseAttackRate);
-            weightDiff = target.PetAttributeA.BeingAttacked(target.Weight, Weight, weightDiff);
+            try
+            {
+                Monitor.Enter(LockObject);
+                Logger.Info($"进入攻击方法，ID={Id}，目标ID={target.Id}");
+                double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
+                Logger.Info($"{PetAttributeA.Name}=>{PetAttributeB.Name}，基础伤害倍率={baseAttackRate}");
 
-            weightDiff = target.PetAttributeB.Attack(Weight, target.Weight, weightDiff, baseAttackRate).Multiple(weightDiff);
-            weightDiff = target.PetAttributeB.BeingAttacked(target.Weight, Weight, weightDiff).Multiple(weightDiff);
+                var weightDiff = PetAttributeA.Attack(Weight, target.Weight, (1, 1), baseAttackRate);
+                Logger.Info($"攻击主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                weightDiff = target.PetAttributeA.BeingAttacked(target.Weight, Weight, weightDiff);
+                Logger.Info($"攻击小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
-            Weight *= weightDiff.Item1;
-            target.Weight *= weightDiff.Item2;
+                weightDiff = target.PetAttributeB.Attack(Weight, target.Weight, weightDiff, baseAttackRate).Multiple(weightDiff);
+                Logger.Info($"攻击主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                weightDiff = target.PetAttributeB.BeingAttacked(target.Weight, Weight, weightDiff).Multiple(weightDiff);
+                Logger.Info($"攻击小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
-            Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
-            target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
+                Weight *= weightDiff.Item1;
+                target.Weight *= weightDiff.Item2;
+                Logger.Info($"攻击方变化后体重={Weight}，被攻击方变化后体重={target.Weight}");
 
-            Update();
-            target.Update();
+                Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
+                target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
+                Logger.Info($"体重限制管理，攻击方体重={Weight}，被攻击方体重={target.Weight}");
+
+                if (target.Weight < Weight * 0.1)
+                {
+                    target.Alive = false;
+                    Logger.Info($"攻击方变化后小于攻击方体重的10%，触发死亡");
+                }
+
+                Update();
+                target.Update();
+
+                var r = new AttackResult
+                {
+                    CurrentWeight = Weight,
+                    Dead = !Alive,
+                    Increment = weightDiff.Item1,
+                    TargetCurrentWeight = target.Weight,
+                    TargetDead = !target.Alive,
+                    TargetDecrement = weightDiff.Item2,
+                };
+                Logger.Info($"攻击方法结束，{r}");
+                return r;
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, "执行攻击方法过程中发生异常");
+                return new AttackResult() { Success = false };
+            }
+            finally
+            {
+                Monitor.Exit(LockObject);
+            }            
         }
 
         private double GetBaseAttackRate(IPetAttribute source, IPetAttribute target)
