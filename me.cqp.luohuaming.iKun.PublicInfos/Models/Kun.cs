@@ -1,5 +1,4 @@
-﻿using me.cqp.luohuaming.iKun.PublicInfos.Items;
-using me.cqp.luohuaming.iKun.PublicInfos.Models.Results;
+﻿using me.cqp.luohuaming.iKun.PublicInfos.Models.Results;
 using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute;
 using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA;
 using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB;
@@ -9,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 {
@@ -70,6 +68,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 Monitor.Enter(LockObject);
                 Logger.Info($"进入强化方法，ID={Id}，数量={count}");
+                if (!Alive || Abandoned)
+                {
+                    Logger.Error("目标鲲已死亡或已被抛弃");
+                    return new UpgradeResult { Success = false };
+                }
                 double original = Weight;
                 double diff = PetAttributeA.Upgrade(count);
                 diff = PetAttributeB.Upgrade(count, diff);
@@ -110,6 +113,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 Monitor.Enter(LockObject);
                 Logger.Info($"进入渡劫方法，ID={Id}");
+                if (!Alive || Abandoned)
+                {
+                    Logger.Error("目标鲲已死亡或已被抛弃");
+                    return new AscendResult { Success = false };
+                }
                 double original = Weight;
                 double success = Level switch
                 {
@@ -186,6 +194,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Monitor.Enter(LockObject);
                 Monitor.Enter(target.LockObject);
                 Logger.Info($"进入吞噬方法，ID={Id}，目标ID={target.Id}");
+                if (!Alive || Abandoned || !target.Alive || target.Abandoned)
+                {
+                    Logger.Error("目标鲲已死亡或已被抛弃");
+                    return new DevourResult { Success = false };
+                }
 
                 double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
                 Logger.Info($"{PetAttributeA.Name}=>{PetAttributeB.Name}，基础伤害倍率={baseAttackRate}");
@@ -268,6 +281,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Monitor.Enter(LockObject);
                 double original = Weight;
                 Logger.Info($"进入喂养方法，ID={Id}，数量={count}");
+                if (!Alive || Abandoned)
+                {
+                    Logger.Error("目标鲲已死亡或已被抛弃");
+                    return new FeedResult { Success = false };
+                }
                 double diff = PetAttributeA.Feed(count);
                 diff = PetAttributeB.Feed(count, diff);
 
@@ -303,6 +321,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 Monitor.Enter(LockObject);
                 Logger.Info($"进入放生方法，ID={Id}");
+                if (!Alive )
+                {
+                    Logger.Error("目标鲲已死亡");
+                    return false;
+                }
                 Abandoned = true;
                 Update();
                 Logger.Info($"退出放生方法");
@@ -330,6 +353,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 Monitor.Enter(LockObject);
                 Logger.Info($"进入复活方法，ID={Id}");
+                if (Abandoned)
+                {
+                    Logger.Error("目标鲲已被抛弃");
+                    return false;
+                }
                 Alive = true;
                 ResurrectCount++;
                 Update();
@@ -362,6 +390,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 Monitor.Enter(LockObject);
                 Logger.Info($"进入幻化方法，ID={Id}");
+                if (!Alive || Abandoned)
+                {
+                    Logger.Error("目标鲲已死亡或已被抛弃");
+                    return new TransmogrifyResult { Success = false };
+                }
                 var originalAttributeA = RandomInsatantiator.GetInstanceByID(true, AttributeAID);
                 var originalAttributeB = RandomInsatantiator.GetInstanceByID(false, AttributeBID);
                 var originalWeight = Weight;
@@ -439,6 +472,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 Monitor.Enter(LockObject);
                 Logger.Info($"进入攻击方法，ID={Id}，目标ID={target.Id}");
+                if (!Alive || Abandoned || !target.Alive || !Abandoned)
+                {
+                    Logger.Error("目标鲲已死亡或已被抛弃");
+                    return new AttackResult { Success = false };
+                }
                 double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
                 Logger.Info($"{PetAttributeA.Name}=>{PetAttributeB.Name}，基础伤害倍率={baseAttackRate}");
 
