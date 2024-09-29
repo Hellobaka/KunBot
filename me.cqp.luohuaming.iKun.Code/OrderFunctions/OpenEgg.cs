@@ -37,15 +37,24 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoPlayer);
                 return result;
             }
-            int consume = count;
-            if (!InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.KunEgg, consume, out int currentCount))
+            int currentCoin = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.Coin);
+            int currentEgg = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.KunEgg);
+            if (currentCoin < count * 10)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.KunEgg().Name, consume, currentCount));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.Coin().Name, count * 10, currentCoin));
                 return result;
             }
-            player.GiveItem([Items.KunEgg(consume * AppConfig.ValueKunEggToCoinRate)]);
 
-            sendText.MsgToSend.Add(string.Format(AppConfig.ReplyOpenKunEgg, consume, consume * AppConfig.ValueKunEggToCoinRate));
+            if (currentEgg < count)
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.KunEgg().Name, count, currentEgg));
+                return result;
+            }
+            InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.Coin, count * 10, out currentCoin);
+            InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.KunEgg, count, out currentEgg);
+            player.GiveItem([Items.BlindBox(count * AppConfig.ValueKunEggToBlindBoxRate)]);
+
+            sendText.MsgToSend.Add(string.Format(AppConfig.ReplyOpenKunEgg, count, count * AppConfig.ValueKunEggToBlindBoxRate));
             return result;
         }
 
