@@ -15,51 +15,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
     /// </summary>
     public abstract class IPetAttribute
     {
+        public string[] Description { get; set; }
+
         public Enums.Attribute ID { get; set; }
 
         public string Name { get; set; }
 
-        public string[] Description { get; set; }
-
         private Logger Logger { get; set; } = new Logger("基础词缀");
-
-        /// <summary>
-        /// 默认完成了道具扣除
-        /// 强化目标是体重的50%
-        /// 每个次数提供10%的概率
-        /// 超出100%的部分额外倍率提升
-        /// 强化失败损失体重的20%-50%
-        /// 仅完成数值计算，不进行数值更改
-        /// </summary>
-        /// <param name="diff">最终值变化附加数值(%)(乘算)</param>
-        /// <returns>体重变化(0.x)</returns>
-        public virtual double Upgrade(int count, double diff = 1)
-        {
-            Logger.Info($"进入强化词缀计算方法，数量={count}，Diff={diff}");
-            int successRandom = CommonHelper.Random.Next(0, 100);
-            Logger.Info($"成功判定随机数：{successRandom}，临界：{count * 10}");
-            if (successRandom >= count * 10)
-            {
-                int rd = CommonHelper.Random.Next(50, 80);
-                Logger.Info($"判定失败，结果随机数：{rd}");
-                diff = rd / 100.0 * diff;
-                Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
-                return diff;
-            }
-            Logger.Info($"判定成功");
-            if (count <= 10)
-            {
-                Logger.Info($"基础倍率");
-
-                diff = 1.5 * diff;
-                Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
-                return diff;
-            }
-            Logger.Info($"额外倍率");
-            diff = count / 10.0 * 1.5 * diff;
-            Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
-            return diff;
-        }
 
         /// <summary>
         /// 默认完成了道具扣除
@@ -76,6 +38,49 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             diff = (random <= success ? 5 : 0.5) * diff;
             Logger.Info($"退出渡劫词缀计算方法，倍率={diff}");
             return diff;
+        }
+
+        /// <summary>
+        /// 被攻击方损失概率体重，攻击方增加对应体重
+        /// </summary>
+        /// <param name="source">攻击方体重</param>
+        /// <param name="target">目标方体重</param>
+        /// <param name="diff">攻击附加变化(%)(乘算)</param>
+        /// <returns>攻击方体重变化(0.x)，目标方体重变化(0.x)</returns>
+        public virtual (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
+        {
+            Logger.Info($"进入攻击词缀计算方法，攻击方体重={source}，目标方体重={target}，Diff={diff}，基础倍率={baseAttack.Item1}，{baseAttack.Item2}");
+            Logger.Info($"攻击体重损失下限={AppConfig.ValueAttackWeightMinimumDecrement}，上限={AppConfig.ValueAttackWeightMaximumDecrement}");
+            double random = CommonHelper.Random.NextDouble(AppConfig.ValueAttackWeightMinimumDecrement / 100.0, AppConfig.ValueAttackWeightMaximumDecrement / 100.0);
+            double decrement = random * diff;
+            double value = source * decrement;
+            double increment = value / target;
+            Logger.Info($"倍率随机数={random}，被攻击方损失倍率={decrement}，攻击方增量={increment}");
+            var r = (baseAttack.Item1 + increment, baseAttack.Item2 - decrement);
+            Logger.Info($"退出攻击词缀计算方法，最终倍率={r.Item1}，{r.Item2}");
+            return r;
+        }
+
+        /// <summary>
+        /// 被攻击时伤害倍率变化
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <param name="diff"></param>
+        /// <returns>攻击方体重变化(0.x)，目标方体重变化(0.x)</returns>
+        public virtual (double, double) BeingAttacked(double source, double target, (double, double) baseAttack)
+        {
+            Logger.Info($"进入被攻击词缀计算方法，攻击方体重={source}，目标方体重={target}，原始倍率={baseAttack.Item1}, {baseAttack.Item2}");
+            Logger.Info($"无处理，返回原始倍率");
+
+            return baseAttack;
+        }
+
+        public virtual (double, double) BeingDevoured(double source, double target, (double, double) baseDevour)
+        {
+            Logger.Info($"进入被吞噬词缀计算方法，攻击方体重={source}，目标方体重={target}，原始倍率={baseDevour.Item1}, {baseDevour.Item2}");
+            Logger.Info($"无处理，返回原始倍率");
+            return baseDevour;
         }
 
         /// <summary>
@@ -129,13 +134,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             }
         }
 
-        public virtual (double, double) BeingDevoured(double source, double target, (double, double) baseDevour)
-        {
-            Logger.Info($"进入被吞噬词缀计算方法，攻击方体重={source}，目标方体重={target}，原始倍率={baseDevour.Item1}, {baseDevour.Item2}");
-            Logger.Info($"无处理，返回原始倍率");
-            return baseDevour;
-        }
-
         /// <summary>
         /// 默认完成了道具扣除
         /// 每个次数可增加5%~10%的体重(加算)
@@ -158,40 +156,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             return increment;
         }
 
-        /// <summary>
-        /// 被攻击方损失概率体重，攻击方增加对应体重
-        /// </summary>
-        /// <param name="source">攻击方体重</param>
-        /// <param name="target">目标方体重</param>
-        /// <param name="diff">攻击附加变化(%)(乘算)</param>
-        /// <returns>攻击方体重变化(0.x)，目标方体重变化(0.x)</returns>
-        public virtual (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
+        public virtual double GetAscendSuccessRate(double value)
         {
-            Logger.Info($"进入攻击词缀计算方法，攻击方体重={source}，目标方体重={target}，Diff={diff}，基础倍率={baseAttack.Item1}，{baseAttack.Item2}");
-            Logger.Info($"攻击体重损失下限={AppConfig.ValueAttackWeightMinimumDecrement}，上限={AppConfig.ValueAttackWeightMaximumDecrement}");
-            double random = CommonHelper.Random.NextDouble(AppConfig.ValueAttackWeightMinimumDecrement / 100.0, AppConfig.ValueAttackWeightMaximumDecrement / 100.0);
-            double decrement = random * diff;
-            double value = source * decrement;
-            double increment = value / target;
-            Logger.Info($"倍率随机数={random}，被攻击方损失倍率={decrement}，攻击方增量={increment}");
-            var r = (baseAttack.Item1 + increment, baseAttack.Item2 - decrement);
-            Logger.Info($"退出攻击词缀计算方法，最终倍率={r.Item1}，{r.Item2}");
-            return r;
-        }
-
-        /// <summary>
-        /// 被攻击时伤害倍率变化
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="target"></param>
-        /// <param name="diff"></param>
-        /// <returns>攻击方体重变化(0.x)，目标方体重变化(0.x)</returns>
-        public virtual (double, double) BeingAttacked(double source, double target, (double, double) baseAttack)
-        {
-            Logger.Info($"进入被攻击词缀计算方法，攻击方体重={source}，目标方体重={target}，原始倍率={baseAttack.Item1}, {baseAttack.Item2}");
-            Logger.Info($"无处理，返回原始倍率");
-
-            return baseAttack;
+            Logger.Info("进入渡劫成功率计算方法");
+            Logger.Info($"退出渡劫成功率计算方法，成功率={value}");
+            return value;
         }
 
         public virtual double GetTransmogrifyFailRate(double fail)
@@ -210,11 +179,42 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             return lost;
         }
 
-        public virtual double GetAscendSuccessRate(double value)
+        /// <summary>
+        /// 默认完成了道具扣除
+        /// 强化目标是体重的50%
+        /// 每个次数提供10%的概率
+        /// 超出100%的部分额外倍率提升
+        /// 强化失败损失体重的20%-50%
+        /// 仅完成数值计算，不进行数值更改
+        /// </summary>
+        /// <param name="diff">最终值变化附加数值(%)(乘算)</param>
+        /// <returns>体重变化(0.x)</returns>
+        public virtual double Upgrade(int count, double diff = 1)
         {
-            Logger.Info("进入渡劫成功率计算方法");
-            Logger.Info($"退出渡劫成功率计算方法，成功率={value}");
-            return value;
+            Logger.Info($"进入强化词缀计算方法，数量={count}，Diff={diff}");
+            int successRandom = CommonHelper.Random.Next(0, 100);
+            Logger.Info($"成功判定随机数：{successRandom}，临界：{count * 10}");
+            if (successRandom >= count * 10)
+            {
+                int rd = CommonHelper.Random.Next(50, 80);
+                Logger.Info($"判定失败，结果随机数：{rd}");
+                diff = rd / 100.0 * diff;
+                Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
+                return diff;
+            }
+            Logger.Info($"判定成功");
+            if (count <= 10)
+            {
+                Logger.Info($"基础倍率");
+
+                diff = 1.5 * diff;
+                Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
+                return diff;
+            }
+            Logger.Info($"额外倍率");
+            diff = count / 10.0 * 1.5 * diff;
+            Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
+            return diff;
         }
     }
 
@@ -225,23 +225,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
         public void AddImplementation<T>(double probability) where T : IPetAttribute
         {
             Implementations.Add(typeof(T), probability);
-        }
-
-        public IPetAttribute GetRandomInstance()
-        {
-            double totalProbability = Implementations.Values.Sum();
-            double randomValue = CommonHelper.Random.NextDouble() * totalProbability;
-
-            double cumulativeProbability = 0.0;
-            for (int i = 0; i < Implementations.Count; i++)
-            {
-                cumulativeProbability += Implementations.Values.ElementAt(i);
-                if (randomValue <= cumulativeProbability)
-                {
-                    return (IPetAttribute)Activator.CreateInstance(Implementations.Keys.ElementAt(i));
-                }
-            }
-            throw new InvalidOperationException("No implementation selected. This should never happen.");
         }
 
         public IPetAttribute GetInstanceByID(bool attrbuteId, int id)
@@ -265,6 +248,23 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             {
                 return new AttributeB.AttributeB(id);
             }
+        }
+
+        public IPetAttribute GetRandomInstance()
+        {
+            double totalProbability = Implementations.Values.Sum();
+            double randomValue = CommonHelper.Random.NextDouble() * totalProbability;
+
+            double cumulativeProbability = 0.0;
+            for (int i = 0; i < Implementations.Count; i++)
+            {
+                cumulativeProbability += Implementations.Values.ElementAt(i);
+                if (randomValue <= cumulativeProbability)
+                {
+                    return (IPetAttribute)Activator.CreateInstance(Implementations.Keys.ElementAt(i));
+                }
+            }
+            throw new InvalidOperationException("No implementation selected. This should never happen.");
         }
     }
 }
