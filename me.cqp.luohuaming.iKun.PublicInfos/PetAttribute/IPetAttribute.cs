@@ -53,9 +53,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             Logger.Info($"攻击体重损失下限={AppConfig.ValueAttackWeightMinimumDecrement}，上限={AppConfig.ValueAttackWeightMaximumDecrement}");
             double random = CommonHelper.Random.NextDouble(AppConfig.ValueAttackWeightMinimumDecrement / 100.0, AppConfig.ValueAttackWeightMaximumDecrement / 100.0);
             double decrement = random * diff;
-            double value = source * decrement;
-            double increment = value / target;
-            Logger.Info($"倍率随机数={random}，被攻击方损失倍率={decrement}，攻击方增量={increment}");
+            double value = target * decrement;
+            double increment = value / source;
+            Logger.Info($"倍率随机数={random}，被攻击方损失倍率={decrement}，攻击方增加倍率={increment}");
             var r = (baseAttack.Item1 + increment, baseAttack.Item2 - decrement);
             Logger.Info($"退出攻击词缀计算方法，最终倍率={r.Item1}，{r.Item2}");
             return r;
@@ -122,14 +122,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             {
                 double loss = CommonHelper.Random.NextDouble(0.5, 1) * diff;
                 double increment = target * loss;
-                Logger.Info($"退出吞噬词缀计算方法，攻击方增加倍率={increment}，被攻击方失去倍率={loss}");
+                Logger.Info($"退出吞噬词缀计算方法，倍率={loss}，攻击方增加体重={increment}");
                 return (increment, -1 * increment);
             }
             else
             {
                 double loss = CommonHelper.Random.NextDouble(0.5, 0.7) * diff;
                 double decrement = source * loss;
-                Logger.Info($"退出吞噬词缀计算方法，攻击方失去倍率={decrement}，被攻击方增加倍率={loss}");
+                Logger.Info($"退出吞噬词缀计算方法，倍率={loss}，攻击方失去体重={decrement}，被攻击方增加体重={decrement}");
                 return (-1 * decrement, decrement);
             }
         }
