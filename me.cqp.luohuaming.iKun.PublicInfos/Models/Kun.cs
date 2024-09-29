@@ -100,6 +100,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     {
                         Logger.Info($"判定成功，鲲触发死亡");
                         Alive = false;
+                        DeadAt = DateTime.Now;
                     }
                     else
                     {
@@ -173,6 +174,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 if (target.Weight < Weight * 0.1)
                 {
                     target.Alive = false;
+                    target.DeadAt = DateTime.Now;
                     Logger.Info($"攻击方变化后小于攻击方体重的10%，触发死亡");
                 }
                 
@@ -186,7 +188,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     Increment = Weight - originalWeight,
                     TargetCurrentWeight = target.Weight,
                     TargetDead = !target.Alive,
-                    TargetDecrement = target.Weight - originalTargetWeight,
+                    TargetDecrement = originalTargetWeight - target.Weight,
                     WeightLimit = Weight == GetLevelWeightLimit(Level),
                 };
                 Logger.Info($"攻击方法结束，{r}");
@@ -235,7 +237,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
                 weightDiff = target.PetAttributeB.Devour(Weight, target.Weight).Multiple(weightDiff);
                 Logger.Info($"吞噬小词缀计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
-                weightDiff = target.PetAttributeB.BeingDevoured(target.Weight, Weight, weightDiff).Multiple(weightDiff);
+                weightDiff = target.PetAttributeB.BeingDevoured(target.Weight, Weight, weightDiff);
                 Logger.Info($"被吞噬小词缀计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
 
                 Weight += weightDiff.Item1;
@@ -254,6 +256,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     {
                         Logger.Info($"判定成功，鲲触发死亡");
                         Alive = false;
+                        DeadAt = DateTime.Now;
                     }
                     else
                     {
@@ -264,6 +267,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     Logger.Info($"由于吞噬成功，被攻击方鲲触发死亡");
                     target.Alive = false;
+                    target.DeadAt = DateTime.Now;
                 }
 
                 Update();
@@ -456,6 +460,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     Logger.Info($"体重小于临界点，直接死亡");
                     Alive = false;
+                    DeadAt = DateTime.Now;
                 }
 
                 if (!success && Alive)
@@ -468,6 +473,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     {
                         Logger.Info($"触发死亡");
                         Alive = false;
+                        DeadAt = DateTime.Now;
                     }
                 }
                 else
@@ -691,6 +697,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Weight = CommonHelper.Random.Next(AppConfig.ValueHatchWeightMin, AppConfig.ValueHatchWeightMax),
                 Abandoned = false,
                 Alive = true,
+                CanResurrect = true,
             };
             kun.Level = (int)Math.Log10(kun.Weight) + 1;
             return kun;
