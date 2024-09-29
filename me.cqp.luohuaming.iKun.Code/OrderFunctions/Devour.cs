@@ -37,7 +37,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 if (string.IsNullOrEmpty(raw))
                 {
                     // 无有效指令
-                    sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, $"，示例：{GetOrderStr()} [QQ|At|昵称|卡片]"));
+                    sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, $"或无法找到目标，示例：{GetOrderStr()} [QQ|At|昵称|卡片]"));
                     return result;
                 }
                 if (!long.TryParse(raw, out target))
@@ -57,6 +57,12 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, $"，示例：{GetOrderStr()} [QQ|At|昵称|卡片]"));
                 return result;
             }
+            if (target == e.FromQQ)
+            {
+                sendText.MsgToSend.Add("不能自己攻击自己");
+                return result;
+            }
+
             var player = Player.GetPlayer(e.FromQQ);
             if (player == null)
             {
@@ -96,6 +102,8 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add("吞噬方法过程发生异常，查看日志获取更多信息");
                 return result;
             }
+            player.DevourAt = DateTime.Now;
+            player.Update();
             string playerInfo = AppConfig.EnableAt ? $"[CQ:at,qq={target}]" : e.FromGroup.GetGroupMemberInfo(target).Card;
             if (r.Dead)
             {
@@ -104,7 +112,13 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             else if (r.Increment > 1)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourSuccess, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
+                string send = string.Format(AppConfig.ReplyDevourSuccess, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber());
+                if (r.WeightLimit)
+                {
+                    send += $"\n{AppConfig.ReplyWeightLimit}";
+                }
+                sendText.MsgToSend.Add(send);
+
                 return result;
             }
             else
