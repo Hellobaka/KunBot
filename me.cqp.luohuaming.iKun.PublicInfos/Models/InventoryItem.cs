@@ -28,7 +28,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             }
             if (item.Stackable)
             {
-                return db.Queryable<InventoryItem>().First(x => x.PlayerID == player.QQ && x.ItemID == (int)itemID && !x.Deleted).Count;
+                return db.Queryable<InventoryItem>().First(x => x.PlayerID == player.QQ && x.ItemID == (int)itemID && !x.Deleted)?.Count ?? 0;
             }
             else
             {
