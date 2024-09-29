@@ -141,23 +141,26 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 Monitor.Enter(LockObject);
                 Logger.Info($"进入攻击方法，ID={Id}，目标ID={target.Id}");
-                if (!Alive || Abandoned || !target.Alive || !Abandoned)
+                if (!Alive || Abandoned || !target.Alive || Abandoned)
                 {
                     Logger.Error("目标鲲已死亡或已被抛弃");
                     return new AttackResult { Success = false };
                 }
+                double originalWeight = Weight;
+                double originalTargetWeight = target.Weight;
+
                 double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
-                Logger.Info($"{PetAttributeA.Name}=>{PetAttributeB.Name}，基础伤害倍率={baseAttackRate}");
+                Logger.Info($"{PetAttributeA.Name}=>{target.PetAttributeA.Name}，基础伤害倍率={baseAttackRate}");
 
                 var weightDiff = PetAttributeA.Attack(Weight, target.Weight, (1, 1), baseAttackRate);
                 Logger.Info($"攻击主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
-                weightDiff = target.PetAttributeA.BeingAttacked(target.Weight, Weight, weightDiff);
-                Logger.Info($"攻击小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                weightDiff = target.PetAttributeA.BeingAttacked(Weight, target.Weight, weightDiff);
+                Logger.Info($"被攻击方主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
-                weightDiff = target.PetAttributeB.Attack(Weight, target.Weight, weightDiff, baseAttackRate).Multiple(weightDiff);
-                Logger.Info($"攻击主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
-                weightDiff = target.PetAttributeB.BeingAttacked(target.Weight, Weight, weightDiff).Multiple(weightDiff);
-                Logger.Info($"攻击小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                weightDiff = target.PetAttributeB.Attack(Weight, target.Weight, weightDiff, baseAttackRate);
+                Logger.Info($"攻击方小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                weightDiff = target.PetAttributeB.BeingAttacked(Weight, target.Weight, weightDiff);
+                Logger.Info($"被攻击方小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
                 Weight *= weightDiff.Item1;
                 target.Weight *= weightDiff.Item2;
@@ -172,7 +175,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     target.Alive = false;
                     Logger.Info($"攻击方变化后小于攻击方体重的10%，触发死亡");
                 }
-
+                
                 Update();
                 target.Update();
 
@@ -180,10 +183,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     CurrentWeight = Weight,
                     Dead = !Alive,
-                    Increment = weightDiff.Item1,
+                    Increment = Weight - originalWeight,
                     TargetCurrentWeight = target.Weight,
                     TargetDead = !target.Alive,
-                    TargetDecrement = weightDiff.Item2,
+                    TargetDecrement = target.Weight - originalTargetWeight,
+                    WeightLimit = Weight == GetLevelWeightLimit(Level),
                 };
                 Logger.Info($"攻击方法结束，{r}");
                 return r;
@@ -218,6 +222,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     Logger.Error("目标鲲已死亡或已被抛弃");
                     return new DevourResult { Success = false };
                 }
+                double originalWeight = Weight;
+                double originalTargetWeight = target.Weight;
 
                 double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
                 Logger.Info($"{PetAttributeA.Name}=>{PetAttributeB.Name}，基础伤害倍率={baseAttackRate}");
@@ -228,9 +234,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Logger.Info($"被吞噬主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
                 weightDiff = target.PetAttributeB.Devour(Weight, target.Weight).Multiple(weightDiff);
-                Logger.Info($"吞噬小词缀计算，变化值={weightDiff.Item1} ， {weightDiff.Item2}");
+                Logger.Info($"吞噬小词缀计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
                 weightDiff = target.PetAttributeB.BeingDevoured(target.Weight, Weight, weightDiff).Multiple(weightDiff);
-                Logger.Info($"被吞噬小词缀计算，变化值={weightDiff.Item1} ， {weightDiff.Item2}");
+                Logger.Info($"被吞噬小词缀计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
 
                 Weight += weightDiff.Item1;
                 target.Weight += weightDiff.Item2;
@@ -267,10 +273,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     CurrentWeight = Weight,
                     Dead = !Alive,
-                    Increment = weightDiff.Item1,
+                    Increment = Weight - originalWeight,
                     TargetCurrentWeight = target.Weight,
                     TargetDead = !target.Alive,
-                    TargetDecrement = weightDiff.Item2,
+                    TargetDecrement = target.Weight - originalTargetWeight,
+                    WeightLimit = Weight == GetLevelWeightLimit(Level)
                 };
                 Logger.Info($"吞噬方法结束，{r}");
                 return r;
@@ -308,7 +315,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 double diff = PetAttributeA.Feed(count);
                 diff = PetAttributeB.Feed(count, diff);
 
-                Weight *= diff;
+                Weight *= (1 + diff);
                 Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
                 Update();
                 bool reachLimit = Weight == GetLevelWeightLimit(Level);
@@ -610,7 +617,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 baseRate = 2;
             }
-
+            if(source.ID != Enums.Attribute.None && target.ID == Enums.Attribute.None)
+            {
+                baseRate = 1.3;
+            }
             return baseRate;
         }
 
@@ -628,7 +638,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public static List<Kun> GetDeadKun(Player player)
         {
             var db = SQLHelper.GetInstance();
-            return db.Queryable<Kun>().Where(x => x.CanResurrect && !x.Alive && !x.Abandoned && x.PlayerID == player.QQ && (DateTime.Now - x.DeadAt) < TimeSpan.FromHours(81))
+            return db.Queryable<Kun>().Where(x => x.CanResurrect && !x.Alive && !x.Abandoned && x.PlayerID == player.QQ)
+                .ToList()
+                .Where(x => (DateTime.Now - x.DeadAt) < TimeSpan.FromHours(AppConfig.ValueMaxResurrectHour))
                 .ToList();
         }
 
