@@ -150,11 +150,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyUpgradeSuccess { get; set; } = "";
 
+        public static string ReplyUpgradeFail { get; set; } = "";
+
         public static string ReplyResurrectHourLimit { get; set; } = "";
 
         public static string ReplyResurrectSuccess { get; set; } = "";
 
         public static string ReplyResurrectFail { get; set; } = "";
+
+        public static string ReplyWeightLimit { get; set; } = "";
 
         public static double ProbablityNone { get; set; }
 
@@ -196,6 +200,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueTranmogifyPillConsume { get; set; }
 
+        public static int ValueUpgradeCoinConsume { get; set; }
+
+        public static int ValueUpgradePillConsume { get; set; }
+
         public static int ValueFeedWeightMinimumIncrement { get; set; }
 
         public static int ValueFeedWeightMaximumIncrement { get; set; }
@@ -224,7 +232,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static double ValueDevourCD { get; set; } = 30;
 
-        public static int ValueKunEggToCoinRate { get; set; } = 10;
+        public static int ValueKunEggToBlindBoxRate { get; set; } = 1;
 
         public static int ValueMaxResurrectHour { get; set; } = 81;
 
@@ -300,9 +308,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyDevourFail = ConfigHelper.GetConfig("ReplyDevourFail", "{0} 企图吃掉 {1}的{2}，但是失败了！\n攻击方体重减少 {3} kg，现 {4} kg\n被攻击方体重增加 {5} kg，现 {6} kg");
             ReplyDevourFailAndDead = ConfigHelper.GetConfig("ReplyDevourFailAndDead", "{0} 企图吃掉 {1}的{2}，但是失败了！反倒被对方吃掉\n被攻击方体重增加 {3} kg，现 {4} kg");
             ReplyFeed = ConfigHelper.GetConfig("ReplyFeed", "你的「{0}」体重增加了 {1} 千克\n现体重为 {2} 千克");
-            ReplyBlindBoxOpen = ConfigHelper.GetConfig("ReplyBlindBoxOpen", "打开 {0} 个盲盒，获得了以下物品：");
+            ReplyBlindBoxOpen = ConfigHelper.GetConfig("ReplyBlindBoxOpen", "打开 {0} 个盲盒，获得了以下物品：\n{1}");
             ReplyBlindBoxGetNothing = ConfigHelper.GetConfig("ReplyBlindBoxGetNothing", "打开 {0} 个盲盒，什么也没获得");
-            ReplyOpenKunEgg = ConfigHelper.GetConfig("ReplyOpenKunEgg", "打开 {0} 个鲲蛋，获得了 {1} 个金币");
+            ReplyOpenKunEgg = ConfigHelper.GetConfig("ReplyOpenKunEgg", "打开 {0} 个鲲蛋，获得了 {1} 个盲盒");
             ReplyReleaseSuccess = ConfigHelper.GetConfig("ReplyReleaseSuccess", "放生成功");
             ReplyReleaseFail = ConfigHelper.GetConfig("ReplyReleaseFail", "放生失败，可能是鲲已死亡或不存在");
             ReplyQueryDeadKun = ConfigHelper.GetConfig("ReplyQueryDeadKun", "还可复活的鲲列表如下：\n");
@@ -311,9 +319,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyTransmogrifyFailAndDead = ConfigHelper.GetConfig("ReplyTransmogrifyFailAndDead", "幻化失败并且魂飞魄散\n剩余 {0} 颗幻化丹 {1} 枚金币");
             ReplyTransmogrifyLevelLimit = ConfigHelper.GetConfig("ReplyTransmogrifyLevelLimit", "不能执行幻化，由于等级限制，当前等级 {0}，最低幻化等级：{1}");
             ReplyUpgradeSuccess = ConfigHelper.GetConfig("ReplyUpgradeSuccess", "强化完成，体重增加了 {0} kg，当前体重 {1} kg\n剩余 {2} 颗强化丹 {3} 枚金币");
+            ReplyUpgradeFail = ConfigHelper.GetConfig("ReplyUpgradeFail", "强化失败，体重减少了 {0} kg，当前体重 {1} kg\n剩余 {2} 颗强化丹 {3} 枚金币");
             ReplyResurrectHourLimit = ConfigHelper.GetConfig("ReplyResurrectHourLimit", "无法复活，由于鲲死亡已超过 {0} 小时，当前死亡 {1} 小时");
             ReplyResurrectSuccess = ConfigHelper.GetConfig("ReplyResurrectSuccess", "鲲已复活");
             ReplyResurrectFail = ConfigHelper.GetConfig("ReplyResurrectFail", "复活失败，查看日志查询原因");
+            ReplyWeightLimit = ConfigHelper.GetConfig("ReplyWeightLimit", "体重已达上限，需进行渡劫提高体重上限");
 
             ProbablityNone = ConfigHelper.GetConfig("ProbablityNone", 70);
             ProbablityJin = ConfigHelper.GetConfig("ProbablityJin", 5);
@@ -331,9 +341,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueHatchWeightMin = ConfigHelper.GetConfig("ValueHatchWeightMin", 10);
             ValueHatchWeightMax = ConfigHelper.GetConfig("ValueHatchWeightMax", 10000);
             ValueEggValue = ConfigHelper.GetConfig("ValueEggValue", 100);
-            ValueFeedCoinConsume = ConfigHelper.GetConfig("ValueFeedCoinConsume", 100);
+            ValueFeedCoinConsume = ConfigHelper.GetConfig("ValueFeedCoinConsume", 10);
             ValueAscendCoinConsume = ConfigHelper.GetConfig("ValueAscendCoinConsume", 100);
-            ValueFeedKunEggConsume = ConfigHelper.GetConfig("ValueFeedKunEggConsume", 10);
+            ValueFeedKunEggConsume = ConfigHelper.GetConfig("ValueFeedKunEggConsume", 1);
             ValueFeedWeightMinimumIncrement = ConfigHelper.GetConfig("ValueFeedWeightMinimumIncrement", 10);
             ValueFeedWeightMaximumIncrement = ConfigHelper.GetConfig("ValueFeedWeightMaximumIncrement", 40);
             ValueAttackWeightMinimumDecrement = ConfigHelper.GetConfig("ValueAttackWeightMinimumDecrement", 5);
@@ -348,13 +358,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueTransmoirgifyFailDeadProbablity = ConfigHelper.GetConfig("ValueTransmoirgifyFailDeadProbablity", 10);
             ValueAttackCD = ConfigHelper.GetConfig("ValueAttackCD", 30);
             ValueDevourCD = ConfigHelper.GetConfig("ValueDevourCD", 30);
-            ValueKunEggToCoinRate = ConfigHelper.GetConfig("ValueKunEggToCoinRate", 10);
+            ValueKunEggToBlindBoxRate = ConfigHelper.GetConfig("ValueKunEggToCoinRate", 1);
             ValueMaxResurrectHour = ConfigHelper.GetConfig("ValueMaxDeadHour", 81);
             ValuePerTwoHourWeightLoss = ConfigHelper.GetConfig("ValuePerTwoHourWeightLoss", 1);
             ValuePerEighteenHourLevelLoss = ConfigHelper.GetConfig("ValuePerEighteenHourLevelLoss", 1);
             ValueTranmogifyCoinConsume = ConfigHelper.GetConfig("ValueTranmogifyCoinConsume", 100);
             ValueTranmogifyPillConsume = ConfigHelper.GetConfig("ValueTranmogifyPillConsume", 1);
             ValueTransmogrifyLevelLimit = ConfigHelper.GetConfig("ValueTransmogrifyLevelLimit", 5);
+            ValueUpgradeCoinConsume = ConfigHelper.GetConfig("ValueUpgradeCoinConsume", 100);
+            ValueUpgradePillConsume = ConfigHelper.GetConfig("ValueUpgradePillConsume", 1);
             
             BlindBoxContents = ConfigHelper.GetConfig("BlindBoxContents", new List<string>() { "0|97", "4|1", "5|1", "6|1" });
 
