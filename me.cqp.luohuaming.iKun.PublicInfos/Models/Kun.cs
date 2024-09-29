@@ -644,6 +644,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             RandomInsatantiator.AddImplementation<Feng>(AppConfig.ProbablityFeng);
             RandomInsatantiator.AddImplementation<Lei>(AppConfig.ProbablityLei);
             RandomInsatantiator.AddImplementation<Yin>(AppConfig.ProbablityYin);
+            RandomInsatantiator.AddImplementation<Yang>(AppConfig.ProbablityYang);
         }
 
         public static Kun RandomCreate(Player player)

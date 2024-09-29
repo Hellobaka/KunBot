@@ -94,6 +94,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static double ProbablityYin { get; set; }
 
+        public static double ProbablityYang { get; set; }
+
         public static double ProbablityMu { get; set; }
 
         public static int ValueHatchProbablityMin { get; set; }
@@ -174,20 +176,21 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyHatchKun = ConfigHelper.GetConfig("ReplyHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n剩余 {2} 颗鲲蛋");
             ReplyBuyEgg = ConfigHelper.GetConfig("ReplyBuyEgg", "购买成功，消耗金币 {0} 枚，获得 {1} 枚鲲蛋\n-------------------\n剩余金币 {2} 枚，鲲蛋 {3} 枚");
 
-            ProbablityNone = ConfigHelper.GetConfig("ProbablityNone", 1);
-            ProbablityJin = ConfigHelper.GetConfig("ProbablityJin", 1);
-            ProbablityMu = ConfigHelper.GetConfig("ProbablityMu", 1);
-            ProbablityShui = ConfigHelper.GetConfig("ProbablityShui", 1);
-            ProbablityTu = ConfigHelper.GetConfig("ProbablityTu", 1);
-            ProbablityHuo = ConfigHelper.GetConfig("ProbablityHuo", 1);
-            ProbablityFeng = ConfigHelper.GetConfig("ProbablityFeng", 1);
-            ProbablityLei = ConfigHelper.GetConfig("ProbablityLei", 1);
-            ProbablityYin = ConfigHelper.GetConfig("ProbablityYin", 1);
+            ProbablityNone = ConfigHelper.GetConfig("ProbablityNone", 70);
+            ProbablityJin = ConfigHelper.GetConfig("ProbablityJin", 5);
+            ProbablityMu = ConfigHelper.GetConfig("ProbablityMu", 5);
+            ProbablityShui = ConfigHelper.GetConfig("ProbablityShui", 5);
+            ProbablityTu = ConfigHelper.GetConfig("ProbablityTu", 5);
+            ProbablityHuo = ConfigHelper.GetConfig("ProbablityHuo", 5);
+            ProbablityFeng = ConfigHelper.GetConfig("ProbablityFeng", 2);
+            ProbablityLei = ConfigHelper.GetConfig("ProbablityLei", 2);
+            ProbablityYin = ConfigHelper.GetConfig("ProbablityYin", 0.5);
+            ProbablityYang = ConfigHelper.GetConfig("ProbablityYang", 0.5);
 
-            ValueHatchProbablityMin = ConfigHelper.GetConfig("ValueHatchProbablityMin", 1);
-            ValueHatchProbablityMax = ConfigHelper.GetConfig("ValueHatchProbablityMax", 1);
-            ValueHatchWeightMin = ConfigHelper.GetConfig("ValueHatchWeightMin", 1);
-            ValueHatchWeightMax = ConfigHelper.GetConfig("ValueHatchWeightMax", 1);
+            ValueHatchProbablityMin = ConfigHelper.GetConfig("ValueHatchProbablityMin", 10);
+            ValueHatchProbablityMax = ConfigHelper.GetConfig("ValueHatchProbablityMax", 50);
+            ValueHatchWeightMin = ConfigHelper.GetConfig("ValueHatchWeightMin", 10);
+            ValueHatchWeightMax = ConfigHelper.GetConfig("ValueHatchWeightMax", 10000);
             ValueEggValue = ConfigHelper.GetConfig("ValueEggValue", 100);
             ValueFeedCoinConsume = ConfigHelper.GetConfig("ValueFeedCoinConsume", 100);
             ValueFeedKunEggConsume = ConfigHelper.GetConfig("ValueFeedKunEggConsume", 10);
