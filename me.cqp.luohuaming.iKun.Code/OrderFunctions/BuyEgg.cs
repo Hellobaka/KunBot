@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
+using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
     public class BuyEgg : IOrderModel
     {
         public bool ImplementFlag { get; set; } = true;
-        
+
         public string GetOrderStr() => AppConfig.CommandBuyEgg;
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
@@ -32,7 +27,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             var param = e.Message.Text.Replace(GetOrderStr(), "").Trim();
             if (!int.TryParse(param, out int count))
             {
-                sendText.MsgToSend.Add($"无效指令，用法：{GetOrderStr()} 数量");
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, $"，示例：{GetOrderStr()} 数量"));
                 return result;
             }
 
@@ -46,7 +41,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             int eggComsume = count * AppConfig.ValueEggValue;
             if (!InventoryItem.TryRemoveItem(player, Items.Coin().ID, eggComsume, out int currentCount))
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, eggComsume, currentCount));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.KunEgg().Name, eggComsume, currentCount));
                 return result;
             }
             player.GiveItem([

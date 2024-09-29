@@ -35,6 +35,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public double Weight { get; set; }
 
+        public DateTime DeadAt { get; set; }
+
         private static Logger Logger { get; set; } = new Logger("鲲");
 
         [SugarColumn(IsIgnore = true)]
@@ -77,18 +79,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     return new AscendResult { Success = false };
                 }
                 double original = Weight;
-                double success = Level switch
-                {
-                    1 => 0.95,
-                    2 => 0.90,
-                    3 => 0.85,
-                    4 => 0.75,
-                    5 => 0.65,
-                    6 => 0.50,
-                    7 => 0.35,
-                    8 => 0.20,
-                    _ => 0.10,
-                };
+                double success = CalcAscendSuccessRate(Level);
                 Logger.Info($"基础成功率：{success * 100}%");
                 success = PetAttributeB.GetAscendSuccessRate(PetAttributeA.GetAscendSuccessRate(success));
                 Logger.Info($"词缀加成后成功率：{success * 100}%");
@@ -388,6 +379,24 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 }
                 Alive = true;
                 ResurrectCount++;
+                double deadHour = (DateTime.Now - DeadAt).TotalHours;
+                if (deadHour >= AppConfig.ValueMaxResurrectHour)
+                {
+                    Logger.Error($"鲲死亡超过{AppConfig.ValueMaxResurrectHour}小时，无法复活");
+                    return false;
+                }
+                int weightLossCount = (int)(deadHour / 2);
+                int levelLossCount = (int)(deadHour / 18);
+                Logger.Info($"体重缩水次数={weightLossCount}，倍率={AppConfig.ValuePerTwoHourWeightLoss}%");
+                Logger.Info($"等级缩水次数={levelLossCount}，数量={AppConfig.ValuePerEighteenHourLevelLoss}%");
+                for (int i = 0; i < weightLossCount; i++)
+                {
+                    Weight *= AppConfig.ValuePerTwoHourWeightLoss / 100.0;
+                }
+                for (int i = 0; i < levelLossCount; i++)
+                {
+                    Level -= AppConfig.ValuePerEighteenHourLevelLoss;
+                }
                 Update();
                 Logger.Info($"退出复活方法");
 
@@ -605,12 +614,22 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return baseRate;
         }
 
+        private static double CalcAscendSuccessRate(int level)
+        {
+            return level switch
+            {
+                <= 5 => 0.95 - 0.1 * (level - 1),
+                _ => 0.4 * Math.Exp(-0.4 * (level - 6))
+            };
+        }
+
         #endregion 数值实例
 
         public static List<Kun> GetDeadKun(Player player)
         {
             var db = SQLHelper.GetInstance();
-            return db.Queryable<Kun>().Where(x => x.CanResurrect && !x.Alive && !x.Abandoned && x.PlayerID == player.QQ).ToList();
+            return db.Queryable<Kun>().Where(x => x.CanResurrect && !x.Alive && !x.Abandoned && x.PlayerID == player.QQ && (DateTime.Now - x.DeadAt) < TimeSpan.FromHours(81))
+                .ToList();
         }
 
         public static Kun GetKunByID(int id)
@@ -688,13 +707,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public override string ToString()
         {
-            return $"[{PetAttributeA.Name}] {PetAttributeB.Name}鲲 {new string('★', Level)} {Weight:f2} 千克";
+            return $"[{PetAttributeA.Name}] {PetAttributeB.Name}鲲 {new string('★', Level)}";
         }
 
         public string ToStringFull()
         {
             StringBuilder stringBuilder = new();
-            stringBuilder.AppendLine(this.ToString());
+            stringBuilder.AppendLine(this.ToString() + $" {Weight.ToShortNumber()} 千克");
             foreach (var item in PetAttributeA.Description)
             {
                 stringBuilder.AppendLine(item.ToString());

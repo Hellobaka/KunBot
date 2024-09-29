@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.PublicInfos;
+using me.cqp.luohuaming.iKun.PublicInfos.Models;
+using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
     public class ReleaseKun : IOrderModel
     {
         public bool ImplementFlag { get; set; } = true;
-        
+
         public string GetOrderStr() => AppConfig.CommandReleaseKun;
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
@@ -27,9 +23,28 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 SendID = e.FromGroup,
             };
-
-            sendText.MsgToSend.Add("这里输入需要发送的文本");
             result.SendObject.Add(sendText);
+            var player = Player.GetPlayer(e.FromQQ);
+            if (player == null)
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyNoPlayer);
+                return result;
+            }
+            var kun = Kun.GetKunByQQ(player.QQ);
+            if (kun == null)
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyNoKun);
+                return result;
+            }
+            kun.Initialize();
+            if (kun.Release())
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyReleaseSuccess);
+            }
+            else
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyReleaseFail);
+            }
             return result;
         }
 

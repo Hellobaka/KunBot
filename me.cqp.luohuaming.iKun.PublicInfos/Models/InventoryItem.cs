@@ -54,6 +54,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     query.Count -= count;
                     db.Updateable(query).ExecuteCommand();
+                    currentCount = query.Count;
                     return true;
                 }
                 else
@@ -71,6 +72,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     {
                         items[i].Deleted = true;
                         db.Updateable(items[i]).ExecuteCommand();
+                        currentCount = 0;
                     }
                     return true;
                 }

@@ -1,17 +1,15 @@
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
-using System;
-using System.Linq;
 using System.Text;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
-    public class Ranking : IOrderModel
+    public class QueryDeadKuns : IOrderModel
     {
         public bool ImplementFlag { get; set; } = true;
 
-        public string GetOrderStr() => AppConfig.CommandRanking;
+        public string GetOrderStr() => AppConfig.CommandQueryDeadKuns;
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
 
@@ -27,17 +25,20 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 SendID = e.FromGroup,
             };
             result.SendObject.Add(sendText);
-            StringBuilder stringBuilder = new StringBuilder();
-            var records = Record.GetRecordsByGroupID(e.FromGroup);
-            var kuns = Kun.GetKunByRecords(records).OrderByDescending(x => x.Weight).ToList();
-            for (int i = 0; i < Math.Min(AppConfig.ValueRankingCount, kuns.Count); i++)
+            var player = Player.GetPlayer(e.FromQQ);
+            if (player == null)
             {
-                string name = e.FromGroup.GetGroupMemberInfo(e.FromQQ).Card;
-                stringBuilder.AppendLine($"{i + 1}. [{name}] {kuns[i]} {kuns[i].Weight:f2} 千克");
+                sendText.MsgToSend.Add(AppConfig.ReplyNoPlayer);
+                return result;
             }
-            stringBuilder.RemoveNewLine();
+            var list = Kun.GetDeadKun(player);
+            StringBuilder stringBuilder = new();
+            foreach (var item in list)
+            {
+                stringBuilder.AppendLine($"{item.Id}. " + item.ToString());
+            }
+            sendText.MsgToSend.Add(AppConfig.ReplyQueryDeadKun + stringBuilder.ToString());
 
-            sendText.MsgToSend.Add(stringBuilder.ToString());
             return result;
         }
 

@@ -14,6 +14,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public DateTime LoginAt { get; set; }
 
+        public DateTime AttackAt { get; set; }
+
+        public DateTime DevourAt { get; set; }
+
         public static bool Exists(long qq) => SQLHelper.GetInstance().Queryable<Player>().Any(p => p.QQ == qq);
 
         public static Player? Create(long qq)

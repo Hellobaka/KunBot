@@ -2,6 +2,8 @@
 {
     public enum Items
     {
+        Nothing = 0,
+
         Coin = 1,
 
         KunEgg,

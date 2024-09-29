@@ -1,18 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
+using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
+using System.Text;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
     public class Inventory : IOrderModel
     {
         public bool ImplementFlag { get; set; } = true;
-        
+
         public string GetOrderStr() => AppConfig.CommandInventory;
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
@@ -37,7 +33,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             StringBuilder stringBuilder = new();
             var kun = Kun.GetKunByQQ(player.QQ);
-            if(kun == null)
+            if (kun == null)
             {
                 stringBuilder.AppendLine(AppConfig.ReplyNoKun);
             }

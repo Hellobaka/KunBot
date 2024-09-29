@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
+using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
     public class Hatch : IOrderModel
     {
         public bool ImplementFlag { get; set; } = true;
-        
+
         public string GetOrderStr() => AppConfig.CommandHatch;
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
@@ -42,16 +37,16 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyDuplicateHatch);
                 return result;
             }
-            int hatchComsume = 1;
-            if (!InventoryItem.TryRemoveItem(player, Items.KunEgg().ID, hatchComsume, out int currentCount))
+            int hatchConsume = 1;
+            if (!InventoryItem.TryRemoveItem(player, Items.KunEgg().ID, hatchConsume, out int currentCount))
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, hatchComsume, currentCount));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.KunEgg().Name, hatchConsume, currentCount));
                 return result;
             }
             int hatchSuccess = CommonHelper.Random.Next(AppConfig.ValueHatchProbablityMin, AppConfig.ValueHatchProbablityMax);
             if (CommonHelper.Random.Next(100) > hatchSuccess)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchFail, currentCount - hatchComsume));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchFail, currentCount - hatchConsume));
                 return result;
             }
 
@@ -60,7 +55,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             int id = Kun.SaveKun(kun);
 
             Record.AddRecord(new Record { Group = e.FromGroup, QQ = e.FromQQ, KunID = id });
-            sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchKun, kun.ToString(), kun.Weight, currentCount - hatchComsume));
+            sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchKun, kun.ToString(), kun.Weight, currentCount - hatchConsume));
             return result;
         }
 

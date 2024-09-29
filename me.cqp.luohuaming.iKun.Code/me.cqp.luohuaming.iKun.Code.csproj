@@ -70,6 +70,7 @@
     <Compile Include="OrderFunctions\ReleaseKun.cs" />
     <Compile Include="OrderFunctions\Resurrect.cs" />
     <Compile Include="OrderFunctions\Ascend.cs" />
+    <Compile Include="OrderFunctions\QueryDeadKuns.cs" />
     <Compile Include="OrderFunctions\Transmogrify.cs" />
     <Compile Include="OrderFunctions\Upgrade.cs" />
     <Compile Include="OrderFunctions\Feed.cs" />

@@ -16,6 +16,14 @@
 
         public static Items KunEgg(int count = 1) => new PublicInfos.Items.KunEgg(count);
 
+        public static Items TransmogrifyPill(int count = 1) => new PublicInfos.Items.TransmogrifyPill(count);
+
+        public static Items BlindBox(int count = 1) => new PublicInfos.Items.BlindBox(count);
+
+        public static Items ResurrectPill(int count = 1) => new PublicInfos.Items.ResurrectPill(count);
+
+        public static Items UpgradePill(int count = 1) => new PublicInfos.Items.UpgradePill(count);
+
         public static Items GetItemByID(Enums.Items id)
         {
             switch (id)

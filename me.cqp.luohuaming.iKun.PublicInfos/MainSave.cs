@@ -1,4 +1,5 @@
 using me.cqp.luohuaming.iKun.Sdk.Cqp;
+using me.cqp.luohuaming.iKun.Sdk.Cqp.Model;
 using System.Collections.Generic;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos
@@ -17,5 +18,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string AppDirectory { get; set; }
 
         public static string ImageDirectory { get; set; }
+
+        public static Dictionary<long, GroupMemberInfoCollection> GroupMemberInfos { get; set; } = [];
     }
 }

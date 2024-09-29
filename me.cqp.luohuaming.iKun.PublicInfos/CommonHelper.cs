@@ -25,6 +25,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static Random Random { get; set; } = new Random();
 
+        public static string[] Units { get; set; } = ["万", "亿", "兆", "京", "垓"];
+
         public static string ParseLongNumber(int num)
         {
             string numStr = num.ToString();
@@ -92,6 +94,35 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static (double, double) Multiple(this (double, double) item1, (double, double) item2)
         {
             return (item1.Item1 * item2.Item1, item1.Item2 * item2.Item2);
+        }
+
+        public static string ToShortNumber(this double value)
+        {
+            if (!AppConfig.EnableShortNumber)
+            {
+                return value.ToString("f2");
+            }
+            int index = -1;
+            while (value > 10000 && index < Units.Length)
+            {
+                value /= 10000;
+                if (value > 1)
+                {
+                    index++;
+                }
+            }
+            if (index < 0)
+            {
+                return value.ToString("f2");
+            }
+            else if (index < Units.Length)
+            {
+                return value.ToString("f2") + Units[index];
+            }
+            else
+            {
+                return value.ToString("f2") + Units.Last();
+            }
         }
     }
 }

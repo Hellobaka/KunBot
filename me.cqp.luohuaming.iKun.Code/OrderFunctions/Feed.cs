@@ -1,18 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
+using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
+using System.Text;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
     public class Feed : IOrderModel
     {
         public bool ImplementFlag { get; set; } = true;
-        
+
         public string GetOrderStr() => AppConfig.CommandFeed;
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
@@ -50,39 +46,29 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 count = 1;
             }
 
-            if (!InventoryItem.TryRemoveItem(player, Items.Coin().ID, count * AppConfig.ValueFeedCoinConsume, out int currentCoin))
+            int currentCoin = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.Coin);
+            int currentEgg = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.KunEgg);
+            if (currentCoin < count * AppConfig.ValueFeedCoinConsume)
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.Coin().Name, count * AppConfig.ValueFeedCoinConsume, currentCoin));
                 return result;
             }
-            currentCoin -= count * AppConfig.ValueFeedCoinConsume;
-            if (!InventoryItem.TryRemoveItem(player, Items.KunEgg().ID, count * AppConfig.ValueFeedKunEggConsume, out int currentKunEgg))
-            {
-                // 消耗了金币，进行补偿
-                player.GiveItem([
-                    Items.Coin(count * AppConfig.ValueFeedCoinConsume)
-                ]);
 
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.KunEgg().Name, count * AppConfig.ValueFeedKunEggConsume, currentKunEgg));
+            if (currentEgg < count * AppConfig.ValueFeedKunEggConsume)
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.KunEgg().Name, count * AppConfig.ValueFeedKunEggConsume, currentEgg));
                 return result;
             }
-            currentKunEgg -= count * AppConfig.ValueFeedKunEggConsume;
+            InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.Coin, count * AppConfig.ValueFeedCoinConsume, out currentCoin);
+            InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.KunEgg, count * AppConfig.ValueFeedCoinConsume, out currentEgg);
 
-            double currentWeight = kun.Weight;
-            for(int i = 0; i < count; i++)
-            {
-                double increase = CommonHelper.Random.Next(AppConfig.ValueFeedWeightMinimumIncrement, AppConfig.ValueFeedWeightMaximumIncrement) * 1.0;
-                currentWeight *= (1 + increase / 100);
-            }
+            var r = kun.Feed(count);
             StringBuilder stringBuilder = new();
-            stringBuilder.AppendLine($"你的「{kun}」体重增加了 {(currentWeight - kun.Weight):f2} 千克");
-            stringBuilder.AppendLine($"现体重为 {kun.Weight:f2} 千克");
+            stringBuilder.AppendLine(string.Format(AppConfig.ReplyFeed, kun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber()));
             stringBuilder.AppendLine("-------------------");
-            stringBuilder.AppendLine($"剩余 {currentCoin} 枚金币，{currentKunEgg} 枚鲲蛋");
+            stringBuilder.AppendLine($"剩余 {currentCoin} 枚金币，{currentEgg} 枚鲲蛋");
             stringBuilder.RemoveNewLine();
 
-            kun.Weight = currentWeight;
-            kun.Update();
             return result;
         }
 

@@ -1,10 +1,10 @@
+using me.cqp.luohuaming.iKun.PublicInfos;
+using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.Interface;
-using me.cqp.luohuaming.iKun.PublicInfos;
 using System;
 using System.IO;
 using System.Reflection;
-using me.cqp.luohuaming.iKun.PublicInfos.Models;
 
 namespace me.cqp.luohuaming.iKun.Code
 {
@@ -51,7 +51,6 @@ namespace me.cqp.luohuaming.iKun.Code
             AutoPlay.LoadAutoPlays();
 
             e.CQLog.Info("初始化", "初始化完成");
-
         }
 
         private void AutoPlay_AutoPlayFinished(AutoPlay autoPlay)
