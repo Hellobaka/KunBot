@@ -42,7 +42,7 @@
             double random = CommonHelper.Random.NextDouble();
             Logger.Info($"逃脱随机数={random}，临界={0.2}");
 
-            if (CommonHelper.Random.NextDouble() < 0.2)
+            if (random < 0.2)
             {
                 Logger.Info("判定成功");
                 baseAttack = (1, 1);

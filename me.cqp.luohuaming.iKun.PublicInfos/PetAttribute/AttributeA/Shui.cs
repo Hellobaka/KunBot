@@ -62,7 +62,7 @@
             Logger.Info($"进入被攻击词缀计算方法，攻击方体重={source}，目标方体重={target}，原始倍率={baseAttack.Item1}, {baseAttack.Item2}");
             double random = CommonHelper.Random.NextDouble();
             Logger.Info($"逃脱随机数={random}，临界={0.3}");
-            if (CommonHelper.Random.NextDouble() < 0.3)
+            if (random < 0.3)
             {
                 Logger.Info("判定成功");
                 baseAttack = (1, 1);
@@ -77,7 +77,7 @@
             Logger.Info($"进入被吞噬词缀计算方法，攻击方体重={source}，目标方体重={target}，原始倍率={baseDevour.Item1}, {baseDevour.Item2}");
             double random = CommonHelper.Random.NextDouble();
             Logger.Info($"逃脱随机数={random}，临界={0.3}");
-            if (CommonHelper.Random.NextDouble() < 0.3)
+            if (random < 0.3)
             {
                 Logger.Info("判定成功");
                 baseDevour = (1, 1);
