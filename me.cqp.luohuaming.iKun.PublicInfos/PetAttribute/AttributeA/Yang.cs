@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
+﻿namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
 {
     public class Yang : IPetAttribute
     {
@@ -27,7 +25,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
             Logger.Info($"临时提升攻击方体重后，攻击方体重={source * 1.3}");
 
             // 攻击或吞噬 临时提升30% 的体重
-            baseAttack =  base.Attack(source * 1.3, target, baseAttack, diff);
+            baseAttack = base.Attack(source * 1.3, target, baseAttack, diff);
             Logger.Info($"退出攻击词缀计算方法，最终倍率={baseAttack.Item1}，{baseAttack.Item2}");
             return baseAttack;
         }

@@ -1,5 +1,4 @@
-﻿using me.cqp.luohuaming.iKun.PublicInfos.Enums;
-using SqlSugar;
+﻿using SqlSugar;
 using System.Collections.Generic;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.Models

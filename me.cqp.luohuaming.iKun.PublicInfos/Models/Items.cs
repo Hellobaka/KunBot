@@ -1,16 +1,11 @@
-﻿using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute;
-using Newtonsoft.Json;
-using System;
-using System.Reflection;
-
-namespace me.cqp.luohuaming.iKun.PublicInfos.Models
+﻿namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 {
     public class Items
     {
         public Enums.Items ID { get; set; }
-        
+
         public string Name { get; set; }
-        
+
         public string Description { get; set; }
 
         public bool Stackable { get; set; } = true;
@@ -27,16 +22,22 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 case Enums.Items.Coin:
                     return new PublicInfos.Items.Coin();
+
                 case Enums.Items.KunEgg:
                     return new PublicInfos.Items.KunEgg();
+
                 case Enums.Items.BlindBox:
                     return new PublicInfos.Items.BlindBox();
+
                 case Enums.Items.ResurrectPill:
                     return new PublicInfos.Items.ResurrectPill();
+
                 case Enums.Items.TransmogrifyPill:
                     return new PublicInfos.Items.TransmogrifyPill();
+
                 case Enums.Items.UpgradePill:
                     return new PublicInfos.Items.UpgradePill();
+
                 default:
                     break;
             }

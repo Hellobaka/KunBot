@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace me.cqp.luohuaming.iKun.PublicInfos.Items
+﻿namespace me.cqp.luohuaming.iKun.PublicInfos.Items
 {
     public class TransmogrifyPill : Models.Items
     {

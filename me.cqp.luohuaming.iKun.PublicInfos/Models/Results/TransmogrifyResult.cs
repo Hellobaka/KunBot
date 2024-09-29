@@ -1,9 +1,4 @@
 ﻿using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.Models.Results
 {

@@ -17,23 +17,28 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
         public int Id { get; set; }
 
+        public bool Abandoned { get; set; }
+
+        public bool Alive { get; set; }
+
         public int AttributeAID { get; set; }
 
         public int AttributeBID { get; set; }
 
-        public long PlayerID { get; set; }
-
-        public double Weight { get; set; }
-
-        public bool Abandoned { get; set; }
+        public bool CanResurrect { get; set; }
 
         public int Level { get; set; }
 
-        public bool Alive { get; set; }
+        public long PlayerID { get; set; }
 
         public int ResurrectCount { get; set; }
 
-        public bool CanResurrect { get; set; }
+        public double Weight { get; set; }
+
+        private static Logger Logger { get; set; } = new Logger("鲲");
+
+        [SugarColumn(IsIgnore = true)]
+        public object LockObject { get; set; } = new object();
 
         [SugarColumn(IsIgnore = true)]
         public IPetAttribute PetAttributeA { get; set; }
@@ -41,14 +46,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         [SugarColumn(IsIgnore = true)]
         public IPetAttribute PetAttributeB { get; set; }
 
-        [SugarColumn(IsIgnore = true)]
-        public object LockObject { get; set; } = new object();
-
         private static PetAttributeRandomInsatantiator RandomInsatantiator { get; set; } = null;
 
-        private static Logger Logger { get; set; } = new Logger("鲲");
-
         #region 数值实例
+
         // 数值方法应当进行数值计算，并将实例属性更新，同步进数据库
         // 反抛给调用方数值变化，由调用方进行文本拼接
         // 为每种方法定义独立的结果类，包含执行结果、以及所有需要的变化数值
@@ -56,50 +57,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         // 进行计算前需要获取对象锁，当涉及两个对象的处理时，需要获取两个对象的锁
         // 部分方法需要检查Alive与Abandoned属性是否有效
 
-        /// <summary>
-        /// 强化
-        /// 次数可以叠加成功率
-        /// 成功率大于1时提升强化效果
-        /// 在词缀中有基础实现
-        /// </summary>
-        public UpgradeResult Upgrade(int count)
-        {
-            try
-            {
-                Monitor.Enter(LockObject);
-                Logger.Info($"进入强化方法，ID={Id}，数量={count}");
-                if (!Alive || Abandoned)
-                {
-                    Logger.Error("目标鲲已死亡或已被抛弃");
-                    return new UpgradeResult { Success = false };
-                }
-                double original = Weight;
-                double diff = PetAttributeA.Upgrade(count);
-                diff = PetAttributeB.Upgrade(count, diff);
-
-                Weight *= diff;
-                Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
-                Update();
-
-                bool reachLimit = Weight == GetLevelWeightLimit(Level);
-                Logger.Info($"强化方法结束，倍率={diff}，结果={Weight}，原始值={original}，变化值={Weight - original}，达到上限={reachLimit}");
-                return new UpgradeResult
-                {
-                    CurrentWeight = Weight,
-                    Increment = Weight - original,
-                    WeightLimit = reachLimit
-                };
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e, "执行强化方法过程中发生异常");
-                return new UpgradeResult { Success = false };
-            }
-            finally
-            {
-                Monitor.Exit(LockObject);
-            }
-        }
+        public static int GetLevelWeightLimit(int level) => (int)Math.Pow(10, level);
 
         /// <summary>
         /// 渡劫
@@ -173,6 +131,76 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 Logger.Error(e, "执行渡劫方法过程中发生异常");
                 return new AscendResult { Success = false };
+            }
+            finally
+            {
+                Monitor.Exit(LockObject);
+            }
+        }
+
+        /// <summary>
+        /// 攻击
+        /// 被攻击方损失概率体重，攻击方增加对应体重
+        /// 被攻击方体重小于攻击方体重的10%时死亡
+        /// 在词缀中有基础实现
+        /// </summary>
+        public AttackResult Attack(Kun target)
+        {
+            try
+            {
+                Monitor.Enter(LockObject);
+                Logger.Info($"进入攻击方法，ID={Id}，目标ID={target.Id}");
+                if (!Alive || Abandoned || !target.Alive || !Abandoned)
+                {
+                    Logger.Error("目标鲲已死亡或已被抛弃");
+                    return new AttackResult { Success = false };
+                }
+                double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
+                Logger.Info($"{PetAttributeA.Name}=>{PetAttributeB.Name}，基础伤害倍率={baseAttackRate}");
+
+                var weightDiff = PetAttributeA.Attack(Weight, target.Weight, (1, 1), baseAttackRate);
+                Logger.Info($"攻击主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                weightDiff = target.PetAttributeA.BeingAttacked(target.Weight, Weight, weightDiff);
+                Logger.Info($"攻击小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+
+                weightDiff = target.PetAttributeB.Attack(Weight, target.Weight, weightDiff, baseAttackRate).Multiple(weightDiff);
+                Logger.Info($"攻击主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                weightDiff = target.PetAttributeB.BeingAttacked(target.Weight, Weight, weightDiff).Multiple(weightDiff);
+                Logger.Info($"攻击小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+
+                Weight *= weightDiff.Item1;
+                target.Weight *= weightDiff.Item2;
+                Logger.Info($"攻击方变化后体重={Weight}，被攻击方变化后体重={target.Weight}");
+
+                Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
+                target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
+                Logger.Info($"体重限制管理，攻击方体重={Weight}，被攻击方体重={target.Weight}");
+
+                if (target.Weight < Weight * 0.1)
+                {
+                    target.Alive = false;
+                    Logger.Info($"攻击方变化后小于攻击方体重的10%，触发死亡");
+                }
+
+                Update();
+                target.Update();
+
+                var r = new AttackResult
+                {
+                    CurrentWeight = Weight,
+                    Dead = !Alive,
+                    Increment = weightDiff.Item1,
+                    TargetCurrentWeight = target.Weight,
+                    TargetDead = !target.Alive,
+                    TargetDecrement = weightDiff.Item2,
+                };
+                Logger.Info($"攻击方法结束，{r}");
+                return r;
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, "执行攻击方法过程中发生异常");
+                return new AttackResult() { Success = false };
             }
             finally
             {
@@ -321,7 +349,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 Monitor.Enter(LockObject);
                 Logger.Info($"进入放生方法，ID={Id}");
-                if (!Alive )
+                if (!Alive)
                 {
                     Logger.Error("目标鲲已死亡");
                     return false;
@@ -461,73 +489,48 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         }
 
         /// <summary>
-        /// 攻击
-        /// 被攻击方损失概率体重，攻击方增加对应体重
-        /// 被攻击方体重小于攻击方体重的10%时死亡
+        /// 强化
+        /// 次数可以叠加成功率
+        /// 成功率大于1时提升强化效果
         /// 在词缀中有基础实现
         /// </summary>
-        public AttackResult Attack(Kun target)
+        public UpgradeResult Upgrade(int count)
         {
             try
             {
                 Monitor.Enter(LockObject);
-                Logger.Info($"进入攻击方法，ID={Id}，目标ID={target.Id}");
-                if (!Alive || Abandoned || !target.Alive || !Abandoned)
+                Logger.Info($"进入强化方法，ID={Id}，数量={count}");
+                if (!Alive || Abandoned)
                 {
                     Logger.Error("目标鲲已死亡或已被抛弃");
-                    return new AttackResult { Success = false };
+                    return new UpgradeResult { Success = false };
                 }
-                double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
-                Logger.Info($"{PetAttributeA.Name}=>{PetAttributeB.Name}，基础伤害倍率={baseAttackRate}");
+                double original = Weight;
+                double diff = PetAttributeA.Upgrade(count);
+                diff = PetAttributeB.Upgrade(count, diff);
 
-                var weightDiff = PetAttributeA.Attack(Weight, target.Weight, (1, 1), baseAttackRate);
-                Logger.Info($"攻击主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
-                weightDiff = target.PetAttributeA.BeingAttacked(target.Weight, Weight, weightDiff);
-                Logger.Info($"攻击小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
-
-                weightDiff = target.PetAttributeB.Attack(Weight, target.Weight, weightDiff, baseAttackRate).Multiple(weightDiff);
-                Logger.Info($"攻击主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
-                weightDiff = target.PetAttributeB.BeingAttacked(target.Weight, Weight, weightDiff).Multiple(weightDiff);
-                Logger.Info($"攻击小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
-
-                Weight *= weightDiff.Item1;
-                target.Weight *= weightDiff.Item2;
-                Logger.Info($"攻击方变化后体重={Weight}，被攻击方变化后体重={target.Weight}");
-
+                Weight *= diff;
                 Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
-                target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
-                Logger.Info($"体重限制管理，攻击方体重={Weight}，被攻击方体重={target.Weight}");
-
-                if (target.Weight < Weight * 0.1)
-                {
-                    target.Alive = false;
-                    Logger.Info($"攻击方变化后小于攻击方体重的10%，触发死亡");
-                }
-
                 Update();
-                target.Update();
 
-                var r = new AttackResult
+                bool reachLimit = Weight == GetLevelWeightLimit(Level);
+                Logger.Info($"强化方法结束，倍率={diff}，结果={Weight}，原始值={original}，变化值={Weight - original}，达到上限={reachLimit}");
+                return new UpgradeResult
                 {
                     CurrentWeight = Weight,
-                    Dead = !Alive,
-                    Increment = weightDiff.Item1,
-                    TargetCurrentWeight = target.Weight,
-                    TargetDead = !target.Alive,
-                    TargetDecrement = weightDiff.Item2,
+                    Increment = Weight - original,
+                    WeightLimit = reachLimit
                 };
-                Logger.Info($"攻击方法结束，{r}");
-                return r;
             }
             catch (Exception e)
             {
-                Logger.Error(e, "执行攻击方法过程中发生异常");
-                return new AttackResult() { Success = false };
+                Logger.Error(e, "执行强化方法过程中发生异常");
+                return new UpgradeResult { Success = false };
             }
             finally
             {
                 Monitor.Exit(LockObject);
-            }            
+            }
         }
 
         private double GetBaseAttackRate(IPetAttribute source, IPetAttribute target)
@@ -599,46 +602,34 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 baseRate = 2;
             }
 
-
             return baseRate;
         }
 
-        public static int GetLevelWeightLimit(int level) => (int)Math.Pow(10, level);
-        #endregion
+        #endregion 数值实例
 
-        /// <summary>
-        /// 使用数值方法前调用初始化
-        /// </summary>
-        public void Initialize()
+        public static List<Kun> GetDeadKun(Player player)
         {
-            PetAttributeA = RandomInsatantiator.GetInstanceByID(true, AttributeAID);
-            PetAttributeB = RandomInsatantiator.GetInstanceByID(false, AttributeBID);
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<Kun>().Where(x => x.CanResurrect && !x.Alive && !x.Abandoned && x.PlayerID == player.QQ).ToList();
         }
 
-        public void Update()
+        public static Kun GetKunByID(int id)
         {
-            UpdateKun(this);
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<Kun>().First(x => x.Id == id);
         }
 
-        public override string ToString()
+        public static Kun GetKunByQQ(long qq)
         {
-            return $"[{PetAttributeA.Name}] {PetAttributeB.Name}鲲 {new string('★', Level)} {Weight:f2} 千克";
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<Kun>().First(x => x.PlayerID == qq && !x.Abandoned && x.Alive);
         }
 
-        public string ToStringFull()
+        public static List<Kun> GetKunByRecords(List<Record> records)
         {
-            StringBuilder stringBuilder = new();
-            stringBuilder.AppendLine(this.ToString());
-            foreach (var item in PetAttributeA.Description)
-            {
-                stringBuilder.AppendLine(item.ToString());
-            }
-            foreach (var item in PetAttributeB.Description)
-            {
-                stringBuilder.AppendLine(item.ToString());
-            }
-            stringBuilder.RemoveNewLine();
-            return stringBuilder.ToString();
+            var db = SQLHelper.GetInstance();
+            var ls = records.Select(x => x.KunID).ToList();
+            return db.Queryable<Kun>().Where(x => ls.Any(o => x.Id == o)).ToList();
         }
 
         public static void InitiazlizeRandom()
@@ -685,29 +676,39 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             db.Updateable(kun).ExecuteCommand();
         }
 
-        public static Kun GetKunByID(int id)
+        /// <summary>
+        /// 使用数值方法前调用初始化
+        /// </summary>
+        public void Initialize()
         {
-            var db = SQLHelper.GetInstance();
-            return db.Queryable<Kun>().First(x => x.Id == id);
+            PetAttributeA = RandomInsatantiator.GetInstanceByID(true, AttributeAID);
+            PetAttributeB = RandomInsatantiator.GetInstanceByID(false, AttributeBID);
         }
 
-        public static Kun GetKunByQQ(long qq)
+        public override string ToString()
         {
-            var db = SQLHelper.GetInstance();
-            return db.Queryable<Kun>().First(x => x.PlayerID == qq && !x.Abandoned && x.Alive);
+            return $"[{PetAttributeA.Name}] {PetAttributeB.Name}鲲 {new string('★', Level)} {Weight:f2} 千克";
         }
 
-        public static List<Kun> GetKunByRecords(List<Record> records)
+        public string ToStringFull()
         {
-            var db = SQLHelper.GetInstance();
-            var ls = records.Select(x => x.KunID).ToList();
-            return db.Queryable<Kun>().Where(x => ls.Any(o => x.Id == o)).ToList();
+            StringBuilder stringBuilder = new();
+            stringBuilder.AppendLine(this.ToString());
+            foreach (var item in PetAttributeA.Description)
+            {
+                stringBuilder.AppendLine(item.ToString());
+            }
+            foreach (var item in PetAttributeB.Description)
+            {
+                stringBuilder.AppendLine(item.ToString());
+            }
+            stringBuilder.RemoveNewLine();
+            return stringBuilder.ToString();
         }
 
-        public static List<Kun> GetDeadKun(Player player)
+        public void Update()
         {
-            var db = SQLHelper.GetInstance();
-            return db.Queryable<Kun>().Where(x => x.CanResurrect && !x.Alive && !x.Abandoned && x.PlayerID == player.QQ).ToList();
+            UpdateKun(this);
         }
     }
 }

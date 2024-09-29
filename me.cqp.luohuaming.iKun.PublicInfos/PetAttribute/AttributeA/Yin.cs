@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
+﻿namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA
 {
     public class Yin : IPetAttribute
     {

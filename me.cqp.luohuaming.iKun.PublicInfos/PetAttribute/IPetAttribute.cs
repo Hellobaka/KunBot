@@ -1,9 +1,4 @@
-﻿using me.cqp.luohuaming.iKun.PublicInfos.Enums;
-using me.cqp.luohuaming.iKun.PublicInfos.Items;
-using me.cqp.luohuaming.iKun.PublicInfos.Models;
-using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA;
-using Newtonsoft.Json.Linq;
-using NLog.Targets;
+﻿using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +16,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
     public abstract class IPetAttribute
     {
         public Enums.Attribute ID { get; set; }
-        
+
         public string Name { get; set; }
-        
+
         public string[] Description { get; set; }
 
         private Logger Logger { get; set; } = new Logger("基础词缀");
@@ -251,7 +246,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
 
         public IPetAttribute GetInstanceByID(bool attrbuteId, int id)
         {
-            if (attrbuteId) 
+            if (attrbuteId)
             {
                 return (Enums.Attribute)id switch
                 {
@@ -269,7 +264,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             else
             {
                 return new AttributeB.AttributeB(id);
-            }            
+            }
         }
     }
 }

@@ -12,9 +12,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string CommandRegister { get; set; } = "";
 
         public static string CommandLogin { get; set; } = "";
-        
+
         public static string CommandMenu { get; set; } = "";
-        
+
         public static string CommandRanking { get; set; } = "";
 
         public static string CommandInventory { get; set; } = "";
@@ -81,19 +81,19 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static double ProbablityNone { get; set; }
 
         public static double ProbablityJin { get; set; }
-       
+
         public static double ProbablityHuo { get; set; }
-       
+
         public static double ProbablityFeng { get; set; }
-       
+
         public static double ProbablityTu { get; set; }
-       
+
         public static double ProbablityLei { get; set; }
-       
+
         public static double ProbablityShui { get; set; }
-       
+
         public static double ProbablityYin { get; set; }
-       
+
         public static double ProbablityMu { get; set; }
 
         public static int ValueHatchProbablityMin { get; set; }
@@ -122,9 +122,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueAttackWeightMaximumDecrement { get; set; }
 
-        public static int ValueLoginCoinReward {  get; set; }
+        public static int ValueLoginCoinReward { get; set; }
 
-        public static int ValueLoginEggReward {  get; set; }
+        public static int ValueLoginEggReward { get; set; }
 
         public static double ValueAscendFailDeadProbablity { get; set; } = 10;
 

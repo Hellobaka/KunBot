@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using me.cqp.luohuaming.iKun.Sdk.Cqp.Model;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos
 {

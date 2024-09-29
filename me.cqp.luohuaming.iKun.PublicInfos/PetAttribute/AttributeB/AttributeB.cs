@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
 {
@@ -233,7 +232,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="fail">0.1</param>
         /// <returns></returns>
@@ -248,7 +247,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lost">0.95</param>
         /// <returns></returns>

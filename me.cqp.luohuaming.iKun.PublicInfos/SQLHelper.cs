@@ -1,8 +1,6 @@
 ﻿using me.cqp.luohuaming.iKun.PublicInfos.Models;
-using Newtonsoft.Json;
 using SqlSugar;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos
@@ -24,7 +22,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static bool CreateDB()
         {
-            if (File.Exists(DBPath)) 
+            if (File.Exists(DBPath))
             {
                 return true;
             }

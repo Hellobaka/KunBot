@@ -34,7 +34,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public void GiveItem(List<Items> items)
         {
             var db = SQLHelper.GetInstance();
-            foreach (var item in items) 
+            foreach (var item in items)
             {
                 var query = db.Queryable<InventoryItem>().First(x => x.ItemID == (int)item.ID && x.PlayerID == QQ);
                 if (query == null || !item.Stackable)
@@ -62,11 +62,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             db.Updateable(this).ExecuteCommand();
         }
 
-
         public static Player? GetPlayer(long qq)
         {
             var db = SQLHelper.GetInstance();
-            return db.Queryable<Player>().First(x=> x.QQ == qq);
+            return db.Queryable<Player>().First(x => x.QQ == qq);
         }
     }
 }
