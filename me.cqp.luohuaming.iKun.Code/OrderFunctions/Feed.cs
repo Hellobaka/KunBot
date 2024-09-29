@@ -60,15 +60,20 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
             InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.Coin, count * AppConfig.ValueFeedCoinConsume, out currentCoin);
-            InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.KunEgg, count * AppConfig.ValueFeedCoinConsume, out currentEgg);
+            InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.KunEgg, count * AppConfig.ValueFeedKunEggConsume, out currentEgg);
 
             var r = kun.Feed(count);
             StringBuilder stringBuilder = new();
             stringBuilder.AppendLine(string.Format(AppConfig.ReplyFeed, kun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber()));
+            if (r.WeightLimit)
+            {
+                stringBuilder.AppendLine(AppConfig.ReplyWeightLimit);
+            }
             stringBuilder.AppendLine("-------------------");
             stringBuilder.AppendLine($"剩余 {currentCoin} 枚金币，{currentEgg} 枚鲲蛋");
             stringBuilder.RemoveNewLine();
 
+            sendText.MsgToSend.Add(stringBuilder.ToString());
             return result;
         }
 
