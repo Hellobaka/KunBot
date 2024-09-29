@@ -2,6 +2,7 @@
 using me.cqp.luohuaming.iKun.PublicInfos.Items;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA;
+using Newtonsoft.Json.Linq;
 using NLog.Targets;
 using System;
 using System.Collections.Generic;
@@ -200,16 +201,24 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
 
         public virtual double GetTransmogrifyFailRate(double fail)
         {
+            Logger.Info("进入幻化失败率计算方法");
+            Logger.Info($"退出幻化失败率计算方法，失败率={fail}");
+
             return fail;
         }
 
         public virtual double GetTransmogrifyFailWeightLostRate(double lost)
         {
+            Logger.Info("进入幻化失败后体重损失率计算方法");
+            Logger.Info($"退出幻化失败后体重损失率计算方法，体重损失率={lost}");
+
             return lost;
         }
 
         public virtual double GetAscendSuccessRate(double value)
         {
+            Logger.Info("进入渡劫成功率计算方法");
+            Logger.Info($"退出渡劫成功率计算方法，成功率={value}");
             return value;
         }
     }

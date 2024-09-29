@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
 {
@@ -17,7 +18,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
             Description = [
                 string.Format(ActionName[AttributeBAction], AppendValueName[AppendValue])
             ];
+            Logger = new Logger($"小词缀_{Name}");
         }
+
+        private Logger Logger { get; set; }
 
         private static Dictionary<int, (string, Enums.AttributeBAction, double)> AttributeBMap { get; set; } = new()
         {
@@ -138,14 +142,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
             {
                 if (diff < 1)
                 {
-                    return 1 - ((1 - diff) * AppendValue);
+                    diff = 1 - ((1 - diff) * AppendValue);
+                    Logger.Info($"降低渡劫失败损失体重，处理后倍率={diff}");
                 }
             }
             else if (AttributeBAction == Enums.AttributeBAction.AscendWeightGainUpper)
             {
                 if (diff > 1)
                 {
-                    return 1 + ((diff - 1) * AppendValue);
+                    diff = 1 + ((diff - 1) * AppendValue);
+                    Logger.Info($"提升渡劫成功后获得体重，处理后倍率={diff}");
                 }
             }
             return diff;
@@ -155,14 +161,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         {
             if (AttributeBAction == Enums.AttributeBAction.AscendSuccessRateUpper)
             {
-                return value *= AppendValue;
+                value *= AppendValue;
+                Logger.Info($"提升渡劫成功率，处理后成功率={value}");
             }
             return value;
         }
 
         public override (double, double) Attack(double source, double target, (double, double) baseAttack, double diff = 1)
         {
-            if (AttributeBAction == Enums.AttributeBAction.AttackDamageUpper)
+            if (baseAttack.Item1 > 1 && AttributeBAction == Enums.AttributeBAction.AttackDamageUpper)
             {
                 double change = AppendValue;
                 double increment = source * (baseAttack.Item1 - 1);
@@ -171,11 +178,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
                 decrement -= decrement * change;
                 increment = decrement;
 
-                return (1 + (increment / source), 1 - (decrement / target));
+                baseAttack = (1 + (increment / source), 1 - (decrement / target));
+                Logger.Info($"提升攻击成功时造成的伤害，处理后倍率={baseAttack.Item1}，{baseAttack.Item2}");
             }
-            else if (AttributeBAction == Enums.AttributeBAction.AttackWeightGainUpper)
+            else if (baseAttack.Item1 > 1 && AttributeBAction == Enums.AttributeBAction.AttackWeightGainUpper)
             {
-                return (baseAttack.Item1 * (1 + AppendValue), baseAttack.Item2);
+                baseAttack = (baseAttack.Item1 * (1 + AppendValue), baseAttack.Item2);
+                Logger.Info($"提升攻击成功时获得的体重，处理后倍率={baseAttack.Item1}，{baseAttack.Item2}");
             }
             return baseAttack;
         }
@@ -186,7 +195,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
             {
                 if (baseAttack.Item2 < 1)
                 {
-                    return (baseAttack.Item1, 1 - ((1 - baseAttack.Item2) * AppendValue));
+                    baseAttack = (baseAttack.Item1, 1 - ((1 - baseAttack.Item2) * AppendValue));
+                    Logger.Info($"降低受到攻击时的伤害，处理后倍率={baseAttack.Item1}，{baseAttack.Item2}");
                 }
             }
             return baseAttack;
@@ -206,7 +216,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         {
             if (AttributeBAction == Enums.AttributeBAction.FeedWeightGainUpper)
             {
-                return diff * (1 + AppendValue);
+                diff = diff * (1 + AppendValue);
+                Logger.Info($"提升喂养时获得的体重，处理后倍率={diff}");
             }
             return diff;
         }
@@ -215,7 +226,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         {
             if (AttributeBAction == Enums.AttributeBAction.UpgradeWeightGainUpper)
             {
-                return diff * (1 + AppendValue);
+                diff = diff * (1 + AppendValue);
+                Logger.Info($"提升升级时获得的体重，处理后倍率={diff}");
             }
             return diff;
         }
@@ -229,7 +241,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         {
             if (AttributeBAction == Enums.AttributeBAction.TransmogrifyFailWeightLostLower)
             {
-                return fail * (1 - AppendValue);
+                fail = fail * (1 - AppendValue);
+                Logger.Info($"降低幻化失败率，处理后失败率={fail}");
             }
             return fail;
         }
@@ -243,7 +256,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         {
             if (AttributeBAction == Enums.AttributeBAction.TransmogrifySuccessRateUpper)
             {
-                return lost * (1 - AppendValue);
+                lost = lost * (1 - AppendValue);
+                Logger.Info($"降低幻化失败后损失体重比率，处理后损失率={lost}");
             }
             return lost;
         }
