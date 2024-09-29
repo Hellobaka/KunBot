@@ -39,7 +39,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             kun.Initialize();
             if (kun.Weight < Kun.GetLevelWeightLimit(kun.Level))
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyNoKun, kun.Weight.ToShortNumber(), Kun.GetLevelWeightLimit(kun.Level)));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAscendNoWeightLimit, kun.Weight.ToShortNumber(), Kun.GetLevelWeightLimit(kun.Level)));
                 return result;
             }
             if (!InventoryItem.TryRemoveItem(player, Items.Coin().ID, AppConfig.ValueAscendCoinConsume, out int currentCoin))
