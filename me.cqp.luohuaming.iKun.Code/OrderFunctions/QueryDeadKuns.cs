@@ -35,6 +35,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             StringBuilder stringBuilder = new();
             foreach (var item in list)
             {
+                item.Initialize();
                 stringBuilder.AppendLine($"{item.Id}. " + item.ToString());
             }
             sendText.MsgToSend.Add(AppConfig.ReplyQueryDeadKun + stringBuilder.ToString());
