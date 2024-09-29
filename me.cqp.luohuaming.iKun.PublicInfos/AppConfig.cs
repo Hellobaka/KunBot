@@ -313,7 +313,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyUpgradeSuccess = ConfigHelper.GetConfig("ReplyUpgradeSuccess", "强化完成，体重增加了 {0} kg，当前体重 {1} kg\n剩余 {2} 颗强化丹 {3} 枚金币");
             ReplyResurrectHourLimit = ConfigHelper.GetConfig("ReplyResurrectHourLimit", "无法复活，由于鲲死亡已超过 {0} 小时，当前死亡 {1} 小时");
             ReplyResurrectSuccess = ConfigHelper.GetConfig("ReplyResurrectSuccess", "鲲已复活");
-            ReplyResurrectHourLimit = ConfigHelper.GetConfig("ReplyResurrectHourLimit", "复活失败，查看日志查询原因");
+            ReplyResurrectFail = ConfigHelper.GetConfig("ReplyResurrectFail", "复活失败，查看日志查询原因");
 
             ProbablityNone = ConfigHelper.GetConfig("ProbablityNone", 70);
             ProbablityJin = ConfigHelper.GetConfig("ProbablityJin", 5);
