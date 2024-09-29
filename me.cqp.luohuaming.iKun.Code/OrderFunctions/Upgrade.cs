@@ -45,18 +45,18 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             int currentCoin = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.Coin);
             int currentPill = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.UpgradePill);
-            if (currentCoin < count * AppConfig.ValueTranmogifyCoinConsume)
+            if (currentCoin < count * AppConfig.ValueUpgradeCoinConsume)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.Coin().Name, count * AppConfig.ValueTranmogifyCoinConsume, currentCoin));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.Coin().Name, count * AppConfig.ValueUpgradeCoinConsume, currentCoin));
                 return result;
             }
-            if (currentPill < count * AppConfig.ValueTranmogifyPillConsume)
+            if (currentPill < count * AppConfig.ValueUpgradePillConsume)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.UpgradePill().Name, count * AppConfig.ValueTranmogifyPillConsume, currentPill));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.UpgradePill().Name, count * AppConfig.ValueUpgradePillConsume, currentPill));
                 return result;
             }
-            InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.Coin, count * AppConfig.ValueTranmogifyCoinConsume, out currentCoin);
-            InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.TransmogrifyPill, count * AppConfig.ValueTranmogifyPillConsume, out currentPill);
+            InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.Coin, count * AppConfig.ValueUpgradeCoinConsume, out currentCoin);
+            InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.UpgradePill, count * AppConfig.ValueUpgradePillConsume, out currentPill);
 
             kun.Initialize();
             var upgradeResult = kun.Upgrade(count);
@@ -66,10 +66,17 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine(string.Format(AppConfig.ReplyUpgradeSuccess, upgradeResult.Increment.ToShortNumber(), upgradeResult.CurrentWeight.ToShortNumber()));
+            if (upgradeResult.Increment > 0)
+            {
+                stringBuilder.AppendLine(string.Format(AppConfig.ReplyUpgradeSuccess, upgradeResult.Increment.ToShortNumber(), upgradeResult.CurrentWeight.ToShortNumber(), currentPill, currentCoin));
+            }
+            else
+            {
+                stringBuilder.AppendLine(string.Format(AppConfig.ReplyUpgradeFail, upgradeResult.Increment.ToShortNumber(), upgradeResult.CurrentWeight.ToShortNumber(), currentPill, currentCoin));
+            }
             if (upgradeResult.WeightLimit)
             {
-                stringBuilder.AppendLine("·已达上限，需进行渡劫提高上限");
+                stringBuilder.AppendLine(AppConfig.ReplyWeightLimit);
             }
 
             sendText.MsgToSend.Add(stringBuilder.ToString());
