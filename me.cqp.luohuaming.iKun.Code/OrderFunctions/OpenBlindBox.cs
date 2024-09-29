@@ -48,7 +48,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, PublicInfos.Models.Items.BlindBox().Name, consume, currentCount));
                 return result;
             }
-            List<PublicInfos.Enums.Items> contents = [];
+            List<Items> contents = [];
             StringBuilder stringBuilder = new();
             for (int i = 0; i < count; i++)
             {
@@ -57,12 +57,13 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 {
                     continue;
                 }
-                contents.Add(item);
-                stringBuilder.AppendLine("·" + PublicInfos.Models.Items.GetItemByID(item).Name);
+                contents.Add(Items.GetItemByID(item));
+                stringBuilder.AppendLine("·" + Items.GetItemByID(item).Name);
             }
             stringBuilder.RemoveNewLine();
             if (contents.Count > 0)
             {
+                player.GiveItem(contents);
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyBlindBoxOpen, consume, stringBuilder.ToString()));
                 return result;
             }
@@ -77,6 +78,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
         {
             if (BlindBoxes == null)
             {
+                BlindBoxes = [];
                 foreach (var item in AppConfig.BlindBoxContents)
                 {
                     string[] split = item.Split('|');
