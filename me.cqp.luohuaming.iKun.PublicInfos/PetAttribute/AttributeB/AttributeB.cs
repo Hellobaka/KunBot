@@ -7,6 +7,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         public AttributeB(int id)
         {
             ID = Enums.Attribute.AttributeB;
+            AttrbiuteBID = id;
             if (!AttributeBMap.TryGetValue(id, out var item))
             {
                 item = AttributeBMap[79];
@@ -208,7 +209,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
 
         public override (double, double) Devour(double source, double target, double diff = 1)
         {
-            return (diff, diff);
+            return (1, 1);
         }
 
         public override double Feed(int count, double diff = 1)

@@ -21,6 +21,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
 
         public string Name { get; set; }
 
+        public int AttrbiuteBID { get; set; }
+
         private Logger Logger { get; set; } = new Logger("基础词缀");
 
         /// <summary>
@@ -42,6 +44,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
 
         /// <summary>
         /// 被攻击方损失概率体重，攻击方增加对应体重
+        /// 攻击方最大造成自身同体重的伤害
         /// </summary>
         /// <param name="source">攻击方体重</param>
         /// <param name="target">目标方体重</param>
@@ -53,6 +56,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             Logger.Info($"攻击体重损失下限={AppConfig.ValueAttackWeightMinimumDecrement}，上限={AppConfig.ValueAttackWeightMaximumDecrement}");
             double random = CommonHelper.Random.NextDouble(AppConfig.ValueAttackWeightMinimumDecrement / 100.0, AppConfig.ValueAttackWeightMaximumDecrement / 100.0);
             double decrement = random * diff;
+            decrement = Math.Min(source, decrement);
             double value = target * decrement;
             double increment = value / source;
             Logger.Info($"倍率随机数={random}，被攻击方损失倍率={decrement}，攻击方增加倍率={increment}");
@@ -196,7 +200,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             Logger.Info($"成功判定随机数：{successRandom}，临界：{count * 10}");
             if (successRandom >= count * 10)
             {
-                int rd = CommonHelper.Random.Next(50, 80);
+                int rd = CommonHelper.Random.Next(80, 90);
                 Logger.Info($"判定失败，结果随机数：{rd}");
                 diff = rd / 100.0 * diff;
                 Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
