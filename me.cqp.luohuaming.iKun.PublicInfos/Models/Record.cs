@@ -18,14 +18,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public static void AddRecord(Record record)
         {
             var db = SQLHelper.GetInstance();
-            if (db.Queryable<Record>().Any(x => x.Group == record.Group && x.QQ == record.QQ))
-            {
-                db.Updateable(record).ExecuteCommand();
-            }
-            else
-            {
-                db.Insertable(record).ExecuteCommand();
-            }
+            db.Insertable(record).ExecuteCommand();
         }
 
         public static List<Record> GetRecordsByGroupID(long groupID)
