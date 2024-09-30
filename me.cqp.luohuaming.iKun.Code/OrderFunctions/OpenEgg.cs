@@ -1,6 +1,7 @@
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
+using System;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
@@ -31,6 +32,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, $"，示例：{GetOrderStr()} 数量"));
                 return result;
             }
+            count = Math.Max(1, count);
             var player = Player.GetPlayer(e.FromQQ);
             if (player == null)
             {

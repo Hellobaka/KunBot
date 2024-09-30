@@ -1,6 +1,7 @@
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
+using System;
 using System.Text;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
@@ -43,6 +44,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 count = 1;
             }
+            count = Math.Max(1, count);
             int currentCoin = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.Coin);
             int currentPill = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.UpgradePill);
             if (currentCoin < count * AppConfig.ValueUpgradeCoinConsume)
