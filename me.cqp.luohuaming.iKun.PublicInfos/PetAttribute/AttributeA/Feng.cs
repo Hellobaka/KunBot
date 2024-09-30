@@ -40,8 +40,8 @@
                 double decrement = target * (1 - baseAttack.Item2);
                 Logger.Info($"攻方增量={increment}，被攻方减量={decrement}");
                 // 额外造成200%攻击: 损失额外减去100%, 增量为损失
-                decrement -= decrement * change;
-                increment = decrement;
+                increment += decrement * change;
+                decrement += decrement * change;
 
                 Logger.Info($"使用加成计算后，攻方增量={increment}，被攻方减量={decrement}");
                 // 额外增加: 增量额外添加损失的30~50%

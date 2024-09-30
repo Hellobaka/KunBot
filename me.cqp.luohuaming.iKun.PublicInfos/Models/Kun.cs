@@ -190,6 +190,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     TargetDead = !target.Alive,
                     TargetDecrement = originalTargetWeight - target.Weight,
                     WeightLimit = Weight == GetLevelWeightLimit(Level),
+                    Escaped = weightDiff.Item1 == 1 && weightDiff.Item2 == 1,
                 };
                 Logger.Info($"攻击方法结束，{r}");
                 return r;
@@ -281,7 +282,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     TargetCurrentWeight = target.Weight,
                     TargetDead = !target.Alive,
                     TargetDecrement = target.Weight - originalTargetWeight,
-                    WeightLimit = Weight == GetLevelWeightLimit(Level)
+                    WeightLimit = Weight == GetLevelWeightLimit(Level),
+                    Escaped = weightDiff.Item1 == 1 && weightDiff.Item2 == 1,
                 };
                 Logger.Info($"吞噬方法结束，{r}");
                 return r;
@@ -692,7 +694,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             Kun kun = new()
             {
                 AttributeAID = (int)attributeA.ID,
-                AttributeBID = (int)attributeB.ID,
+                AttributeBID = attributeB.AttrbiuteBID,
                 PlayerID = player.QQ,
                 Weight = CommonHelper.Random.Next(AppConfig.ValueHatchWeightMin, AppConfig.ValueHatchWeightMax),
                 Abandoned = false,

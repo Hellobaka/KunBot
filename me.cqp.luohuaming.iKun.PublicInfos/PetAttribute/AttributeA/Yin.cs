@@ -45,8 +45,8 @@
                 if (change < 0.1)
                 {
                     change = 2;
-                    decrement -= increment * change;
-                    increment += increment * change;
+                    increment += decrement * change;
+                    decrement += decrement * change;
                     Logger.Info($"使用加成计算后，攻方增量={increment}，被攻方减量={decrement}");
                 }
 

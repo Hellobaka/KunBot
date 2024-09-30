@@ -36,8 +36,8 @@
                 double decrement = target * (1 - baseAttack.Item2);
                 Logger.Info($"攻方增量={increment}，被攻方减量={decrement}");
 
-                decrement -= decrement * change;
-                increment = decrement;
+                increment += decrement * change;
+                decrement += decrement * change;
                 Logger.Info($"使用加成计算后，攻方增量={increment}，被攻方减量={decrement}");
 
                 baseAttack = (1 + (increment / source), 1 - (decrement / target));
