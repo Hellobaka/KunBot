@@ -58,7 +58,10 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                     continue;
                 }
                 contents.Add(Items.GetItemByID(item));
-                stringBuilder.AppendLine("·" + Items.GetItemByID(item).Name);
+            }
+            foreach(var item in contents.GroupBy(x => x.Name, (key, groups) => new { Key = key, Items = groups.ToList() }))
+            {
+                stringBuilder.AppendLine("·" + item.Key + $" {item.Items.Count} 个");
             }
             stringBuilder.RemoveNewLine();
             if (contents.Count > 0)
