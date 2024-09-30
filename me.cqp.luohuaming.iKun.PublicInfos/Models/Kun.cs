@@ -668,7 +668,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         {
             var db = SQLHelper.GetInstance();
             var ls = records.Select(x => x.KunID).ToList();
-            return db.Queryable<Kun>().Where(x => ls.Any(o => x.Id == o)).ToList();
+            return db.Queryable<Kun>().Where(x => ls.Contains(x.Id) && x.Alive && !x.Abandoned).ToList();
         }
 
         public static void InitiazlizeRandom()
