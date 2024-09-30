@@ -23,7 +23,7 @@ namespace me.cqp.luohuaming.iKunCore
                 {
                     foreach (var sendMsg in item.MsgToSend)
                     {
-                        e.CQApi.SendGroupMessage(item.SendID, $"[CQ:reply,id={e.Id}]" + sendMsg);
+                        e.CQApi.SendGroupMessage(item.SendID, $"[CQ:reply,id={e.Message.Id}]" + sendMsg);
                     }
                 }
             }
