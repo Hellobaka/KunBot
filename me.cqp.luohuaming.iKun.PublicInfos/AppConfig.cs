@@ -266,7 +266,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandHatch = ConfigHelper.GetConfig("CommandHatch", "#孵蛋");
             CommandInventory = ConfigHelper.GetConfig("CommandInventory", "#背包");
             CommandLogin = ConfigHelper.GetConfig("CommandLogin", "#签到");
-            CommandMenu = ConfigHelper.GetConfig("CommandMenu", "#菜单");
+            CommandMenu = ConfigHelper.GetConfig("CommandMenu", "#鲲菜单");
             CommandOpenBlindBox = ConfigHelper.GetConfig("CommandOpenBlindBox", "#开盲盒");
             CommandOpenEgg = ConfigHelper.GetConfig("CommandOpenEgg", "#开鲲蛋");
             CommandRanking = ConfigHelper.GetConfig("CommandRanking", "#排行");
