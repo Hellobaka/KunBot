@@ -108,7 +108,6 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             if (r.Dead)
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourFailAndDead, kun.ToString(), playerInfo, targetKun.ToString(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
-                return result;
             }
             else if (r.Increment > 1)
             {
@@ -118,14 +117,16 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                     send += $"\n{AppConfig.ReplyWeightLimit}";
                 }
                 sendText.MsgToSend.Add(send);
-
-                return result;
+            }
+            else if (r.Escaped)
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourEscaped, kun.ToString(), playerInfo, targetKun.ToString()));
             }
             else
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourFail, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
-                return result;
-            }
+            }                
+            return result;
         }
 
         public FunctionResult Execute(CQPrivateMessageEventArgs e)

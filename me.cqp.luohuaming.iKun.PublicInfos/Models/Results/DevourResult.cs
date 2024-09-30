@@ -18,9 +18,11 @@
 
         public bool TargetDead { get; set; }
 
+        public bool Escaped { get; set; }
+
         public override string ToString()
         {
-            return $"执行成功={Success}，攻击方增量={Increment}，攻击方当前体重={CurrentWeight}，攻击方是否死亡={Dead}，体重上限={WeightLimit}，" +
+            return $"执行成功={Success}，被逃脱={Escaped}，攻击方增量={Increment}，攻击方当前体重={CurrentWeight}，攻击方是否死亡={Dead}，体重上限={WeightLimit}，" +
                 $"被攻击方增量={TargetDecrement}，被攻击方当前体重={TargetCurrentWeight}，被攻击方是否死亡={TargetDead}";
         }
     }
