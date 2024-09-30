@@ -23,7 +23,15 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 SendID = e.FromGroup,
             };
 
-            sendText.MsgToSend.Add(AppConfig.ReplyMenu);
+            sendText.MsgToSend.Add(string.Format(AppConfig.ReplyMenu, AppConfig.CommandRegister, AppConfig.CommandLogin
+                , AppConfig.CommandFeed, AppConfig.CommandUpgrade
+                , AppConfig.CommandHatch, AppConfig.CommandInventory
+                , AppConfig.CommandBuyEgg, AppConfig.CommandOpenBlindBox
+                , AppConfig.CommandOpenEgg, AppConfig.CommandTransmogrify
+                , AppConfig.CommandAttack, AppConfig.CommandDevour
+                , AppConfig.CommandQueryDeadKuns, AppConfig.CommandReleaseKun
+                , AppConfig.CommandResurrect, AppConfig.CommandRanking
+                , AppConfig.CommandAscend, AppConfig.CommandMenu));
             result.SendObject.Add(sendText);
             return result;
         }

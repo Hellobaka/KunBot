@@ -282,8 +282,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyDuplicateHatch = ConfigHelper.GetConfig("ReplyDuplicateHatch", "你已经有一只鲲了，不能重复孵化");
             ReplyDuplicateResurrect = ConfigHelper.GetConfig("ReplyDuplicateResurrect", "你已经有一只鲲了，不能执行复活");
             ReplyNewRegister = ConfigHelper.GetConfig("ReplyNewRegister", "注册成功，赠送 {0} 枚金币以及 {1} 枚鲲蛋");
-            ReplyRegisterFailed = ConfigHelper.GetConfig("ReplyRegisterFailed", "注册失败了");
-            ReplyMenu = ConfigHelper.GetConfig("ReplyMenu", "菜单：");
+            ReplyRegisterFailed = ConfigHelper.GetConfig("ReplyRegisterFailed", "注册失败了，查看日志排查问题");
+            ReplyMenu = ConfigHelper.GetConfig("ReplyMenu", "功能列表：\n{0}  {1}\n{2}  {3}\n{4}  {5}\n{6}  {7}\n{8}  {9}\n{10}  {11}\n{12}  {13}\n{14}  {15}\n{16}  {17}");
             ReplyNoPlayer = ConfigHelper.GetConfig("ReplyNoPlayer", "请先注册");
             ReplyNoKun = ConfigHelper.GetConfig("ReplyNoKun", "未持有鲲");
             ReplyNoTargrtKun = ConfigHelper.GetConfig("ReplyNoTargrtKun", "目标所指的鲲不存在");
