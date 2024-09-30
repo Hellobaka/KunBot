@@ -124,9 +124,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
 
         private static Dictionary<double, string> AppendValueName { get; set; } = new()
         {
+            { 0, "" },
             { 0.01, "微小幅度" },
             { 0.05, "小幅度" },
-            { 0.10, "中幅度" },
+            { 0.1, "中幅度" },
             { 0.15, "大幅度" },
         };
 
