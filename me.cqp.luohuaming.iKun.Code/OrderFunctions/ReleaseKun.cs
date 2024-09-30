@@ -39,7 +39,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             kun.Initialize();
             if (kun.Release())
             {
-                sendText.MsgToSend.Add(AppConfig.ReplyReleaseSuccess);
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyReleaseSuccess, kun.ToString()));
             }
             else
             {

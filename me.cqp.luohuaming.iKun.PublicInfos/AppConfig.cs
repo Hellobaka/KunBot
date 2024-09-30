@@ -100,6 +100,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyAttackFail { get; set; } = "";
 
+        public static string ReplyAttackEscaped { get; set; } = "";
+
         public static string ReplyAttackSuccessAndTargetDead { get; set; } = "";
 
         public static string ReplyAttackFailAndDead { get; set; } = "";
@@ -109,6 +111,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string ReplyDevourFail { get; set; } = "";
 
         public static string ReplyDevourFailAndDead { get; set; } = "";
+
+        public static string ReplyDevourEscaped { get; set; } = "";
 
         public static string ReplyDuplicateLogin { get; set; } = "";
 
@@ -300,18 +304,20 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyNoTargetPlayerKun = ConfigHelper.GetConfig("ReplyNoTargetKun", "目标指定的玩家未持有鲲");
             ReplyAttackInCD = ConfigHelper.GetConfig("ReplyAttackInCD", "攻击冷却中，下次可攻击时间：{0}");
             ReplyDevourInCD = ConfigHelper.GetConfig("ReplyDevourInCD", "吞噬冷却中，下次可吞噬时间：{0}");
-            ReplyAttackSuccess = ConfigHelper.GetConfig("ReplyAttackSuccess", "{0} 对 {1}的{2} 发起攻击！\n攻击成功了！\n攻击方体重增长 {3} kg，现 {4} kg\n被攻击方体重减少 {5} kg，现 {6} kg");
-            ReplyAttackFail = ConfigHelper.GetConfig("ReplyAttackFail", "{0} 对 {1}的{2} 发起攻击！\n攻击失败了！\n攻击方体重减少 {3} kg，现 {4} kg\n被攻击方体重增加 {5} kg，现 {6} kg");
-            ReplyAttackSuccessAndTargetDead = ConfigHelper.GetConfig("ReplyAttackSuccessAndTargetDead", "{0} 对 {1}的{2} 发起攻击！\n攻击成功了！被攻击方伤重致死\n攻击方体重增长 {3} kg，现 {4} kg");
-            ReplyAttackFailAndDead = ConfigHelper.GetConfig("ReplyAttackFailAndDead", "{0} 对 {1}的{2} 发起攻击！\n攻击失败了！自身伤重致死\n被攻击方体重增加 {3} kg，现 {4} kg");
+            ReplyAttackSuccess = ConfigHelper.GetConfig("ReplyAttackSuccess", "{0} 对 {1}的{2} 发起攻击，攻击成功了！\n攻击方体重增长 {3} kg，现 {4} kg\n被攻击方体重减少 {5} kg，现 {6} kg");
+            ReplyAttackFail = ConfigHelper.GetConfig("ReplyAttackFail", "{0} 对 {1}的{2} 发起攻击，攻击失败了！\n攻击方体重减少 {3} kg，现 {4} kg\n被攻击方体重增加 {5} kg，现 {6} kg");
+            ReplyAttackEscaped = ConfigHelper.GetConfig("ReplyAttackEscaped", "{0} 对 {1}的{2} 发起攻击，对方逃脱了！");
+            ReplyAttackSuccessAndTargetDead = ConfigHelper.GetConfig("ReplyAttackSuccessAndTargetDead", "{0} 对 {1}的{2} 发起攻击，攻击成功了！被攻击方伤重致死\n攻击方体重增长 {3} kg，现 {4} kg");
+            ReplyAttackFailAndDead = ConfigHelper.GetConfig("ReplyAttackFailAndDead", "{0} 对 {1}的{2} 发起攻击，攻击失败了！自身伤重致死\n被攻击方体重增加 {3} kg，现 {4} kg");
             ReplyDevourSuccess = ConfigHelper.GetConfig("ReplyDevourSuccess", "{0} 吃掉了 {1}的{2}\n攻击方体重增长 {3} kg，现 {4} kg");
             ReplyDevourFail = ConfigHelper.GetConfig("ReplyDevourFail", "{0} 企图吃掉 {1}的{2}，但是失败了！\n攻击方体重减少 {3} kg，现 {4} kg\n被攻击方体重增加 {5} kg，现 {6} kg");
             ReplyDevourFailAndDead = ConfigHelper.GetConfig("ReplyDevourFailAndDead", "{0} 企图吃掉 {1}的{2}，但是失败了！反倒被对方吃掉\n被攻击方体重增加 {3} kg，现 {4} kg");
+            ReplyDevourEscaped = ConfigHelper.GetConfig("ReplyAttackEscaped", "{0} 企图吃掉 {1}的{2}，对方逃脱了！");
             ReplyFeed = ConfigHelper.GetConfig("ReplyFeed", "你的「{0}」体重增加了 {1} 千克\n现体重为 {2} 千克");
             ReplyBlindBoxOpen = ConfigHelper.GetConfig("ReplyBlindBoxOpen", "打开 {0} 个盲盒，获得了以下物品：\n{1}");
             ReplyBlindBoxGetNothing = ConfigHelper.GetConfig("ReplyBlindBoxGetNothing", "打开 {0} 个盲盒，什么也没获得");
             ReplyOpenKunEgg = ConfigHelper.GetConfig("ReplyOpenKunEgg", "打开 {0} 个鲲蛋，获得了 {1} 个盲盒");
-            ReplyReleaseSuccess = ConfigHelper.GetConfig("ReplyReleaseSuccess", "放生成功");
+            ReplyReleaseSuccess = ConfigHelper.GetConfig("ReplyReleaseSuccess", "{0}放生成功");
             ReplyReleaseFail = ConfigHelper.GetConfig("ReplyReleaseFail", "放生失败，可能是鲲已死亡或不存在");
             ReplyQueryDeadKun = ConfigHelper.GetConfig("ReplyQueryDeadKun", "还可复活的鲲列表如下：\n");
             ReplyTransmogrifySuccess = ConfigHelper.GetConfig("ReplyTransmogrifySuccess", "幻化成功，{0} 转变为 {1}，体重减少 {2} kg，现 {3} kg\n剩余 {4} 颗幻化丹 {5} 枚金币");
@@ -368,7 +374,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueUpgradeCoinConsume = ConfigHelper.GetConfig("ValueUpgradeCoinConsume", 100);
             ValueUpgradePillConsume = ConfigHelper.GetConfig("ValueUpgradePillConsume", 1);
             
-            BlindBoxContents = ConfigHelper.GetConfig("BlindBoxContents", new List<string>() { "0|97", "4|1", "5|1", "6|1" });
+            BlindBoxContents = ConfigHelper.GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|8" });
 
             Groups = ConfigHelper.GetConfig("Groups", new List<long>());
             Admins = ConfigHelper.GetConfig("Admins", new List<long>());
