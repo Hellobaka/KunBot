@@ -46,7 +46,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             int hatchSuccess = CommonHelper.Random.Next(AppConfig.ValueHatchProbablityMin, AppConfig.ValueHatchProbablityMax);
             if (CommonHelper.Random.Next(100) > hatchSuccess)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchFail, currentCount - hatchConsume));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchFail, currentCount));
                 return result;
             }
 
