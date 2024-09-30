@@ -33,7 +33,9 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             var kuns = Kun.GetKunByRecords(records).OrderByDescending(x => x.Weight).ToList();
             for (int i = 0; i < Math.Min(AppConfig.ValueRankingCount, kuns.Count); i++)
             {
-                string name = e.FromGroup.GetGroupMemberInfo(e.FromQQ).Card;
+                kuns[i].Initialize();
+                var info = e.FromGroup.GetGroupMemberInfo(kuns[i].PlayerID);
+                string name = string.IsNullOrWhiteSpace(info.Card) ? info.Nick : info.Card;
                 stringBuilder.AppendLine($"{i + 1}. [{name}] {kuns[i]} {kuns[i].Weight:f2} 千克");
             }
             stringBuilder.RemoveNewLine();
