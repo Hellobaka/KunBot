@@ -86,6 +86,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyAscendNoWeightLimit { get; set; } = "";
 
+        public static string ReplyAscendFailAndDead { get; set; } = "";
+
         public static string ReplyAscendFail { get; set; } = "";
 
         public static string ReplyAscendSuccess { get; set; } = "";
@@ -298,7 +300,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyBuyEgg = ConfigHelper.GetConfig("ReplyBuyEgg", "购买成功，消耗金币 {0} 枚，获得 {1} 枚鲲蛋\n-------------------\n剩余金币 {2} 枚，鲲蛋 {3} 枚");
             ReplyAscendNoWeightLimit = ConfigHelper.GetConfig("ReplyAscendNoWeightLimit", "无法渡劫，由于体重未达到上限\n当前体重 {0} kg，上限体重 {1} kg");
             ReplyAscendSuccess = ConfigHelper.GetConfig("ReplyAscendSuccess", "渡劫成功，体重增加了 {0} kg，等级加一\n当前体重 {1} kg，当前等级 {2}");
-            ReplyAscendFail = ConfigHelper.GetConfig("ReplyAscendFail", "渡劫失败，你的鲲已死亡");
+            ReplyAscendFailAndDead = ConfigHelper.GetConfig("ReplyAscendFailAndDead", "渡劫失败，你的鲲已死亡");
+            ReplyAscendFail = ConfigHelper.GetConfig("ReplyAscendFail", "渡劫失败，体重减少了 {0} kg，当前体重 {1} kg");
             ReplyParamInvalid = ConfigHelper.GetConfig("ReplyParamInvalid", "指令格式错误{0}");
             ReplyNoTargetPlayer = ConfigHelper.GetConfig("ReplyNoTargetPlayer", "目标指定的玩家未注册");
             ReplyNoTargetPlayerKun = ConfigHelper.GetConfig("ReplyNoTargetKun", "目标指定的玩家未持有鲲");

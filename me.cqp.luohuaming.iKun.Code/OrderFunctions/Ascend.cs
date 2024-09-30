@@ -55,11 +55,15 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             if (r.Dead)
             {
-                sendText.MsgToSend.Add(AppConfig.ReplyAscendFail);
+                sendText.MsgToSend.Add(AppConfig.ReplyAscendFailAndDead);
+            }
+            else if(r.Increment > 0)
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAscendSuccess, r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.CurrentLevel));
             }
             else
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAscendSuccess, r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.CurrentLevel));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAscendFail, r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber()));
             }
             return result;
         }
