@@ -55,7 +55,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             int id = Kun.SaveKun(kun);
 
             Record.AddRecord(new Record { Group = e.FromGroup, QQ = e.FromQQ, KunID = id });
-            sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchKun, kun.ToString(), kun.Weight, currentCount - hatchConsume));
+            sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchKun, kun.ToString(), kun.Weight, currentCount));
             return result;
         }
 
