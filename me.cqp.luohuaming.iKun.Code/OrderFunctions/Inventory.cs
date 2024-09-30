@@ -52,7 +52,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 foreach (var item in list)
                 {
-                    var items = Items.GetItemByID((PublicInfos.Enums.Items)item.Id);
+                    var items = Items.GetItemByID((PublicInfos.Enums.Items)item.ItemID);
                     if (items == null)
                     {
                         continue;
