@@ -122,6 +122,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyItemLeak { get; set; } = "";
 
+        public static string ReplyMultiHatchKun { get; set; } = "";
+
         public static string ReplyHatchKun { get; set; } = "";
 
         public static string ReplyDuplicateHatch { get; set; } = "";
@@ -297,6 +299,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyItemLeak = ConfigHelper.GetConfig("ReplyItemLeak", "{0}数量不足，需要{1}个，现有{2}个");
             ReplyHatchFail = ConfigHelper.GetConfig("ReplyHatchFail", "孵化失败\n-------------------\n剩余 {0} 颗鲲蛋");
             ReplyHatchKun = ConfigHelper.GetConfig("ReplyHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n剩余 {2} 颗鲲蛋");
+            ReplyMultiHatchKun = ConfigHelper.GetConfig("ReplyMultiHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n共消耗 {2} 个蛋 剩余 {3} 颗鲲蛋");
             ReplyBuyEgg = ConfigHelper.GetConfig("ReplyBuyEgg", "购买成功，消耗金币 {0} 枚，获得 {1} 枚鲲蛋\n-------------------\n剩余金币 {2} 枚，鲲蛋 {3} 枚");
             ReplyAscendNoWeightLimit = ConfigHelper.GetConfig("ReplyAscendNoWeightLimit", "无法渡劫，由于体重未达到上限\n当前体重 {0} kg，上限体重 {1} kg");
             ReplyAscendSuccess = ConfigHelper.GetConfig("ReplyAscendSuccess", "渡劫成功，体重增加了 {0} kg，等级加一\n当前体重 {1} kg，当前等级 {2}");
