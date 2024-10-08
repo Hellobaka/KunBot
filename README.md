@@ -30,7 +30,7 @@
 | ReplyDuplicateResurrect          | 重复复活回复                               | 你已经有一只鲲了，不能执行复活                         |
 | ReplyNewRegister                 | 新注册回复                                 | 注册成功，赠送 {0} 枚金币以及 {1} 枚鲲蛋             |
 | ReplyRegisterFailed              | 注册失败回复                               | 注册失败了，查看日志排查问题                           |
-| ReplyMenu                        | 菜单回复                                   | 功能列表：\n{0}  {1}\n{2}  {3}\n...            |
+| ReplyMenu                        | 菜单回复                                   | 功能列表：\n{0}  {1}\n{2}  {3}\n{4}  {5}\n{6}  {7}\n{8}  {9}\n{10}  {11}\n{12}  {13}\n{14}  {15}\n{16}  {17} |
 | ReplyNoPlayer                    | 无玩家回复                                 | 请先注册                                     |
 | ReplyNoKun                       | 无鲲回复                                   | 未持有鲲                                     |
 | ReplyNoTargrtKun                 | 目标鲲不存在回复                             | 目标所指的鲲不存在                               |
@@ -42,11 +42,11 @@
 | ReplyLoginReward                 | 签到奖励回复                               | 签到成功，赠送 {0} 枚金币以及 {1} 枚鲲蛋         |
 | ReplyItemLeak                    | 物品不足回复                               | {0}数量不足，需要{1}个，现有{2}个                |
 | ReplyHatchFail                   | 孵化失败回复                               | 孵化失败\n-------------------\n剩余 {0} 颗鲲蛋    |
-| ReplyHatchKun                    | 孵化成功回复                               | 恭喜你获得一只{0}\n体重 {1} 千克\n...          |
-| ReplyMultiHatchKun               | 多次孵化成功回复                             | 恭喜你获得一只{0}\n体重 {1} 千克\n...          |
+| ReplyHatchKun                    | 孵化成功回复                               | 恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n剩余 {2} 颗鲲蛋|
+| ReplyMultiHatchKun               | 多次孵化成功回复                             | 恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n共消耗 {2} 个蛋 剩余 {3} 颗鲲蛋|
 | ReplyBuyEgg                      | 购买鲲蛋回复                               | 购买成功，消耗金币 {0} 枚，获得 {1} 枚鲲蛋\n...   |
 | ReplyAscendNoWeightLimit         | 渡劫失败体重未达上限回复                      | 无法渡劫，由于体重未达到上限\n当前体重 {0} kg，上限体重 {1} kg |
-| ReplyAscendSuccess               | 渡劫成功回复                               | 渡劫成功，体重增加了 {0} kg，等级加一\n...      |
+| ReplyAscendSuccess               | 渡劫成功回复                               | 购买成功，消耗金币 {0} 枚，获得 {1} 枚鲲蛋\n-------------------\n剩余金币 {2} 枚，鲲蛋 {3} 枚 |
 | ReplyAscendFailAndDead           | 渡劫失败鲲死亡回复                           | 渡劫失败，你的鲲已死亡                             |
 | ReplyAscendFail                  | 渡劫失败回复                               | 渡劫失败，体重减少了 {0} kg，当前体重 {1} kg      |
 | ReplyParamInvalid                | 参数无效回复                               | 指令格式错误{0}                                 |
@@ -54,14 +54,14 @@
 | ReplyNoTargetPlayerKun           | 目标玩家无鲲回复                             | 目标指定的玩家未持有鲲                             |
 | ReplyAttackInCD                  | 攻击冷却中回复                             | 攻击冷却中，下次可攻击时间：{0}                     |
 | ReplyDevourInCD                  | 吞噬冷却中回复                             | 吞噬冷却中，下次可吞噬时间：{0}                     |
-| ReplyAttackSuccess               | 攻击成功回复                               | {0} 对 {1}的{2} 发起攻击，攻击成功了！\n...       |
-| ReplyAttackFail                  | 攻击失败回复                               | {0} 对 {1}的{2} 发起攻击，攻击失败了！\n...       |
+| ReplyAttackSuccess               | 攻击成功回复                               | {0} 对 {1}的{2} 发起攻击，攻击成功了！\n攻击方体重增长 {3} kg，现 {4} kg\n被攻击方体重减少 {5} kg，现 {6} kg|
+| ReplyAttackFail                  | 攻击失败回复                               | {0} 对 {1}的{2} 发起攻击，攻击失败了！\n攻击方体重减少 {3} kg，现 {4} kg\n被攻击方体重增加 {5} kg，现 {6} kg|
 | ReplyAttackEscaped               | 攻击逃脱回复                               | {0} 对 {1}的{2} 发起攻击，对方逃脱了！             |
-| ReplyAttackSuccessAndTargetDead  | 攻击成功目标死亡回复                         | {0} 对 {1}的{2} 发起攻击，攻击成功了！被攻击方伤重致死\n... |
-| ReplyAttackFailAndDead           | 攻击失败自身死亡回复                         | {0} 对 {1}的{2} 发起攻击，攻击失败了！自身伤重致死\n... |
+| ReplyAttackSuccessAndTargetDead  | 攻击成功目标死亡回复                         | {0} 对 {1}的{2} 发起攻击，攻击成功了！被攻击方伤重致死\n攻击方体重增长 {3} kg，现 {4} kg|
+| ReplyAttackFailAndDead           | 攻击失败自身死亡回复                         | {0} 对 {1}的{2} 发起攻击，攻击失败了！自身伤重致死\n被攻击方体重增加 {3} kg，现 {4} kg|
 | ReplyDevourSuccess               | 吞噬成功回复                               | {0} 吃掉了 {1}的{2}\n攻击方体重增长 {3} kg，现 {4} kg |
-| ReplyDevourFail                  | 吞噬失败回复                               | {0} 企图吃掉 {1}的{2}，但是失败了！\n...          |
-| ReplyDevourFailAndDead           | 吞噬失败自身死亡回复                         | {0} 企图吃掉 {1}的{2}，但是失败了！反倒被对方吃掉\n... |
+| ReplyDevourFail                  | 吞噬失败回复                               | {0} 企图吃掉 {1}的{2}，但是失败了！\n攻击方体重减少 {3} kg，现 {4} kg\n被攻击方体重增加 {5} kg，现 {6} kg |
+| ReplyDevourFailAndDead           | 吞噬失败自身死亡回复                         | {0} 企图吃掉 {1}的{2}，但是失败了！反倒被对方吃掉\n被攻击方体重增加 {3} kg，现 {4} kg|
 | ReplyDevourEscaped               | 吞噬逃脱回复                               | {0} 企图吃掉 {1}的{2}，对方逃脱了！                 |
 | ReplyFeed                        | 喂养回复                                   | 你的「{0}」体重增加了 {1} 千克\n现体重为 {2} 千克   |
 | ReplyBlindBoxOpen                | 打开盲盒回复                               | 打开 {0} 个盲盒，获得了以下物品：\n{1}              |
@@ -70,14 +70,14 @@
 | ReplyReleaseSuccess              | 放生成功回复                               | {0}放生成功                                    |
 | ReplyReleaseFail                 | 放生失败回复                               | 放生失败，可能是鲲已死亡或不存在                      |
 | ReplyQueryDeadKun                | 查询已死亡鲲回复                             | 还可复活的鲲列表如下：\n                           |
-| ReplyTransmogrifySuccess         | 幻化成功回复                               | 幻化成功，{0} 转变为 {1}，体重减少 {2} kg，现 {3} kg\n... |
-| ReplyTransmogrifyFail            | 幻化失败回复                               | 幻化失败了，体重减少 {0} kg，现 {1} kg\n...         |
+| ReplyTransmogrifySuccess         | 幻化成功回复                               | 幻化成功，{0} 转变为 {1}，体重减少 {2} kg，现 {3} kg\n剩余 {4} 颗幻化丹 {5} 枚金币 |
+| ReplyTransmogrifyFail            | 幻化失败回复                               | 幻化失败了，体重减少 {0} kg，现 {1} kg\n剩余 {2} 颗幻化丹 {3} 枚金币|
 | ReplyTransmogrifyFailAndDead     | 幻化失败自身死亡回复                         | 幻化失败并且魂飞魄散\n剩余 {0} 颗幻化丹 {1} 枚金币     |
 | ReplyTransmogrifyLevelLimit      | 幻化等级限制回复                             | 不能执行幻化，由于等级限制，当前等级 {0}，最低幻化等级：{1} |
-| ReplyUpgradeSuccess              | 强化成功回复                               | 强化完成，体重增加了 {0} kg，当前体重 {1} kg\n...     |
-| ReplyUpgradeFail                 | 强化失败回复                               | 强化失败，体重减少了 {0} kg，当前体重 {1} kg\n...     |
+| ReplyUpgradeSuccess              | 强化成功回复                               | 强化完成，体重增加了 {0} kg，当前体重 {1} kg\n剩余 {2} 颗强化丹 {3} 枚金币|
+| ReplyUpgradeFail                 | 强化失败回复                               | 强化失败，体重减少了 {0} kg，当前体重 {1} kg\n剩余 {2} 颗强化丹 {3} 枚金币 |
 | ReplyResurrectHourLimit          | 复活时间限制回复                             | 无法复活，由于鲲死亡已超过 {0} 小时，当前死亡 {1} 小时     |
-| ReplyResurrectSuccess            | 复活成功回复                               | 鲲已复活，死亡时间 {0}，复活次数 {1}\n...           |
+| ReplyResurrectSuccess            | 复活成功回复                               | 鲲已复活，死亡时间 {0}，复活次数 {1}\n未复活期间，共损失了 {2} kg，{3} 星级\n消耗 {4} 个复活丸，还剩余 {5} 个复活丸|
 | ReplyResurrectFail               | 复活失败回复                               | 复活失败，消耗 {0} 个复活丸，还剩余 {1} 个复活丸，查看日志查询原因 |
 | ReplyWeightLimit                 | 体重上限回复                               | 体重已达上限，需进行渡劫提高体重上限                    |
 | ProbablityNone                   | 主词缀_无概率                                     | 70                                        |
