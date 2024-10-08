@@ -33,7 +33,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 || !long.TryParse(targetValue, out target))
             {
                 // 非CQ码，尝试解析昵称、卡片与QQ
-                string raw = e.Message.Text.Replace(GetOrderStr(), "").Trim();
+                string raw = e.Message.Text.Substring(GetOrderStr().Length).Trim();
                 if (string.IsNullOrEmpty(raw))
                 {
                     // 无有效指令

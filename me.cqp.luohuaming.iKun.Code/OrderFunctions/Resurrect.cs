@@ -25,7 +25,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 SendID = e.FromGroup,
             };
             result.SendObject.Add(sendText);
-            var param = e.Message.Text.Replace(GetOrderStr(), "").Trim();
+            var param = e.Message.Text.Substring(GetOrderStr().Length).Trim();
             if (!int.TryParse(param, out int id))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, $"，示例：{GetOrderStr()} ID"));

@@ -59,7 +59,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         // 进行计算前需要获取对象锁，当涉及两个对象的处理时，需要获取两个对象的锁
         // 部分方法需要检查Alive与Abandoned属性是否有效
 
-        public static int GetLevelWeightLimit(int level) => (int)Math.Pow(10, level);
+        public static double GetLevelWeightLimit(int level) => Math.Pow(10, level);
 
         /// <summary>
         /// 渡劫
