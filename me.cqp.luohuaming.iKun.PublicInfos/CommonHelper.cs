@@ -92,7 +92,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         /// <returns></returns>
         public static double NextDouble(this Random random, double lower, double upper)
         {
-            return random.Next((int)(lower * 100000), (int)(upper * 100000)) / 100000.0;
+            return random.NextDouble() * (upper - lower) + lower;
         }
 
         public static (double, double) Multiple(this (double, double) item1, (double, double) item2)
