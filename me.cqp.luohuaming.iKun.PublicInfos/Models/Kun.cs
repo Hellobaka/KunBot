@@ -412,7 +412,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         /// 默认完成道具扣除并满足条件
         /// 每复活一次，消耗的资源翻倍
         /// </summary>
-        public bool Resurrect()
+        public ResurrectResult Resurrect()
         {
             try
             {
@@ -421,15 +421,17 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 if (Abandoned)
                 {
                     Logger.Error("目标鲲已被抛弃");
-                    return false;
+                    return new ResurrectResult() { Success = false };
                 }
                 Alive = true;
                 ResurrectCount++;
+                double originalWeight = Weight;
+                double originalLevel = Level;
                 double deadHour = (DateTime.Now - DeadAt).TotalHours;
                 if (deadHour >= AppConfig.ValueMaxResurrectHour)
                 {
                     Logger.Error($"鲲死亡超过{AppConfig.ValueMaxResurrectHour}小时，无法复活");
-                    return false;
+                    return new ResurrectResult() { Success = false };
                 }
                 int weightLossCount = (int)(deadHour / 2);
                 int levelLossCount = (int)(deadHour / 18);
@@ -446,12 +448,17 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Update();
                 Logger.Info($"退出复活方法");
 
-                return true;
+                return new ResurrectResult
+                {
+                    CurrentResurrectCount = ResurrectCount,
+                    WeightLoss = originalWeight - Weight,
+                    LevelLoss = originalLevel - Level,
+                };
             }
             catch (Exception e)
             {
                 Logger.Error(e, "执行复活方法过程中发生异常");
-                return false;
+                return new ResurrectResult() { Success = false };
             }
             finally
             {

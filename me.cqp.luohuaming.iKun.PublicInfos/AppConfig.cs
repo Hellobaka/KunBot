@@ -353,8 +353,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyUpgradeSuccess = GetConfig("ReplyUpgradeSuccess", "强化完成，体重增加了 {0} kg，当前体重 {1} kg\n剩余 {2} 颗强化丹 {3} 枚金币");
             ReplyUpgradeFail = GetConfig("ReplyUpgradeFail", "强化失败，体重减少了 {0} kg，当前体重 {1} kg\n剩余 {2} 颗强化丹 {3} 枚金币");
             ReplyResurrectHourLimit = GetConfig("ReplyResurrectHourLimit", "无法复活，由于鲲死亡已超过 {0} 小时，当前死亡 {1} 小时");
-            ReplyResurrectSuccess = GetConfig("ReplyResurrectSuccess", "鲲已复活");
-            ReplyResurrectFail = GetConfig("ReplyResurrectFail", "复活失败，查看日志查询原因");
+            ReplyResurrectSuccess = GetConfig("ReplyResurrectSuccess", "鲲已复活，死亡时间 {0}，复活次数 {1}\n未复活期间，共损失了 {2} kg，{3} 星级\n消耗 {4} 个复活丸，还剩余 {5} 个复活丸");
+            ReplyResurrectFail = GetConfig("ReplyResurrectFail", "复活失败，消耗 {0} 个复活丸，还剩余 {1} 个复活丸，查看日志查询原因");
             ReplyWeightLimit = GetConfig("ReplyWeightLimit", "体重已达上限，需进行渡劫提高体重上限");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
