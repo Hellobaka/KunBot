@@ -147,6 +147,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             try
             {
                 Monitor.Enter(LockObject);
+                Monitor.Enter(target.LockObject);
                 Logger.Info($"进入攻击方法，ID={Id}，目标ID={target.Id}");
                 if (!Alive || Abandoned || !target.Alive || Abandoned)
                 {
@@ -222,6 +223,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             finally
             {
                 Monitor.Exit(LockObject);
+                Monitor.Exit(target.LockObject);
             }
         }
 
