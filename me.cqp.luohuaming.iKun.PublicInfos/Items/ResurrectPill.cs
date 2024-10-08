@@ -5,8 +5,8 @@
         public ResurrectPill(int count = 1)
         {
             ID = Enums.Items.ResurrectPill;
-            Name = "复活丸";
-            Description = "能复活鲲，但是不能复活因幻化而死去的鲲";
+            Name = ItemConfig.ResurrectPillName;
+            Description = ItemConfig.ResurrectPillDescription;
             Stackable = true;
             Count = count;
         }

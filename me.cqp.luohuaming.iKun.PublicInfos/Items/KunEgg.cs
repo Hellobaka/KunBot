@@ -5,8 +5,8 @@
         public KunEgg(int count = 1)
         {
             ID = Enums.Items.KunEgg;
-            Name = "鲲之蛋";
-            Description = "可用于孵化、强化鲲";
+            Name = ItemConfig.KunEggName;
+            Description = ItemConfig.KunEggDescription;
             Stackable = true;
             Count = count;
         }

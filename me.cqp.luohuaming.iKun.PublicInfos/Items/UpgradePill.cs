@@ -5,8 +5,8 @@
         public UpgradePill(int count = 1)
         {
             ID = Enums.Items.UpgradePill;
-            Name = "强化丸";
-            Description = "能用于强化鲲";
+            Name = ItemConfig.UpgradePillName;
+            Description = ItemConfig.UpgradePillDescription;
             Stackable = true;
             Count = count;
         }

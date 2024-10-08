@@ -5,8 +5,8 @@
         public BlindBox(int count = 1)
         {
             ID = Enums.Items.BlindBox;
-            Name = "盲盒";
-            Description = "能获得随机材料";
+            Name = ItemConfig.BlindBoxName;
+            Description = ItemConfig.BlindBoxDescription;
             Stackable = true;
             Count = count;
         }
