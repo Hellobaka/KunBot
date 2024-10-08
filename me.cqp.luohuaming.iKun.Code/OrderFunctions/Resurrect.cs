@@ -75,7 +75,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyResurrectHourLimit, AppConfig.ValueMaxResurrectHour, (int)(DateTime.Now - kun.DeadAt).TotalHours));
                 return result;
             }
-            int consume = (int)Math.Pow(kun.ResurrectCount, 2);
+            int consume = Math.Min(1, (int)Math.Pow(kun.ResurrectCount, 2));
             if (!InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.ResurrectPill, consume, out int currentCount))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.ResurrectPill().Name, consume, currentCount));
@@ -83,13 +83,14 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
 
             kun.Initialize();
-            if (kun.Resurrect())
+            var r = kun.Resurrect();
+            if (r.Success)
             {
-                sendText.MsgToSend.Add(AppConfig.ReplyResurrectSuccess);
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyResurrectSuccess, DateTime.Now.ToString("G"), r.CurrentResurrectCount, r.WeightLoss.ToShortNumber(), r.LevelLoss.ToShortNumber(), consume, currentCount));
             }
             else
             {
-                sendText.MsgToSend.Add(AppConfig.ReplyResurrectFail);
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyResurrectFail, consume, currentCount));
             }
             return result;
         }
