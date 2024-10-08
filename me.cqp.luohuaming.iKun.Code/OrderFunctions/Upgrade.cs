@@ -39,7 +39,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoKun);
                 return result;
             }
-            var param = e.Message.Text.Replace(GetOrderStr(), "").Trim();
+            var param = e.Message.Text.Substring(GetOrderStr().Length).Trim();
             if (!int.TryParse(param, out int count))
             {
                 count = 1;

@@ -26,7 +26,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             };
             result.SendObject.Add(sendText);
 
-            var param = e.Message.Text.Replace(GetOrderStr(), "").Trim();
+            var param = e.Message.Text.Substring(GetOrderStr().Length).Trim();
             if (!int.TryParse(param, out int count))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, $"，示例：{GetOrderStr()} 数量"));
