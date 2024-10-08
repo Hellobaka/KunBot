@@ -1,4 +1,5 @@
 using me.cqp.luohuaming.iKun.PublicInfos;
+using me.cqp.luohuaming.iKun.PublicInfos.Items;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.Interface;
@@ -33,10 +34,13 @@ namespace me.cqp.luohuaming.iKun.Code
             }
 
             e.CQLog.Info("初始化", "加载配置");
-            ConfigHelper.ConfigPath = Path.Combine(MainSave.AppDirectory, "Config.json");
-            ConfigHelper.Load();
-            AppConfig.LoadConfig();
-            AppConfig.EnableAutoReload();
+            AppConfig appConfig = new(Path.Combine(MainSave.AppDirectory, "Config.json"));
+            appConfig.LoadConfig();
+            appConfig.EnableAutoReload();
+
+            ItemConfig itemConfig = new(Path.Combine(MainSave.AppDirectory, "Items.json"));
+            itemConfig.LoadConfig();
+            itemConfig.EnableAutoReload();
 
             e.CQLog.Info("初始化", "初始化日志");
             Logger.Init();

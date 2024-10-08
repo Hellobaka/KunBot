@@ -72,13 +72,14 @@
   <ItemGroup>
     <Compile Include="AppConfig.cs" />
     <Compile Include="CommonHelper.cs" />
-    <Compile Include="ConfigHelper.cs" />
+    <Compile Include="ConfigBase.cs" />
     <Compile Include="Enums\AttributeBAction.cs" />
     <Compile Include="Enums\Attributes.cs" />
     <Compile Include="Enums\Items.cs" />
     <Compile Include="FunctionResult.cs" />
     <Compile Include="Items\BlindBox.cs" />
     <Compile Include="Items\Coin.cs" />
+    <Compile Include="Items\ItemConfig.cs" />
     <Compile Include="Items\KunEgg.cs" />
     <Compile Include="Items\ResurrectPill.cs" />
     <Compile Include="Items\TransmogrifyPill.cs" />

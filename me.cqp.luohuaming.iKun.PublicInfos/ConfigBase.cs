@@ -8,18 +8,29 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
     /// <summary>
     /// 配置读取帮助类
     /// </summary>
-    public static class ConfigHelper
+    public class ConfigBase
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public ConfigBase(string configPath)
+        {
+            ConfigPath = configPath;
+            Load();
+        }
+
+        public FileSystemWatcher ConfigChangeWatcher { get; set; } = new();
+
         /// <summary>
         /// 配置文件路径
         /// </summary>
-        public static string ConfigPath { get; set; } = @"conf/Config.json";
+        public string ConfigPath { get; set; } = @"conf/Config.json";
 
-        public static object ReadLock { get; set; } = new object();
+        public object ReadLock { get; set; } = new object();
 
-        public static object WriteLock { get; set; } = new object();
+        public object WriteLock { get; set; } = new object();
 
-        public static JObject CurrentJObject { get; set; }
+        public JObject CurrentJObject { get; set; }
 
         /// <summary>
         /// 读取配置
@@ -27,7 +38,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         /// <param name="sectionName">需要读取的配置键名</param>
         /// <typeparam name="T">类型</typeparam>
         /// <returns>目标类型的配置</returns>
-        public static T GetConfig<T>(string sectionName, T defaultValue = default)
+        public T GetConfig<T>(string sectionName, T defaultValue = default)
         {
             lock (ReadLock)
             {
@@ -76,7 +87,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             }
         }
 
-        public static void SetConfig<T>(string sectionName, T value)
+        public void SetConfig<T>(string sectionName, T value)
         {
             lock (WriteLock)
             {
@@ -97,7 +108,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             }
         }
 
-        public static bool Load()
+        public bool Load()
         {
             try
             {
@@ -113,6 +124,39 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             {
                 MainSave.CQLog.Debug("配置热重载", $"LoadFail: {e.Message}");
                 return false;
+            }
+        }
+
+        public void EnableAutoReload()
+        {
+            ConfigChangeWatcher.Path = Path.GetDirectoryName(ConfigPath);
+            ConfigChangeWatcher.Filter = Path.GetFileName(ConfigPath);
+            ConfigChangeWatcher.NotifyFilter = NotifyFilters.LastWrite;
+            ConfigChangeWatcher.Changed -= ConfigChangeWatcher_Changed;
+            ConfigChangeWatcher.Changed += ConfigChangeWatcher_Changed;
+            ConfigChangeWatcher.EnableRaisingEvents = true;
+        }
+
+        public void DisableAutoReload()
+        {
+            ConfigChangeWatcher.EnableRaisingEvents = false;
+        }
+
+        public virtual void LoadConfig()
+        {
+        }
+
+        private void ConfigChangeWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            try
+            {
+                if (e.ChangeType == WatcherChangeTypes.Changed && Load())
+                {
+                    LoadConfig();
+                }
+            }
+            catch
+            {
             }
         }
     }
