@@ -109,7 +109,15 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourFailAndDead, kun.ToString(), playerInfo, targetKun.ToString(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
             }
-            else if (r.Increment > 1)
+            else if (r.Increment < 0)
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourFail, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
+            }
+            else if (r.Escaped)
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourEscaped, kun.ToString(), playerInfo, targetKun.ToString()));
+            }
+            else
             {
                 string send = string.Format(AppConfig.ReplyDevourSuccess, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber());
                 if (r.WeightLimit)
@@ -118,14 +126,6 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 }
                 sendText.MsgToSend.Add(send);
             }
-            else if (r.Escaped)
-            {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourEscaped, kun.ToString(), playerInfo, targetKun.ToString()));
-            }
-            else
-            {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourFail, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
-            }                
             return result;
         }
 

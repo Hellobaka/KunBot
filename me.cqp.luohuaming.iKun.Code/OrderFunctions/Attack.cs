@@ -114,14 +114,9 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAttackSuccessAndTargetDead, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber()));
             }
-            else if (r.Increment > 1)
+            else if (r.Increment < 0)
             {
-                string send = string.Format(AppConfig.ReplyAttackSuccess, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber());
-                if (r.WeightLimit)
-                {
-                    send += $"\n{AppConfig.ReplyWeightLimit}";
-                }
-                sendText.MsgToSend.Add(send);
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAttackFail, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
             }
             else if (r.Escaped)
             {
@@ -129,7 +124,12 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             else
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAttackFail, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
+                string send = string.Format(AppConfig.ReplyAttackSuccess, kun.ToString(), playerInfo, targetKun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber());
+                if (r.WeightLimit)
+                {
+                    send += $"\n{AppConfig.ReplyWeightLimit}";
+                }
+                sendText.MsgToSend.Add(send);
             }
             return result;
         }
