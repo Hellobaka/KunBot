@@ -5,7 +5,7 @@
 |----------------------------------|------------------------------------------|-------------------------------------------|
 | RankingCount                     | 排行榜数量                                 | 10                                        |
 | EnableAt                         | 是否启用@功能                              | false                                     |
-| EnableShortNumber                | 是否启用短号码显示                          | false                                     |
+| EnableShortNumber                | 是否启用短数字（万、亿、兆...）显示                          | false                                     |
 | CommandAscend                    | 渡劫命令                                   | #渡劫                                      |
 | CommandAttack                    | 攻击命令                                   | #攻击                                      |
 | CommandBuyEgg                    | 买鲲蛋命令                                 | #买鲲蛋                                    |
