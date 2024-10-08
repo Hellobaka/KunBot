@@ -108,6 +108,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     }
                 }
                 Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
+                if (Weight <= 0)
+                {
+                    Alive = false;
+                    DeadAt = DateTime.Now;
+                    Logger.Info($"体重小于0，鲲触发死亡");
+                }
                 Update();
 
                 Logger.Info($"渡劫方法结束，倍率={diff}，结果={Weight}，原始值={original}，变化值={Weight - original}，当前等级={Level}，是否死亡={!Alive}");
@@ -175,9 +181,22 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     target.Alive = false;
                     target.DeadAt = DateTime.Now;
-                    Logger.Info($"攻击方变化后小于攻击方体重的10%，触发死亡");
+                    Logger.Info($"被攻击方变化后小于攻击方体重的10%，触发死亡");
                 }
-                
+
+                if (Weight <= 0)
+                {
+                    Alive = false;
+                    DeadAt = DateTime.Now;
+                    Logger.Info($"攻击方变化后体重小于0，触发死亡");
+                }
+                if (target.Weight <= 0)
+                {
+                    target.Alive = false;
+                    target.DeadAt = DateTime.Now;
+                    Logger.Info($"被攻击方变化后体重小于0，触发死亡");
+                }
+
                 Update();
                 target.Update();
 
@@ -271,6 +290,19 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     target.DeadAt = DateTime.Now;
                 }
 
+                if (Weight <= 0)
+                {
+                    Alive = false;
+                    DeadAt = DateTime.Now;
+                    Logger.Info($"吞噬方变化后体重小于0，触发死亡");
+                }
+                if (target.Weight <= 0)
+                {
+                    target.Alive = false;
+                    target.DeadAt = DateTime.Now;
+                    Logger.Info($"被吞噬方变化后体重小于0，触发死亡");
+                }
+
                 Update();
                 target.Update();
 
@@ -304,7 +336,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         /// <summary>
         /// 喂养
         /// 在词缀中有基础实现
-        /// 每个次数可增加5%~10%的体重
+        /// 每个次数可增加10+(5%~10%)的体重
         /// </summary>
         public FeedResult Feed(int count)
         {
@@ -322,10 +354,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 diff = PetAttributeB.Feed(count, diff);
 
                 Weight *= (1 + diff);
+                Weight += count * AppConfig.ValueFeedWeightBaseIncrement;
                 Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
                 Update();
                 bool reachLimit = Weight == GetLevelWeightLimit(Level);
-                Logger.Info($"喂养方法结束，倍率={diff}，结果={Weight}，原始值={original}，变化值={Weight - original}，达到上限={reachLimit}");
+                Logger.Info($"喂养方法结束，倍率={diff}，基础增加={count * AppConfig.ValueFeedWeightBaseIncrement}，结果={Weight}，原始值={original}，变化值={Weight - original}，达到上限={reachLimit}");
                 return new FeedResult
                 {
                     CurrentWeight = Weight,
@@ -625,7 +658,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             {
                 baseRate = 2;
             }
-            if(source.ID != Enums.Attribute.None && target.ID == Enums.Attribute.None)
+            if (source.ID != Enums.Attribute.None && target.ID == Enums.Attribute.None)
             {
                 baseRate = 1.3;
             }
