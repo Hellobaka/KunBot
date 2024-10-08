@@ -87,6 +87,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyKunAlive { get; set; } = "";
 
+        public static string ReplyKunWeightZero { get; set; } = "";
+
         public static string ReplyKunNotAlive { get; set; } = "";
 
         public static string ReplyNoTargetPlayerKun { get; set; } = "";
@@ -259,6 +261,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueTransmogrifyLevelLimit { get; set; } = 5;
 
+        public static int ValueAscendWeightMinimalIncrement { get; set; }
+
+        public static int ValueAscendWeightMaximalIncrement { get; set; }
+
+        public static int ValueAscendWeightMinimalDecrement { get; set; }
+
+        public static int ValueAscendWeightMaximalDecrement { get; set; }
+
         public static List<string> BlindBoxContents { get; set; } = [];
 
         public static List<long> Groups { get; set; } = [];
@@ -303,6 +313,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyKunOwnerNotMatch = GetConfig("ReplyKunOwnerNotMatch", "这只鲲不是你的{0}");
             ReplyKunAbandoned = GetConfig("ReplyKunAbandoned", "鲲已被标记为弃置{0}");
             ReplyKunAlive = GetConfig("ReplyKunAlive", "鲲未死亡{0}");
+            ReplyKunWeightZero = GetConfig("ReplyKunWeightZero", "鲲体重小于0{0}");
             ReplyKunNotAlive = GetConfig("ReplyKunNotAlive", "鲲已死亡{0}");
             ReplyLoginReward = GetConfig("ReplyLoginReward", "签到成功，赠送 {0} 枚金币以及 {1} 枚鲲蛋");
             ReplyItemLeak = GetConfig("ReplyItemLeak", "{0}数量不足，需要{1}个，现有{2}个");
@@ -389,6 +400,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueTransmogrifyLevelLimit = GetConfig("ValueTransmogrifyLevelLimit", 5);
             ValueUpgradeCoinConsume = GetConfig("ValueUpgradeCoinConsume", 100);
             ValueUpgradePillConsume = GetConfig("ValueUpgradePillConsume", 1);
+            ValueAscendWeightMinimalIncrement = GetConfig("ValueAscendWeightMinimalIncrement", 10);
+            ValueAscendWeightMaximalIncrement = GetConfig("ValueAscendWeightMaximalIncrement", 500);
+            ValueAscendWeightMinimalDecrement = GetConfig("ValueAscendWeightMinimalDecrement", 10);
+            ValueAscendWeightMaximalDecrement = GetConfig("ValueAscendWeightMaximalDecrement", 50);
             
             BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|8" });
 

@@ -27,7 +27,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
 
         /// <summary>
         /// 默认完成了道具扣除
-        /// 成功增加500%，失败扣除50%，10%概率死亡
+        /// 成功增加10%~500%，失败扣除10~50%，10%概率死亡
         /// </summary>
         /// <param name="success">基础成功率(0.x)</param>
         /// <param name="diff">最终值变化附加数值(%)(乘算)</param>
@@ -37,7 +37,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             Logger.Info($"进入渡劫词缀计算方法，成功率={success}，Diff={diff}");
             double random = CommonHelper.Random.NextDouble();
             Logger.Info($"判定随机数={random}");
-            diff = (random <= success ? 5 : 0.5) * diff;
+            diff = (random <= success
+                    ? CommonHelper.Random.NextDouble(AppConfig.ValueAscendWeightMinimalIncrement, AppConfig.ValueAscendWeightMaximalIncrement)
+                    : CommonHelper.Random.NextDouble(AppConfig.ValueAscendWeightMinimalDecrement, AppConfig.ValueAscendWeightMaximalDecrement))
+                * diff;
             Logger.Info($"退出渡劫词缀计算方法，倍率={diff}");
             return diff;
         }
@@ -151,7 +154,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             double increment = 0;
             for (int i = 0; i < count; i++)
             {
-                double random = CommonHelper.Random.Next(5, 10);
+                double random = CommonHelper.Random.Next(AppConfig.ValueFeedWeightMinimumIncrement, AppConfig.ValueFeedWeightMaximumIncrement);
                 double newIncrement = random / 100.0 * diff;
                 increment += newIncrement;
                 Logger.Info($"次数={i + 1}，随机数={random}，增量={newIncrement}，当前总增量={increment}");
