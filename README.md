@@ -126,7 +126,7 @@
 | ValueAscendWeightMaximalIncrement| 渡劫体重最大增量                             | 500                                       |
 | ValueAscendWeightMinimalDecrement| 渡劫体重最小减量                             | 10                                        |
 | ValueAscendWeightMaximalDecrement| 渡劫体重最大减量                             | 50                                        |
-| BlindBoxContents                 | 盲盒内容(ID|概率)                                   | ["0|75", "4|8", "5|8", "6|8"]             |
+| BlindBoxContents                 | 盲盒内容(ID\|概率)                                   | ["0\|75", "4\|8", "5\|8", "6\|8"]             |
 | Groups                           | 群组列表                                   | []                                        |
 | Admins                           | 管理员列表                                 | []                                        |
 
@@ -145,3 +145,14 @@
 | ResurrectPillDescription  | 复活丸描述                 | 用于复活的道具，能复活鲲 |
 | TransmogrifyPillDescription| 幻化丸描述                 | 用于幻化的道具，能够随机更改鲲的词缀 |
 | UpgradePillDescription    | 强化丸描述                 | 用于强化的道具，能用于强化鲲 |
+
+### 物品ID
+| ID                       | 物品名称                       |
+|---------------------------|----------------------------|
+|0|空|
+|1|金币|
+|2|鲲之蛋|
+|3|盲盒|
+|4|复活丸|
+|5|幻化丸|
+|6|强化丸|
