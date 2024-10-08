@@ -65,6 +65,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunAlive, "，无法复活"));
                 return result;
             }
+            if (kun.Weight <= 0)
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunWeightZero, "，无法复活"));
+                return result;
+            }
             if ((DateTime.Now - kun.DeadAt).TotalHours >= AppConfig.ValueMaxResurrectHour)
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyResurrectHourLimit, AppConfig.ValueMaxResurrectHour, (int)(DateTime.Now - kun.DeadAt).TotalHours));
