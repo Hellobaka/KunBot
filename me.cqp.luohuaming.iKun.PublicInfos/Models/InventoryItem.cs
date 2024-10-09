@@ -1,4 +1,5 @@
 ﻿using SqlSugar;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos.Models
@@ -49,6 +50,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             if (item.Stackable)
             {
                 var query = db.Queryable<InventoryItem>().Where(x => x.PlayerID == player.QQ && x.ItemID == (int)itemID && !x.Deleted).First();
+                if (query == null)
+                {
+                    return false;
+                }
                 currentCount = query.Count;
                 if (query.Count >= count)
                 {
@@ -65,6 +70,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             else
             {
                 var items = db.Queryable<InventoryItem>().Where(x => x.PlayerID == player.QQ && x.ItemID == (int)itemID && !x.Deleted).ToList();
+                if (items == null || items.Count == 0)
+                {
+                    return false;
+                }
                 currentCount = items.Count;
                 if (items.Count >= count)
                 {
