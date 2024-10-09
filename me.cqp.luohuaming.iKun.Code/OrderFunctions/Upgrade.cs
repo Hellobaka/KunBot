@@ -42,7 +42,8 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             var param = e.Message.Text.Substring(GetOrderStr().Length).Trim();
             if (!int.TryParse(param, out int count))
             {
-                count = 1;
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, $"，示例：{GetOrderStr()} 数量"));
+                return result;
             }
             count = Math.Max(1, count);
             int currentCoin = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.Coin);
