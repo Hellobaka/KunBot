@@ -43,7 +43,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             int eggComsume = count * AppConfig.ValueEggValue;
             if (!InventoryItem.TryRemoveItem(player, Items.Coin().ID, eggComsume, out int currentCount))
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.KunEgg().Name, eggComsume, currentCount));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.Coin().Name, eggComsume, currentCount));
                 return result;
             }
             player.GiveItem([
