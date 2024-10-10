@@ -186,6 +186,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyDevourSelf { get; set; } = "";
 
+        public static string ReplyKunToString { get; set; } = "";
+
         public static double ProbablityNone { get; set; }
 
         public static double ProbablityJin { get; set; }
@@ -369,6 +371,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyEmptyInventory = GetConfig("ReplyEmptyInventory", "仓库为空");
             ReplyAttackSelf = GetConfig("ReplyAttackSelf", "不能自己攻击自己");
             ReplyDevourSelf = GetConfig("ReplyDevourSelf", "不能自己攻击自己");
+            ReplyKunToString = GetConfig("ReplyKunToString", "[%PetAttributeA%] %PetAttributeB%鲲 %LongLevel%");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);

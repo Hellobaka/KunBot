@@ -770,7 +770,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public override string ToString()
         {
-            return $"[{PetAttributeA.Name}] {PetAttributeB.Name}鲲 {new string('★', Level)}";
+            return AppConfig.ReplyKunToString
+                .Replace("%PetAttributeA%", PetAttributeA.Name)
+                .Replace("%PetAttributeB%", PetAttributeB.Name)
+                .Replace("%LongLevel%", new string('★', Level))
+                .Replace("%ShortLevel%", $"{Level}★")
+                .Replace("%Weight%", Weight.ToShortNumber());
         }
 
         public string ToStringFull()
