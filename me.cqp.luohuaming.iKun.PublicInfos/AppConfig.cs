@@ -401,7 +401,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueUpgradeCoinConsume = GetConfig("ValueUpgradeCoinConsume", 100);
             ValueUpgradePillConsume = GetConfig("ValueUpgradePillConsume", 1);
             ValueAscendWeightMinimalIncrement = GetConfig("ValueAscendWeightMinimalIncrement", 10);
-            ValueAscendWeightMaximalIncrement = GetConfig("ValueAscendWeightMaximalIncrement", 500);
+            ValueAscendWeightMaximalIncrement = GetConfig("ValueAscendWeightMaximalIncrement", 400);
             ValueAscendWeightMinimalDecrement = GetConfig("ValueAscendWeightMinimalDecrement", 10);
             ValueAscendWeightMaximalDecrement = GetConfig("ValueAscendWeightMaximalDecrement", 50);
             

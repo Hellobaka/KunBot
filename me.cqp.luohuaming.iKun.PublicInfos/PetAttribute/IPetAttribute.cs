@@ -38,8 +38,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             double random = CommonHelper.Random.NextDouble();
             Logger.Info($"判定随机数={random}");
             diff = (random <= success
-                    ? CommonHelper.Random.NextDouble(AppConfig.ValueAscendWeightMinimalIncrement, AppConfig.ValueAscendWeightMaximalIncrement)
-                    : CommonHelper.Random.NextDouble(AppConfig.ValueAscendWeightMinimalDecrement, AppConfig.ValueAscendWeightMaximalDecrement))
+                    ? 1 + (CommonHelper.Random.NextDouble(AppConfig.ValueAscendWeightMinimalIncrement, AppConfig.ValueAscendWeightMaximalIncrement) / 100)
+                    : 1 - (CommonHelper.Random.NextDouble(AppConfig.ValueAscendWeightMinimalDecrement, AppConfig.ValueAscendWeightMaximalDecrement) / 100))
                 * diff;
             Logger.Info($"退出渡劫词缀计算方法，倍率={diff}");
             return diff;
