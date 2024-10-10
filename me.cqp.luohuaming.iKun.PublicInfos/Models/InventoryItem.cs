@@ -1,4 +1,5 @@
 ﻿using SqlSugar;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -42,6 +43,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             var db = SQLHelper.GetInstance();
             var item = Items.GetItemByID(itemID);
             currentCount = 0;
+            count = Math.Max(1, count);
             if (item == null)
             {
                 MainSave.CQLog.Error("获取物资信息", $"无法查询到ID为 {itemID} 的物资");
