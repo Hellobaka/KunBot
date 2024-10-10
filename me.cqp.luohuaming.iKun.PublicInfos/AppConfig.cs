@@ -15,8 +15,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static AppConfig Instance { get; private set; }
 
-        public static int RankingCount { get; set; } = 10;
-
         public static bool EnableAt { get; set; }
 
         public static ShortNumberType ShortNumberType { get; set; }
@@ -288,7 +286,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public override void LoadConfig()
         {
-            RankingCount = GetConfig("RankingCount", 10);
             EnableAt = GetConfig("EnableAt", false);
             ShortNumberType = GetConfig("EnableShortNumber", ShortNumberType.Normal);
 
