@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using me.cqp.luohuaming.iKun.PublicInfos.Enums;
+using System.Collections.Generic;
 using System.IO;
 
 namespace me.cqp.luohuaming.iKun.PublicInfos
@@ -18,7 +19,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static bool EnableAt { get; set; }
 
-        public static bool EnableShortNumber { get; set; }
+        public static ShortNumberType ShortNumberType { get; set; }
 
         public static string CommandRegister { get; set; } = "";
 
@@ -279,7 +280,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         {
             RankingCount = GetConfig("RankingCount", 10);
             EnableAt = GetConfig("EnableAt", false);
-            EnableShortNumber = GetConfig("EnableShortNumber", false);
+            ShortNumberType = GetConfig("EnableShortNumber", ShortNumberType.Normal);
 
             CommandAscend = GetConfig("CommandAscend", "#渡劫");
             CommandAttack = GetConfig("CommandAttack", "#攻击");

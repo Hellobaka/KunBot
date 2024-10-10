@@ -102,9 +102,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ToShortNumber(this double value)
         {
-            if (!AppConfig.EnableShortNumber)
+            if (AppConfig.ShortNumberType == Enums.ShortNumberType.Normal)
             {
                 return value.ToString("f2");
+            }
+            else if (AppConfig.ShortNumberType == Enums.ShortNumberType.Science)
+            {
+                return value <= 1000000 ? value.ToString("f2") : value.ToString("E2");
             }
             int index = -1;
             while (value > 10000 && index < Units.Length)
