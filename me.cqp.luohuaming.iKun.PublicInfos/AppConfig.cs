@@ -289,7 +289,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public override void LoadConfig()
         {
             EnableAt = GetConfig("EnableAt", false);
-            ShortNumberType = GetConfig("EnableShortNumber", ShortNumberType.Normal);
+            ShortNumberType = GetConfig("ShortNumberType", ShortNumberType.Normal);
 
             CommandAscend = GetConfig("CommandAscend", "#渡劫");
             CommandAttack = GetConfig("CommandAttack", "#攻击");
@@ -349,7 +349,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyDevourFail = GetConfig("ReplyDevourFail", "{0} 企图吃掉 {1}的{2}，但是失败了！\n攻击方体重减少 {3} kg，现 {4} kg\n被攻击方体重增加 {5} kg，现 {6} kg");
             ReplyDevourFailAndDead = GetConfig("ReplyDevourFailAndDead", "{0} 企图吃掉 {1}的{2}，但是失败了！反倒被对方吃掉\n被攻击方体重增加 {3} kg，现 {4} kg");
             ReplyDevourEscaped = GetConfig("ReplyAttackEscaped", "{0} 企图吃掉 {1}的{2}，对方逃脱了！");
-            ReplyFeed = GetConfig("ReplyFeed", "你的「{0}」体重增加了 {1} 千克\n现体重为 {2} 千克\n-------------------n剩余 {3} 枚金币，{4} 枚鲲蛋");
+            ReplyFeed = GetConfig("ReplyFeed", "你的「{0}」体重增加了 {1} 千克\n现体重为 {2} 千克\n-------------------\n剩余 {3} 枚金币，{4} 枚鲲蛋");
             ReplyBlindBoxOpen = GetConfig("ReplyBlindBoxOpen", "打开 {0} 个盲盒，获得了以下物品：\n{1}");
             ReplyBlindBoxGetNothing = GetConfig("ReplyBlindBoxGetNothing", "打开 {0} 个盲盒，什么也没获得");
             ReplyOpenKunEgg = GetConfig("ReplyOpenKunEgg", "打开 {0} 个鲲蛋，获得了 {1} 个盲盒");
