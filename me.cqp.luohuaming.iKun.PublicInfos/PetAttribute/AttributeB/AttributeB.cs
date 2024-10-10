@@ -162,7 +162,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
         {
             if (AttributeBAction == Enums.AttributeBAction.AscendSuccessRateUpper)
             {
-                value *= AppendValue;
+                value *= (1 + AppendValue);
                 Logger.Info($"提升渡劫成功率，倍率={AppendValue}，处理后成功率={value}");
             }
             return value;
