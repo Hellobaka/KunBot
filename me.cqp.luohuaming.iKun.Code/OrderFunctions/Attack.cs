@@ -60,7 +60,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             if (target == e.FromQQ)
             {
-                sendText.MsgToSend.Add("不能自己攻击自己");
+                sendText.MsgToSend.Add(AppConfig.ReplyAttackSelf);
                 return result;
             }
 

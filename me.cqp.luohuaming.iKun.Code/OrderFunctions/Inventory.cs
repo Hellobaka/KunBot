@@ -46,7 +46,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             var list = InventoryItem.GetItemsByQQ(e.FromQQ);
             if (list == null || list.Count == 0)
             {
-                sendText.MsgToSend.Add("仓库为空");
+                sendText.MsgToSend.Add(AppConfig.ReplyEmptyInventory);
             }
             else
             {

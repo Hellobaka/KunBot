@@ -28,7 +28,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             };
             result.SendObject.Add(sendText);
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("排行如下：");
+            stringBuilder.AppendLine(AppConfig.ReplyRankingHeader);
             var records = Record.GetRecordsByGroupID(e.FromGroup);
             var kuns = Kun.GetKunByRecords(records).OrderByDescending(x => x.Weight).ToList();
             for (int i = 0; i < Math.Min(AppConfig.ValueRankingCount, kuns.Count); i++)

@@ -52,22 +52,22 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             if (kun.PlayerID != player.QQ)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunOwnerNotMatch, "，无法复活"));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunOwnerNotMatch, AppConfig.ReplyResurrectFailed));
                 return result;
             }
             if (kun.Abandoned)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunAbandoned, "，无法复活"));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunAbandoned, AppConfig.ReplyResurrectFailed));
                 return result;
             }
             if (kun.Alive)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunAlive, "，无法复活"));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunAlive, AppConfig.ReplyResurrectFailed));
                 return result;
             }
             if (kun.Weight <= 0)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunWeightZero, "，无法复活"));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunWeightZero, AppConfig.ReplyResurrectFailed));
                 return result;
             }
             if ((DateTime.Now - kun.DeadAt).TotalHours >= AppConfig.ValueMaxResurrectHour)

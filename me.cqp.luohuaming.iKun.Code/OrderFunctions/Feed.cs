@@ -69,13 +69,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 
                 var r = kun.Feed(count);
                 StringBuilder stringBuilder = new();
-                stringBuilder.AppendLine(string.Format(AppConfig.ReplyFeed, kun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber()));
+                stringBuilder.AppendLine(string.Format(AppConfig.ReplyFeed, kun.ToString(), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber(), currentCoin, currentEgg));
                 if (r.WeightLimit)
                 {
                     stringBuilder.AppendLine(AppConfig.ReplyWeightLimit);
                 }
-                stringBuilder.AppendLine("-------------------");
-                stringBuilder.AppendLine($"剩余 {currentCoin} 枚金币，{currentEgg} 枚鲲蛋");
                 stringBuilder.RemoveNewLine();
 
                 sendText.MsgToSend.Add(stringBuilder.ToString());

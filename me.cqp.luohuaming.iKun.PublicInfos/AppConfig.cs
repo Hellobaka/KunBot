@@ -178,6 +178,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyWeightLimit { get; set; } = "";
 
+        public static string ReplyResurrectFailed { get; set; } = "";
+
+        public static string ReplyRankingHeader { get; set; } = "";
+
+        public static string ReplyEmptyInventory { get; set; } = "";
+
+        public static string ReplyAttackSelf { get; set; } = "";
+
+        public static string ReplyDevourSelf { get; set; } = "";
+
         public static double ProbablityNone { get; set; }
 
         public static double ProbablityJin { get; set; }
@@ -340,7 +350,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyDevourFail = GetConfig("ReplyDevourFail", "{0} 企图吃掉 {1}的{2}，但是失败了！\n攻击方体重减少 {3} kg，现 {4} kg\n被攻击方体重增加 {5} kg，现 {6} kg");
             ReplyDevourFailAndDead = GetConfig("ReplyDevourFailAndDead", "{0} 企图吃掉 {1}的{2}，但是失败了！反倒被对方吃掉\n被攻击方体重增加 {3} kg，现 {4} kg");
             ReplyDevourEscaped = GetConfig("ReplyAttackEscaped", "{0} 企图吃掉 {1}的{2}，对方逃脱了！");
-            ReplyFeed = GetConfig("ReplyFeed", "你的「{0}」体重增加了 {1} 千克\n现体重为 {2} 千克");
+            ReplyFeed = GetConfig("ReplyFeed", "你的「{0}」体重增加了 {1} 千克\n现体重为 {2} 千克\n-------------------n剩余 {3} 枚金币，{4} 枚鲲蛋");
             ReplyBlindBoxOpen = GetConfig("ReplyBlindBoxOpen", "打开 {0} 个盲盒，获得了以下物品：\n{1}");
             ReplyBlindBoxGetNothing = GetConfig("ReplyBlindBoxGetNothing", "打开 {0} 个盲盒，什么也没获得");
             ReplyOpenKunEgg = GetConfig("ReplyOpenKunEgg", "打开 {0} 个鲲蛋，获得了 {1} 个盲盒");
@@ -357,6 +367,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyResurrectSuccess = GetConfig("ReplyResurrectSuccess", "鲲已复活，死亡时间 {0}，复活次数 {1}\n未复活期间，共损失了 {2} kg，{3} 星级\n消耗 {4} 个复活丸，还剩余 {5} 个复活丸");
             ReplyResurrectFail = GetConfig("ReplyResurrectFail", "复活失败，消耗 {0} 个复活丸，还剩余 {1} 个复活丸，查看日志查询原因");
             ReplyWeightLimit = GetConfig("ReplyWeightLimit", "体重已达上限，需进行渡劫提高体重上限");
+            ReplyResurrectFailed = GetConfig("ReplyResurrectFailed", "，无法复活");
+            ReplyRankingHeader = GetConfig("ReplyRankingHeader", "排行如下：");
+            ReplyEmptyInventory = GetConfig("ReplyEmptyInventory", "仓库为空");
+            ReplyAttackSelf = GetConfig("ReplyAttackSelf", "不能自己攻击自己");
+            ReplyDevourSelf = GetConfig("ReplyDevourSelf", "不能自己攻击自己");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);
