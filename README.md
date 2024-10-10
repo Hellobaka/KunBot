@@ -3,9 +3,8 @@
 ### 核心配置
 | 键                                 | 描述                                       | 默认值                                      |
 |----------------------------------|------------------------------------------|-------------------------------------------|
-| RankingCount                     | 排行榜数量                                 | 10                                        |
 | EnableAt                         | 是否启用@功能                              | false                                     |
-| EnableShortNumber                | 是否启用短数字（万、亿、兆...）显示                          | false                                     |
+|ShortNumberType|短数字类型（0: 默认小数 1: 单位制 2: 科学记数法）|0|
 | CommandAscend                    | 渡劫命令                                   | #渡劫                                      |
 | CommandAttack                    | 攻击命令                                   | #攻击                                      |
 | CommandBuyEgg                    | 买鲲蛋命令                                 | #买鲲蛋                                    |
@@ -63,7 +62,7 @@
 | ReplyDevourFail                  | 吞噬失败回复                               | {0} 企图吃掉 {1}的{2}，但是失败了！\n攻击方体重减少 {3} kg，现 {4} kg\n被攻击方体重增加 {5} kg，现 {6} kg |
 | ReplyDevourFailAndDead           | 吞噬失败自身死亡回复                         | {0} 企图吃掉 {1}的{2}，但是失败了！反倒被对方吃掉\n被攻击方体重增加 {3} kg，现 {4} kg|
 | ReplyDevourEscaped               | 吞噬逃脱回复                               | {0} 企图吃掉 {1}的{2}，对方逃脱了！                 |
-| ReplyFeed                        | 喂养回复                                   | 你的「{0}」体重增加了 {1} 千克\n现体重为 {2} 千克   |
+| ReplyFeed                        | 喂养回复                                   | 你的「{0}」体重增加了 {1} 千克\n现体重为 {2} 千克\n-------------------n剩余 {3} 枚金币，{4} 枚鲲蛋   |
 | ReplyBlindBoxOpen                | 打开盲盒回复                               | 打开 {0} 个盲盒，获得了以下物品：\n{1}              |
 | ReplyBlindBoxGetNothing          | 打开盲盒无物品回复                           | 打开 {0} 个盲盒，什么也没获得                       |
 | ReplyOpenKunEgg                  | 打开鲲蛋回复                               | 打开 {0} 个鲲蛋，获得了 {1} 个盲盒                   |
@@ -123,12 +122,18 @@
 | ValueUpgradeCoinConsume          | 强化金币消耗                                | 100                                       |
 | ValueUpgradePillConsume          | 强化丹消耗                                  | 1                                         |
 | ValueAscendWeightMinimalIncrement| 渡劫体重最小增量                             | 10                                        |
-| ValueAscendWeightMaximalIncrement| 渡劫体重最大增量                             | 500                                       |
+| ValueAscendWeightMaximalIncrement| 渡劫体重最大增量                             | 400                                       |
 | ValueAscendWeightMinimalDecrement| 渡劫体重最小减量                             | 10                                        |
 | ValueAscendWeightMaximalDecrement| 渡劫体重最大减量                             | 50                                        |
 | BlindBoxContents                 | 盲盒内容(ID\|概率)                                   | ["0\|75", "4\|8", "5\|8", "6\|8"]             |
 | Groups                           | 群组列表                                   | []                                        |
 | Admins                           | 管理员列表                                 | []                                        |
+|ReplyResurrectFailed|无法复活的文本|，无法复活|
+|ReplyRankingHeader|体重排名的前置文本|排行如下：|
+|ReplyEmptyInventory|仓库为空时的文本|仓库为空|
+|ReplyAttackSelf|攻击自己时的文本|不能自己攻击自己|
+|ReplyDevourSelf|吞噬自己时的文本|不能自己攻击自己|
+|ReplyKunToString|输出鲲文本|[%PetAttributeA%] %PetAttributeB%鲲 %LongLevel%|
 
 ### 物品配置
 | 键                        | 描述                       | 默认值           |
@@ -156,3 +161,12 @@
 |4|复活丸|
 |5|幻化丸|
 |6|强化丸|
+
+### 格式化鲲输出
+| 格式                                 | 描述                                       | 
+|----------------------------------|------------------------------------------|
+|%PetAttributeA%|主词缀名称|
+|%PetAttributeB%|副词缀名称|
+|%LongLevel%|完整星级|
+|%ShortLevel%|数字+星级|
+|%Weight%|体重|
