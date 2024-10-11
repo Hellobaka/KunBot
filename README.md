@@ -134,6 +134,11 @@
 |ReplyAttackSelf|攻击自己时的文本|不能自己攻击自己|
 |ReplyDevourSelf|吞噬自己时的文本|不能自己攻击自己|
 |ReplyKunToString|输出鲲文本|[%PetAttributeA%] %PetAttributeB%鲲 %LongLevel%|
+|ValueRegisterCoinReward|注册时给予的金币数量|500|
+|ValueRegisterEggReward|注册时给予的鲲蛋数量|50|
+|BlindBoxEnableMultiContents|盲盒可获得多个奖励开关|false|
+|BlindBoxMultiContentMustHasItem|盲盒多个奖励必定获取物品|false|
+|BlindBoxMultiContentProbablity|盲盒多个奖励触发概率|10|
 
 ### 物品配置
 | 键                        | 描述                       | 默认值           |
