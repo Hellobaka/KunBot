@@ -280,6 +280,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueAscendWeightMaximalDecrement { get; set; }
 
+        public static int ValueRegisterCoinReward { get; set; }
+
+        public static int ValueRegisterEggReward { get; set; }
+
         public static List<string> BlindBoxContents { get; set; } = [];
 
         public static List<long> Groups { get; set; } = [];
@@ -420,6 +424,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueAscendWeightMaximalIncrement = GetConfig("ValueAscendWeightMaximalIncrement", 400);
             ValueAscendWeightMinimalDecrement = GetConfig("ValueAscendWeightMinimalDecrement", 10);
             ValueAscendWeightMaximalDecrement = GetConfig("ValueAscendWeightMaximalDecrement", 50);
+            ValueRegisterCoinReward = GetConfig("ValueRegisterCoinReward", 500);
+            ValueRegisterEggReward = GetConfig("ValueRegisterEggReward", 50);
             
             BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|8" });
 

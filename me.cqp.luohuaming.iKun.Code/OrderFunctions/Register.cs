@@ -33,8 +33,8 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             var player = Player.Create(e.FromQQ);
             if (player != null)
             {
-                int coinCount = 500;
-                int eggCount = 50;
+                int coinCount = AppConfig.ValueRegisterCoinReward;
+                int eggCount = AppConfig.ValueRegisterEggReward;
                 player.GiveItem([
                     Items.Coin(coinCount),
                     Items.KunEgg(eggCount)
