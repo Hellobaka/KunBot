@@ -47,21 +47,26 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             int consume = count;
             if (!InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.BlindBox, consume, out int currentCount))
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, PublicInfos.Models.Items.BlindBox().Name, consume, currentCount));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.BlindBox().Name, consume, currentCount));
                 return result;
             }
+            BuildBlindBox();
+
             List<Items> contents = [];
             StringBuilder stringBuilder = new();
             for (int i = 0; i < count; i++)
             {
-                var item = GetBlindBox();
-                if (item == PublicInfos.Enums.Items.Nothing)
+                var blindBox = GetBlindBox();
+                foreach (var item in blindBox)
                 {
-                    continue;
+                    if (item == PublicInfos.Enums.Items.Nothing)
+                    {
+                        continue;
+                    }
+                    contents.Add(Items.GetItemByID(item));
                 }
-                contents.Add(Items.GetItemByID(item));
             }
-            foreach(var item in contents.GroupBy(x => x.Name, (key, groups) => new { Key = key, Items = groups.ToList() }))
+            foreach (var item in contents.GroupBy(x => x.Name, (key, groups) => new { Key = key, Items = groups.ToList() }))
             {
                 stringBuilder.AppendLine("·" + item.Key + $" {item.Items.Count} 个");
             }
@@ -79,35 +84,63 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
         }
 
-        private static PublicInfos.Enums.Items GetBlindBox()
+        private static List<PublicInfos.Enums.Items> GetBlindBox(bool redraw = false)
         {
-            if (BlindBoxes == null)
-            {
-                BlindBoxes = [];
-                foreach (var item in AppConfig.BlindBoxContents)
-                {
-                    string[] split = item.Split('|');
-                    int index = int.TryParse(split[0], out int value) ? value : -1;
-                    double probablity = double.TryParse(split[1], out double doubleValue) ? doubleValue : -1;
-                    if (index >= 0 && index <= 6)
-                    {
-                        BlindBoxes.Add(((PublicInfos.Enums.Items)index, probablity));
-                    }
-                }
-            }
+            List<PublicInfos.Enums.Items> result = [];
 
             double probablityTotal = BlindBoxes.Sum(x => x.Item2);
             double random = probablityTotal * CommonHelper.Random.NextDouble();
             double p = 0;
-            foreach (var item in BlindBoxes)
+
+            if (redraw && AppConfig.BlindBoxMultiContentMustHasItem)
             {
-                p += item.Item2;
-                if (random < p)
+                probablityTotal = BlindBoxes.Where(x => x.Item1 != PublicInfos.Enums.Items.Nothing).Sum(x => x.Item2);
+                random = probablityTotal * CommonHelper.Random.NextDouble();
+                foreach (var item in BlindBoxes.Where(x => x.Item1 != PublicInfos.Enums.Items.Nothing))
                 {
-                    return item.Item1;
+                    p += item.Item2;
+                    if (random < p)
+                    {
+                        result.Add(item.Item1);
+                        break;
+                    }
                 }
             }
-            return PublicInfos.Enums.Items.Nothing;
+            else
+            {
+                foreach (var item in BlindBoxes)
+                {
+                    p += item.Item2;
+                    if (random < p)
+                    {
+                        result.Add(item.Item1);
+                        break;
+                    }
+                }
+            }
+
+            if (AppConfig.BlindBoxEnableMultiContents && CommonHelper.Random.NextDouble() < AppConfig.BlindBoxMultiContentProbablity / 100.0)
+            {
+                MainSave.CQLog.Debug("盲盒", "触发二次抽取");
+                result = [.. result, .. GetBlindBox(true)];
+            }
+
+            return result;
+        }
+
+        private static void BuildBlindBox()
+        {
+            BlindBoxes = [];
+            foreach (var item in AppConfig.BlindBoxContents)
+            {
+                string[] split = item.Split('|');
+                int index = int.TryParse(split[0], out int value) ? value : -1;
+                double probablity = double.TryParse(split[1], out double doubleValue) ? doubleValue : -1;
+                if (index >= 0 && index <= 6)
+                {
+                    BlindBoxes.Add(((PublicInfos.Enums.Items)index, probablity));
+                }
+            }
         }
 
         public FunctionResult Execute(CQPrivateMessageEventArgs e)

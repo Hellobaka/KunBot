@@ -286,6 +286,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static List<string> BlindBoxContents { get; set; } = [];
 
+        public static bool BlindBoxEnableMultiContents {  get; set; }
+
+        public static int BlindBoxMultiContentProbablity { get; set; } = 10;
+
+        public static bool BlindBoxMultiContentMustHasItem {  get; set; }
+
         public static List<long> Groups { get; set; } = [];
 
         public static List<long> Admins { get; set; } = [];
@@ -428,6 +434,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueRegisterEggReward = GetConfig("ValueRegisterEggReward", 50);
             
             BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|8" });
+            BlindBoxEnableMultiContents = GetConfig("BlindBoxEnableMultiContents", false);
+            BlindBoxMultiContentMustHasItem = GetConfig("BlindBoxMultiContentMustHasItem", false);
+            BlindBoxMultiContentProbablity = GetConfig("BlindBoxMultiContentProbablity", 10);
 
             Groups = GetConfig("Groups", new List<long>());
             Admins = GetConfig("Admins", new List<long>());
