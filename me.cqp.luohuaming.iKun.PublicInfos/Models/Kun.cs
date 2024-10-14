@@ -165,7 +165,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 weightDiff = target.PetAttributeA.BeingAttacked(Weight, target.Weight, weightDiff);
                 Logger.Info($"被攻击方主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
-                weightDiff = target.PetAttributeB.Attack(Weight, target.Weight, weightDiff, baseAttackRate);
+                weightDiff = PetAttributeB.Attack(Weight, target.Weight, weightDiff, baseAttackRate);
                 Logger.Info($"攻击方小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
                 weightDiff = target.PetAttributeB.BeingAttacked(Weight, target.Weight, weightDiff);
                 Logger.Info($"被攻击方小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
@@ -257,7 +257,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 weightDiff = target.PetAttributeA.BeingDevoured(target.Weight, Weight, weightDiff);
                 Logger.Info($"被吞噬主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
-                weightDiff = target.PetAttributeB.Devour(Weight, target.Weight).Multiple(weightDiff);
+                weightDiff = PetAttributeB.Devour(Weight, target.Weight).Multiple(weightDiff);
                 Logger.Info($"吞噬小词缀计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
                 weightDiff = target.PetAttributeB.BeingDevoured(target.Weight, Weight, weightDiff);
                 Logger.Info($"被吞噬小词缀计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
