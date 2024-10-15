@@ -98,10 +98,10 @@
                 double decrement = target * (1 - baseAttack.Item2);
                 Logger.Info($"攻方增量={increment}，被攻方减量={decrement}");
 
-                decrement -= increment * change;
+                increment -= decrement * change;
                 Logger.Info($"使用加成计算后，攻方增量={increment}，被攻方减量={decrement}");
 
-                baseAttack = (1 + (decrement / source), baseAttack.Item2);
+                baseAttack = (1 + (increment / source), baseAttack.Item2);
             }
             Logger.Info($"退出词缀计算方法，计算结果={baseAttack.Item1}，{baseAttack.Item2}");
 

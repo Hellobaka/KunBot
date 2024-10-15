@@ -55,13 +55,16 @@
             // 被攻击时 10% 概率 敌人受到 30~50% 我方受到的伤害
             if (random <= 0.1)
             {
-                double diff = 1 + CommonHelper.Random.NextDouble(0.3, 0.5);
-                Logger.Info($"加成增量={diff}");
+                double change = CommonHelper.Random.NextDouble(0.3, 0.5);
+                Logger.Info($"加成增量={change}");
                 double increment = source * (baseAttack.Item1 - 1);
-                double decrement = target * (1 - baseAttack.Item2) * diff;
+                double decrement = target * (1 - baseAttack.Item2);
                 Logger.Info($"攻方增量={increment}，被攻方减量={decrement}");
 
-                baseAttack = (1 + (increment - decrement) / source, baseAttack.Item2);
+                increment -= decrement * change;
+                Logger.Info($"使用加成计算后，攻方增量={increment}，被攻方减量={decrement}");
+
+                baseAttack = (1 + (increment / source), baseAttack.Item2);
             }
             Logger.Info($"退出词缀计算方法，计算结果={baseAttack.Item1}，{baseAttack.Item2}");
             return baseAttack;
