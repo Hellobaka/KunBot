@@ -250,7 +250,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 double originalTargetWeight = target.Weight;
 
                 double baseAttackRate = GetBaseAttackRate(PetAttributeA, target.PetAttributeA);
-                Logger.Info($"{PetAttributeA.Name}=>{PetAttributeB.Name}，基础伤害倍率={baseAttackRate}");
+                Logger.Info($"{PetAttributeA.Name}=>{target.PetAttributeA.Name}，基础伤害倍率={baseAttackRate}");
 
                 var weightDiff = PetAttributeA.Devour(Weight, target.Weight, baseAttackRate);
                 Logger.Info($"吞噬主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
