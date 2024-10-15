@@ -178,7 +178,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 target.Weight = Math.Min(target.Weight, GetLevelWeightLimit(target.Level));
                 Logger.Info($"体重限制管理，攻击方体重={Weight}，被攻击方体重={target.Weight}");
 
-                if (target.Weight < Weight * 0.1)
+                if (weightDiff.Item2 < 1 && target.Weight < Weight * 0.1)
                 {
                     target.Alive = false;
                     target.DeadAt = DateTime.Now;
