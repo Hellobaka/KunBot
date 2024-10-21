@@ -139,6 +139,17 @@
 |BlindBoxEnableMultiContents|盲盒可获得多个奖励开关|false|
 |BlindBoxMultiContentMustHasItem|盲盒多个奖励必定获取物品|false|
 |BlindBoxMultiContentProbablity|盲盒多个奖励触发概率|10|
+|CommandStartAutoPlay|开始挂机的指令|#开始挂机|
+|CommandStopAutoPlay|停止挂机的指令|#停止挂机|
+|ReplyAutoPlayFinished|挂机完成的回复|挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重，当前体重 {3} kg|
+|ReplyAutoPlayFinishedButDead|挂机结束但是暴毙的回复|挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重\n但是却因走火入魔而暴毙！|
+|ReplyAutoPlayStarted|开始挂机的回复|挂机开始！\n预计结束时间 {0} 预计获得体重 {1} kg|
+|ReplyAutoPlaying|正在挂机的回复|{0} 正在挂机中|
+|ReplyNotAutoPlaying|未在挂机的回复|{0} 未在挂机|
+|ReplyStartAutoPlayFailed|开始挂机失败的附加回复|，无法开始挂机|
+|ReplyStopAutoPlayFailed|停止挂机失败的附加回复|，无法结束挂机|
+|ValueAutoPlayDeadProbablity|挂机后暴毙的概率|5|
+|ValueMaxAutoPlayDuration|最大可挂机时长(h)|24|
 
 ### 物品配置
 | 键                        | 描述                       | 默认值           |
@@ -175,3 +186,14 @@
 |%LongLevel%|完整星级|
 |%ShortLevel%|数字+星级|
 |%Weight%|体重|
+
+### 挂机经验
+| 等级                                | 每小时经验                                       | 满级所需时间|
+|----------------------------------|------------------------------------------|----|
+|1|10|1|
+|2|100|1|
+|3|1000|1|
+|4|7000|1.42|
+|5|30000|3.33|
+|>=6 and < 8|0.005 * (10 ^ (等级 - 1))|200|
+|>=8|0.001 * (10 ^ (等级 - 1))|1000|
