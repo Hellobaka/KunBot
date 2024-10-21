@@ -430,9 +430,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 double originalWeight = Weight;
                 double originalLevel = Level;
                 double deadHour = (DateTime.Now - DeadAt).TotalHours;
+                Logger.Info($"死亡时间 {DeadAt:G}");
                 if (deadHour >= AppConfig.ValueMaxResurrectHour)
                 {
-                    Logger.Error($"鲲死亡超过{AppConfig.ValueMaxResurrectHour}小时，无法复活");
+                    Logger.Error($"鲲死亡超过 {AppConfig.ValueMaxResurrectHour} 小时，无法复活");
                     return new ResurrectResult() { Success = false };
                 }
                 int weightLossCount = (int)(deadHour / 2);
@@ -441,7 +442,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Logger.Info($"等级缩水次数={levelLossCount}，数量={AppConfig.ValuePerEighteenHourLevelLoss}%");
                 for (int i = 0; i < weightLossCount; i++)
                 {
-                    Weight *= AppConfig.ValuePerTwoHourWeightLoss / 100.0;
+                    Weight *= ((100 - AppConfig.ValuePerTwoHourWeightLoss) / 100.0);
                 }
                 for (int i = 0; i < levelLossCount; i++)
                 {
