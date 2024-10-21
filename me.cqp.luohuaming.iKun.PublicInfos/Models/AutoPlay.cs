@@ -203,8 +203,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 3 => 1000,
                 4 => 7000,
                 5 => 30000,
-                >= 6 and < 8 => (int)Math.Pow(10, level - 1) / 2,
-                >= 8 => (int)Math.Pow(10, level - 1) / 4,
+                >= 6 and < 8 => (int)Math.Pow(10, level - 1) / 200,
+                >= 8 => (int)Math.Pow(10, level - 1) / 1000,
             };
             Logger.Info($"星级={level}，挂机经验速度={expSpeed}");
             return expSpeed * (endTime - startTime).TotalHours;
