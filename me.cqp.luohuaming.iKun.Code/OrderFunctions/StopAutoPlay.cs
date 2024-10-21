@@ -9,7 +9,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
     {
         public bool ImplementFlag { get; set; } = true;
 
-        public string GetOrderStr() => AppConfig.CommandBuyEgg;
+        public string GetOrderStr() => AppConfig.CommandStopAutoPlay;
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
 
@@ -65,11 +65,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             string msg = "";
             if (r.Dead)
             {
-                msg = string.Format(AppConfig.ReplyAutoPlayFinishedButDead, kun, r.Duration.ToString("f2"), r.Increment.ToShortNumber());
+                msg = string.Format(AppConfig.ReplyAutoPlayFinishedButDead, kun, r.Duration.TotalHours.ToString("f2"), r.Increment.ToShortNumber());
             }
             else
             {
-                msg = string.Format(AppConfig.ReplyAutoPlayFinished, kun, r.Duration.ToString("f2"), r.Increment.ToShortNumber(), r.CurrentWeight);
+                msg = string.Format(AppConfig.ReplyAutoPlayFinished, kun, r.Duration.TotalHours.ToString("f2"), r.Increment.ToShortNumber(), r.CurrentWeight);
                 if (r.WeightLimit)
                 {
                     msg += $"\n{AppConfig.ReplyWeightLimit}";
