@@ -64,6 +64,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string CommandOpenBlindBox { get; set; } = "";
 
+        public static string CommandStartAutoPlay { get; set; } = "";
+
+        public static string CommandStopAutoPlay { get; set; } = "";
+
         public static string ReplyDuplicateRegister { get; set; } = "";
 
         public static string ReplyNewRegister { get; set; } = "";
@@ -178,6 +182,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyResurrectFailed { get; set; } = "";
 
+        public static string ReplyStartAutoPlayFailed { get; set; } = "";
+
+        public static string ReplyStopAutoPlayFailed { get; set; } = "";
+
         public static string ReplyRankingHeader { get; set; } = "";
 
         public static string ReplyEmptyInventory { get; set; } = "";
@@ -187,6 +195,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string ReplyDevourSelf { get; set; } = "";
 
         public static string ReplyKunToString { get; set; } = "";
+
+        public static string ReplyAutoPlayStarted { get; set; } = "";
+
+        public static string ReplyAutoPlayFinished { get; set; } = "";
+       
+        public static string ReplyAutoPlayFinishedButDead { get; set; } = "";
+
+        public static string ReplyAutoPlaying { get; set; } = "";
+
+        public static string ReplyNotAutoPlaying { get; set; } = "";
 
         public static double ProbablityNone { get; set; }
 
@@ -284,6 +302,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueRegisterEggReward { get; set; }
 
+        public static int ValueAutoPlayDeadProbablity { get; set; }
+
+        public static int ValueMaxAutoPlayDuration { get; set; }
+
         public static List<string> BlindBoxContents { get; set; } = [];
 
         public static bool BlindBoxEnableMultiContents {  get; set; }
@@ -319,6 +341,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandUpgrade = GetConfig("CommandUpgrade", "#强化");
             CommandRegister = GetConfig("CommandRegister", "#注册");
             CommandQueryDeadKuns = GetConfig("CommandQueryDeadKuns", "#查询已死亡鲲");
+            CommandStartAutoPlay = GetConfig("CommandStartAutoPlay", "#开始挂机");
+            CommandStopAutoPlay = GetConfig("CommandStopAutoPlay", "#停止挂机");
 
             ReplyDuplicateRegister = GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
             ReplyDuplicateLogin = GetConfig("ReplyLoginDuplicate", "你今天已经签到过了，不能重复签到");
@@ -382,6 +406,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyAttackSelf = GetConfig("ReplyAttackSelf", "不能自己攻击自己");
             ReplyDevourSelf = GetConfig("ReplyDevourSelf", "不能自己攻击自己");
             ReplyKunToString = GetConfig("ReplyKunToString", "[%PetAttributeA%] %PetAttributeB%鲲 %LongLevel%");
+            ReplyAutoPlayFinished = GetConfig("ReplyAutoPlayFinished", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重，当前体重 {3} kg");
+            ReplyAutoPlayFinishedButDead = GetConfig("ReplyAutoPlayFinishedButDead", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重\n但是却因走火入魔而暴毙！");
+            ReplyAutoPlayStarted = GetConfig("ReplyAutoPlayStarted", "挂机开始！\n预计结束时间 {0} 预计获得体重 {1} kg");
+            ReplyAutoPlaying = GetConfig("ReplyAutoPlaying", "{0} 正在挂机中");
+            ReplyNotAutoPlaying = GetConfig("ReplyNotAutoPlaying", "{0} 未在挂机");
+            ReplyStartAutoPlayFailed = GetConfig("ReplyStartAutoPlayFailed", "，无法开始挂机");
+            ReplyStopAutoPlayFailed = GetConfig("ReplyStopAutoPlayFailed", "，无法结束挂机");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);
@@ -432,6 +463,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueAscendWeightMaximalDecrement = GetConfig("ValueAscendWeightMaximalDecrement", 50);
             ValueRegisterCoinReward = GetConfig("ValueRegisterCoinReward", 500);
             ValueRegisterEggReward = GetConfig("ValueRegisterEggReward", 50);
+            ValueAutoPlayDeadProbablity = GetConfig("ValueAutoPlayDeadProbablity", 5);
+            ValueMaxAutoPlayDuration = GetConfig("ValueMaxAutoPlayDuration", 24);
             
             BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|8" });
             BlindBoxEnableMultiContents = GetConfig("BlindBoxEnableMultiContents", false);

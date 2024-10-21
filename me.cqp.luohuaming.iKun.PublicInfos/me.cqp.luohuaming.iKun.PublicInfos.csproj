@@ -96,6 +96,7 @@
     <Compile Include="Models\Results\AscendResult.cs" />
     <Compile Include="Models\Results\AttackResult.cs" />
     <Compile Include="Models\Results\DevourResult.cs" />
+    <Compile Include="Models\Results\AutoPlayResult.cs" />
     <Compile Include="Models\Results\FeedResult.cs" />
     <Compile Include="Models\Results\ResurrectResult.cs" />
     <Compile Include="Models\Results\TransmogrifyResult.cs" />

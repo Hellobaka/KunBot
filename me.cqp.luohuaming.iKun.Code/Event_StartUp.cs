@@ -1,6 +1,7 @@
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Items;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
+using me.cqp.luohuaming.iKun.PublicInfos.Models.Results;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.Interface;
 using System;
@@ -57,18 +58,20 @@ namespace me.cqp.luohuaming.iKun.Code
             e.CQLog.Info("初始化", "初始化完成");
         }
 
-        private void AutoPlay_AutoPlayFinished(AutoPlay autoPlay)
+        private void AutoPlay_AutoPlayFinished(AutoPlay autoPlay, AutoPlayResult autoPlayResult, Kun kun)
         {
-            double exp = autoPlay.CalcAutoPlayExp();
-            Kun kun = Kun.GetKunByID(autoPlay.KunID);
-            if (kun.Alive && !kun.Abandoned)
+            if (autoPlayResult == null)
             {
-                kun.Weight += exp;
-                kun.Update();
+                return;
             }
             if (AppConfig.Groups.Contains(autoPlay.GroupId))
             {
-                MainSave.CQApi.SendGroupMessage(autoPlay.GroupId, $"");
+                string msg = string.Format(AppConfig.ReplyAutoPlayFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, autoPlayResult.Increment.ToShortNumber(), kun.Weight.ToShortNumber());
+                if (autoPlayResult.WeightLimit)
+                {
+                    msg += $"\n{AppConfig.ReplyWeightLimit}";
+                }
+                MainSave.CQApi.SendGroupMessage(autoPlay.GroupId, msg);
             }
         }
     }

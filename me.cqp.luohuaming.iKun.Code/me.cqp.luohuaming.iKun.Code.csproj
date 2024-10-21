@@ -62,6 +62,8 @@
     <Compile Include="Event_PrivateMessage.cs" />
     <Compile Include="Event_GroupMessage.cs" />
     <Compile Include="Event_StartUp.cs" />
+    <Compile Include="OrderFunctions\StopAutoPlay.cs" />
+    <Compile Include="OrderFunctions\StartAutoPlay.cs" />
     <Compile Include="OrderFunctions\OpenBlindBox.cs" />
     <Compile Include="OrderFunctions\OpenEgg.cs" />
     <Compile Include="OrderFunctions\BuyEgg.cs" />

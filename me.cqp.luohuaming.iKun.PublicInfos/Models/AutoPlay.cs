@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using me.cqp.luohuaming.iKun.PublicInfos.Models.Results;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public bool Running { get; set; }
 
         [SugarColumn(IsIgnore = true)]
+        public static Logger Logger { get; set; } = new Logger("挂机管理");
+
+        [SugarColumn(IsIgnore = true)]
         private Task RunningTask { get; set; }
 
         [SugarColumn(IsIgnore = true)]
         private CancellationTokenSource RunningTaskCancellationToken { get; set; }
 
-        public static event Action<AutoPlay> AutoPlayFinished;
+        public static event Action<AutoPlay, AutoPlayResult, Kun> AutoPlayFinished;
 
         private static List<AutoPlay> RunningAutoPlay { get; set; } = null;
 
@@ -47,6 +51,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return db.Queryable<AutoPlay>().Where(x => x.Running && x.GroupId == groupId).ToList();
         }
 
+        public static AutoPlay? GetKunAutoPlay(Kun kun)
+        {
+            if (RunningAutoPlay != null)
+            {
+                return RunningAutoPlay.FirstOrDefault(x => x.KunID == kun.Id);
+            }
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<AutoPlay>().Where(x => x.KunID == kun.Id).OrderByDescending(x => x.StartTime).First();
+        }
+
         public static void LoadAutoPlays()
         {
             RunningAutoPlay = GetAllRunningAutoPlay();
@@ -60,14 +74,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         {
             Stop();
             SetTaskRunning(this, true);
+            RunningTaskCancellationToken = new();
             RunningTask = new Task(() =>
             {
                 while (!RunningTaskCancellationToken.IsCancellationRequested)
                 {
                     if (DateTime.Now > (StartTime + TimeSpan.FromHours(Duration)))
                     {
-                        AutoPlayFinished?.Invoke(this);
                         SetTaskRunning(this, false);
+                        AutoPlayFinished?.Invoke(this, SettleAutoPlayResult(out Kun kun), kun);
+                        Logger.Info($"挂机完成，ID={ID}，时长={Duration}");
                         break;
                     }
                     Task.Delay(1000);
@@ -76,14 +92,59 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             RunningTask.Start();
         }
 
-        public void Stop()
+        public AutoPlayResult Stop()
         {
             if (RunningTask != null)
             {
                 RunningTaskCancellationToken.Cancel();
                 RunningTask.Wait();
                 SetTaskRunning(this, false);
+
+                return SettleAutoPlayResult(out _);
             }
+            else
+            {
+                return null;
+            }
+        }
+
+        public AutoPlayResult SettleAutoPlayResult(out Kun kun)
+        {
+            kun = Kun.GetKunByID(KunID);
+            if (kun == null || !kun.Alive || kun.Abandoned)
+            {
+                Logger.Info($"目标鲲不存在或已死亡或已被抛弃");
+                return null;
+            }
+            kun.Initialize();
+            var originalWeight = kun.Weight;
+            var exp = CalcAutoPlayExp(kun.Level, StartTime, EndTime);
+
+            kun.Weight += exp;
+            kun.Weight = Math.Min(kun.Weight, Kun.GetLevelWeightLimit(kun.Level));
+            double random = CommonHelper.Random.NextDouble();
+            Logger.Info($"随机数={random}，死亡概率={AppConfig.ValueAutoPlayDeadProbablity}%");
+            if (random < AppConfig.ValueAutoPlayDeadProbablity / 100)
+            {
+                Logger.Info("判定成功，鲲已死亡");
+                kun.Alive = false;
+                kun.DeadAt = DateTime.Now;
+            }
+            kun.Update();
+
+            var r = new AutoPlayResult
+            {
+                CurrentWeight = kun.Weight,
+                Duration = EndTime - StartTime,
+                StartTime = StartTime,
+                EndTime = EndTime,
+                Dead = !kun.Alive,
+                Increment = kun.Weight - originalWeight,
+                WeightLimit = kun.Weight == Kun.GetLevelWeightLimit(kun.Level)
+            };
+
+            Logger.Info($"挂机结束，开始时间={r.StartTime}，时长={r.Duration.TotalHours:f2}h，经验增加={r.Increment}，是否死亡={r.Dead}");
+            return r;
         }
 
         public static void SetTaskRunning(AutoPlay task, bool running)
@@ -91,14 +152,23 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             task.Running = running;
             if (!running)
             {
-                task.EndTime = DateTime.Now;
+                var taskEnd = task.StartTime.AddHours(task.Duration);
+                if (taskEnd < DateTime.Now)
+                {
+                    task.EndTime = taskEnd;
+                }
+                else
+                {
+                    task.EndTime = DateTime.Now;
+                }
                 RunningAutoPlay.Remove(task);
             }
             else
             {
-                task.StartTime = DateTime.Now;
-                task.EndTime = new();
-                RunningAutoPlay.Add(task);
+                if (!RunningAutoPlay.Any(x => x.ID == task.ID))
+                {
+                    RunningAutoPlay.Add(task);
+                }
             }
             var db = SQLHelper.GetInstance();
             db.Updateable(task).ExecuteCommand();
@@ -107,7 +177,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public static void AddAutoPlay(AutoPlay autoPlay)
         {
             var db = SQLHelper.GetInstance();
-            db.Insertable(autoPlay).ExecuteCommand();
+            autoPlay.ID = db.Insertable(autoPlay).ExecuteReturnIdentity();
 
             autoPlay.Start();
             autoPlay.Running = true;
@@ -123,21 +193,21 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return db.Queryable<AutoPlay>().Where(x => x.KunID == kun.Id).OrderByDescending(x => x.StartTime).First()?.Running ?? false;
         }
 
-        public double CalcAutoPlayExp()
+        public static double CalcAutoPlayExp(int level, DateTime startTime, DateTime endTime)
         {
-            Kun kun = Kun.GetKunByID(KunID);
-            int level = kun.Level;
             int expSpeed = level switch
             {
+                <= 0 => 0,
                 1 => 10,
                 2 => 100,
                 3 => 1000,
                 4 => 7000,
                 5 => 30000,
-                6 => 100000,
-                _ => 0
+                >= 6 and < 8 => (int)Math.Pow(10, level - 1) / 2,
+                >= 8 => (int)Math.Pow(10, level - 1) / 4,
             };
-            return expSpeed * ((EndTime - StartTime).TotalHours / 24.0);
+            Logger.Info($"星级={level}，挂机经验速度={expSpeed}");
+            return expSpeed * (endTime - startTime).TotalHours;
         }
     }
 }
