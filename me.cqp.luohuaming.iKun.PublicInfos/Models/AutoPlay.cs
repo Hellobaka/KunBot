@@ -195,7 +195,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public static double CalcAutoPlayExp(int level, DateTime startTime, DateTime endTime)
         {
-            int expSpeed = level switch
+            double expSpeed = level switch
             {
                 <= 0 => 0,
                 1 => 10,
@@ -203,8 +203,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 3 => 1000,
                 4 => 7000,
                 5 => 30000,
-                >= 6 and < 8 => (int)Math.Pow(10, level - 1) / 20,
-                >= 8 => (int)Math.Pow(10, level - 1) / 100,
+                >= 6 and < 8 => Math.Pow(10, level - 1) / 20,
+                >= 8 => Math.Pow(10, level - 1) / 100,
             };
             Logger.Info($"星级={level}，挂机经验速度={expSpeed}");
             return expSpeed * (endTime - startTime).TotalHours;

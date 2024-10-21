@@ -69,7 +69,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             else
             {
-                msg = string.Format(AppConfig.ReplyAutoPlayFinished, kun, r.Duration.TotalHours.ToString("f2"), r.Increment.ToShortNumber(), r.CurrentWeight);
+                msg = string.Format(AppConfig.ReplyAutoPlayFinished, kun, r.Duration.TotalHours.ToString("f2"), r.Increment.ToShortNumber(), r.CurrentWeight.ToShortNumber());
                 if (r.WeightLimit)
                 {
                     msg += $"\n{AppConfig.ReplyWeightLimit}";
