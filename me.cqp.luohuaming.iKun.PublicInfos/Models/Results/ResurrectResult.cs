@@ -14,6 +14,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models.Results
 
         public double WeightLoss { get; set; }
 
-        public double LevelLoss { get; set; }
+        public int LevelLoss { get; set; }
+
+        public override string ToString()
+        {
+            return $"当前死亡次数={CurrentResurrectCount}，体重丢失={WeightLoss}，星级丢失={LevelLoss}";
+        }
     }
 }

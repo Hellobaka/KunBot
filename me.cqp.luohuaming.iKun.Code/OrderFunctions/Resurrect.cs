@@ -86,7 +86,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             var r = kun.Resurrect();
             if (r.Success)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyResurrectSuccess, kun.DeadAt.ToString("G"), r.CurrentResurrectCount, r.WeightLoss.ToShortNumber(), r.LevelLoss.ToShortNumber(), consume, currentCount));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyResurrectSuccess, kun.DeadAt.ToString("G"), r.CurrentResurrectCount, r.WeightLoss.ToShortNumber(), r.LevelLoss, consume, currentCount));
             }
             else
             {

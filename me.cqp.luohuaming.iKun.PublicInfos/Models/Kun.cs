@@ -419,7 +419,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             try
             {
                 Monitor.Enter(LockObject);
-                Logger.Info($"进入复活方法，ID={Id}");
+                Logger.Info($"进入复活方法，ID={Id}，体重={Weight}，星级={Level}，死亡时间={DeadAt:G}");
                 if (Abandoned)
                 {
                     Logger.Error("目标鲲已被抛弃");
@@ -428,9 +428,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Alive = true;
                 ResurrectCount++;
                 double originalWeight = Weight;
-                double originalLevel = Level;
+                int originalLevel = Level;
                 double deadHour = (DateTime.Now - DeadAt).TotalHours;
-                Logger.Info($"死亡时间 {DeadAt:G}");
+                Logger.Info($"死亡小时数={deadHour}");
                 if (deadHour >= AppConfig.ValueMaxResurrectHour)
                 {
                     Logger.Error($"鲲死亡超过 {AppConfig.ValueMaxResurrectHour} 小时，无法复活");
@@ -449,14 +449,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     Level -= AppConfig.ValuePerEighteenHourLevelLoss;
                 }
                 Update();
-                Logger.Info($"退出复活方法");
 
-                return new ResurrectResult
+                var r = new ResurrectResult
                 {
                     CurrentResurrectCount = ResurrectCount,
                     WeightLoss = originalWeight - Weight,
                     LevelLoss = originalLevel - Level,
                 };
+                Logger.Info($"退出复活方法，{r}");
+                return r;
             }
             catch (Exception e)
             {
