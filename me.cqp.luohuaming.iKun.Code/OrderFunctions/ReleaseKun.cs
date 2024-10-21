@@ -36,6 +36,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoKun);
                 return result;
             }
+            if (AutoPlay.CheckKunAutoPlay(kun))
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
+                return result;
+            }
             kun.Initialize();
             if (kun.Release())
             {
