@@ -39,12 +39,12 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoKun);
                 return result;
             }
+            kun.Initialize();
             if (AutoPlay.CheckKunAutoPlay(kun))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
                 return result;
             }
-            kun.Initialize();
 
             var param = e.Message.Text.Substring(GetOrderStr().Length).Trim();
             if (!int.TryParse(param, out int count))

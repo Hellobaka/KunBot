@@ -64,12 +64,12 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyWeightLimit);
                 return result;
             }
+            kun.Initialize();
             if (AutoPlay.CheckKunAutoPlay(kun))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
                 return result;
             }
-            kun.Initialize();
             var start = DateTime.Now;
             var end = start.AddHours(duration);
             var autoPlay = new AutoPlay

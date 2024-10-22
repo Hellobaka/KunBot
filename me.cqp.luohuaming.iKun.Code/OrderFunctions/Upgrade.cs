@@ -39,6 +39,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoKun);
                 return result;
             }
+            kun.Initialize();
             if (AutoPlay.CheckKunAutoPlay(kun))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
@@ -66,7 +67,6 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.Coin, count * AppConfig.ValueUpgradeCoinConsume, out currentCoin);
             InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.UpgradePill, count * AppConfig.ValueUpgradePillConsume, out currentPill);
 
-            kun.Initialize();
             var upgradeResult = kun.Upgrade(count);
             if (upgradeResult.Success is false)
             {

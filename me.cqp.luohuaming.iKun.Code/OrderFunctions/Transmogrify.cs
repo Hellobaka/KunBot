@@ -41,12 +41,12 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyTransmogrifyLevelLimit, kun.Level, AppConfig.ValueTransmogrifyLevelLimit));
                 return result;
             }
+            kun.Initialize();
             if (AutoPlay.CheckKunAutoPlay(kun))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
                 return result;
             }
-            kun.Initialize();
             int currentCoin = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.Coin);
             int currentPill = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.TransmogrifyPill);
             if (currentCoin < AppConfig.ValueTranmogifyCoinConsume)

@@ -48,13 +48,13 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunAbandoned, AppConfig.ReplyStartAutoPlayFailed));
                 return result;
             }
+            kun.Initialize();
             if (!AutoPlay.CheckKunAutoPlay(kun))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyNotAutoPlaying, kun));
                 return result;
             }
 
-            kun.Initialize();
             var autoPlay = AutoPlay.GetKunAutoPlay(kun);
             if (autoPlay == null)
             {

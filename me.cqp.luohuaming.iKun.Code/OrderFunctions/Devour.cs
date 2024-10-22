@@ -81,6 +81,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoKun);
                 return result;
             }
+            kun.Initialize();
             if (AutoPlay.CheckKunAutoPlay(kun))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
@@ -92,13 +93,12 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoTargetPlayerKun);
                 return result;
             }
+            targetKun.Initialize();
             if (AutoPlay.CheckKunAutoPlay(targetKun))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, targetKun));
                 return result;
             }
-            kun.Initialize();
-            targetKun.Initialize();
 
             if (DateTime.Now - player.DevourAt < TimeSpan.FromMinutes(AppConfig.ValueDevourCD))
             {
