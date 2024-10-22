@@ -11,6 +11,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
     [SugarTable]
     public class AutoPlay
     {
+        private static object loadLock = new();
+
         [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
         public int ID { get; set; }
 
@@ -64,9 +66,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public static void LoadAutoPlays()
         {
             RunningAutoPlay = GetAllRunningAutoPlay();
-            foreach (var autoPlay in RunningAutoPlay)
+            lock (loadLock)
             {
-                autoPlay.Start();
+                foreach (var autoPlay in RunningAutoPlay)
+                {
+                    autoPlay.Start();
+                }
             }
         }
 
@@ -75,7 +80,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             Stop();
             SetTaskRunning(this, true);
             RunningTaskCancellationToken = new();
-            RunningTask = new Task(() =>
+            RunningTask = new Task(async () =>
             {
                 while (!RunningTaskCancellationToken.IsCancellationRequested)
                 {
@@ -86,7 +91,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                         Logger.Info($"挂机完成，ID={ID}，时长={Duration}");
                         break;
                     }
-                    Task.Delay(1000);
+                    await Task.Delay(1000);
                 }
             }, RunningTaskCancellationToken.Token);
             RunningTask.Start();
@@ -161,13 +166,19 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     task.EndTime = DateTime.Now;
                 }
-                RunningAutoPlay.Remove(task);
+                lock (loadLock)
+                {
+                    RunningAutoPlay.Remove(task);
+                }
             }
             else
             {
                 if (!RunningAutoPlay.Any(x => x.ID == task.ID))
                 {
-                    RunningAutoPlay.Add(task);
+                    lock (loadLock)
+                    {
+                        RunningAutoPlay.Add(task);
+                    }
                 }
             }
             var db = SQLHelper.GetInstance();
