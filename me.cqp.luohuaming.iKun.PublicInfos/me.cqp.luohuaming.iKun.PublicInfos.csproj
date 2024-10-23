@@ -115,7 +115,7 @@
     <Compile Include="PetAttribute\IPetAttribute.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomPunish.cs" />
+    <Compile Include="Models\RandomPunish.cs" />
     <Compile Include="SQLHelper.cs" />
   </ItemGroup>
   <ItemGroup>

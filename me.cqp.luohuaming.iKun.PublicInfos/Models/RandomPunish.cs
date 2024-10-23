@@ -1,12 +1,10 @@
-﻿using me.cqp.luohuaming.iKun.PublicInfos.Enums;
-using me.cqp.luohuaming.iKun.PublicInfos.Models;
-using me.cqp.luohuaming.iKun.Sdk.Cqp;
+﻿using me.cqp.luohuaming.iKun.Sdk.Cqp;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace me.cqp.luohuaming.iKun.PublicInfos
+namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 {
     public class RandomPunish
     {
@@ -31,6 +29,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         {
             Stop();
             RunningTaskCancellationToken = new();
+            if (!AppConfig.EnableRandomPunish)
+            {
+                return;
+            }
             RunningTask = new Task(async () =>
             {
                 while (!RunningTaskCancellationToken.IsCancellationRequested)
