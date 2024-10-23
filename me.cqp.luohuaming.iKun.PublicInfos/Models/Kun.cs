@@ -687,6 +687,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         #endregion 数值实例
 
+        public static List<Kun> GetAllAliveKun()
+        {
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<Kun>().Where(x => x.Alive && !x.Abandoned).ToList();
+        }
+
         public static List<Kun> GetDeadKun(Player player)
         {
             var db = SQLHelper.GetInstance();

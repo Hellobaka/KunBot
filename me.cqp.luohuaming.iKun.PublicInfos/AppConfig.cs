@@ -1,4 +1,5 @@
 ﻿using me.cqp.luohuaming.iKun.PublicInfos.Enums;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -16,6 +17,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static AppConfig Instance { get; private set; }
 
         public static bool EnableAt { get; set; }
+
+        public static bool EnableRandomPunish { get; set; }
 
         public static ShortNumberType ShortNumberType { get; set; }
 
@@ -67,6 +70,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string CommandStartAutoPlay { get; set; } = "";
 
         public static string CommandStopAutoPlay { get; set; } = "";
+
+        public static string CommandRandomPunish { get; set; } = "";
 
         public static string ReplyDuplicateRegister { get; set; } = "";
 
@@ -206,6 +211,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyNotAutoPlaying { get; set; } = "";
 
+        public static string ReplyRandomPunish { get; set; } = "";
+        
+        public static string ReplyRandomPunishSkipped { get; set; } = "";
+        
+        public static string ReplyRandomPunishFinished { get; set; } = "";
+       
+        public static string ReplyRandomPunishFinishedAndDead { get; set; } = "";
+
         public static double ProbablityNone { get; set; }
 
         public static double ProbablityJin { get; set; }
@@ -306,6 +319,18 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueMaxAutoPlayDuration { get; set; }
 
+        public static int ValueRandomPunishProbablity { get; set; }
+
+        public static int ValueRandomPunishMinimalDecrement { get; set; }
+       
+        public static int ValueRandomPunishMaximalDecrement { get; set; }
+       
+        public static int ValueRandomPunishDeadProbablity { get; set; }
+       
+        public static int ValueRandomPunishExecuteDay { get; set; }
+
+        public static DateTime ValueRandomPunishExecuteTime {  get; set; }
+
         public static List<string> BlindBoxContents { get; set; } = [];
 
         public static bool BlindBoxEnableMultiContents {  get; set; }
@@ -321,6 +346,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public override void LoadConfig()
         {
             EnableAt = GetConfig("EnableAt", false);
+            EnableRandomPunish = GetConfig("EnableRandomPunish", false);
             ShortNumberType = GetConfig("ShortNumberType", ShortNumberType.Normal);
 
             CommandAscend = GetConfig("CommandAscend", "#渡劫");
@@ -343,6 +369,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandQueryDeadKuns = GetConfig("CommandQueryDeadKuns", "#查询已死亡鲲");
             CommandStartAutoPlay = GetConfig("CommandStartAutoPlay", "#开始挂机");
             CommandStopAutoPlay = GetConfig("CommandStopAutoPlay", "#停止挂机");
+            CommandRandomPunish = GetConfig("CommandRandomPunish", "#天罚");
 
             ReplyDuplicateRegister = GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
             ReplyDuplicateLogin = GetConfig("ReplyLoginDuplicate", "你今天已经签到过了，不能重复签到");
@@ -413,6 +440,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyNotAutoPlaying = GetConfig("ReplyNotAutoPlaying", "{0} 未在挂机");
             ReplyStartAutoPlayFailed = GetConfig("ReplyStartAutoPlayFailed", "，无法开始挂机");
             ReplyStopAutoPlayFailed = GetConfig("ReplyStopAutoPlayFailed", "，无法结束挂机");
+            ReplyRandomPunish = GetConfig("ReplyRandomPunish", "每{0}会从所有鲲中抽选一个赐予天罚，体重越大抽到的概率更大");
+            ReplyRandomPunishFinished = GetConfig("ReplyRandomPunishFinished", "天罚降下，{0} 被五雷轰顶，{1} 损失了 {2} kg，现在体重 {3} kg");
+            ReplyRandomPunishSkipped = GetConfig("ReplyRandomPunishSkipped", "本周天罚无事");
+            ReplyRandomPunishFinishedAndDead = GetConfig("ReplyRandomPunishFinishedAndDead", "天罚降下，{0} 被五雷轰顶，{1} 直接暴毙！");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);
@@ -465,6 +496,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueRegisterEggReward = GetConfig("ValueRegisterEggReward", 50);
             ValueAutoPlayDeadProbablity = GetConfig("ValueAutoPlayDeadProbablity", 5);
             ValueMaxAutoPlayDuration = GetConfig("ValueMaxAutoPlayDuration", 24);
+            ValueRandomPunishProbablity = GetConfig("ValueRandomPunishProbablity", 80);
+            ValueRandomPunishMinimalDecrement = GetConfig("ValueRandomPunishMinimalDecrement", 50);
+            ValueRandomPunishMaximalDecrement = GetConfig("ValueRandomPunishMaximalDecrement", 80);
+            ValueRandomPunishDeadProbablity = GetConfig("ValueRandomPunishDeadProbablity", 10);
+            ValueRandomPunishExecuteDay = GetConfig("ValueRandomPunishExecuteDay", 4);
+            ValueRandomPunishExecuteTime = GetConfig("ValueRandomPunishExecuteTime", new DateTime());
             
             BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|8" });
             BlindBoxEnableMultiContents = GetConfig("BlindBoxEnableMultiContents", false);

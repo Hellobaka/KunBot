@@ -55,6 +55,9 @@ namespace me.cqp.luohuaming.iKun.Code
             AutoPlay.AutoPlayFinished += AutoPlay_AutoPlayFinished;
             AutoPlay.LoadAutoPlays();
 
+            e.CQLog.Info("初始化", "启动天罚线程");
+            new RandomPunish().Start();
+
             e.CQLog.Info("初始化", "初始化完成");
         }
 

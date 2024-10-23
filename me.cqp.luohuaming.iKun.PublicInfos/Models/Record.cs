@@ -26,5 +26,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             var db = SQLHelper.GetInstance();
             return db.Queryable<Record>().Where(x => x.Group == groupID).ToList();
         }
+
+        public static Record? GetRecordByKunID(int kunId)
+        {
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<Record>().Where(x => x.KunID == kunId).First();
+        }
     }
 }
