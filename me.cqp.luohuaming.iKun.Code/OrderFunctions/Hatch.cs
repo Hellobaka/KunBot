@@ -78,11 +78,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             Record.AddRecord(new Record { Group = e.FromGroup, QQ = e.FromQQ, KunID = id });
             if (count > 1)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyMultiHatchKun, kun.ToString(), kun.Weight, consume, currentCount + diff));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyMultiHatchKun, kun.ToString(), kun.Weight.ToShortNumber(), consume, currentCount + diff));
             }
             else
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchKun, kun.ToString(), kun.Weight, currentCount));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyHatchKun, kun.ToString(), kun.Weight.ToShortNumber(), currentCount));
             }
             return result;
         }
