@@ -446,7 +446,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyNotAutoPlaying = GetConfig("ReplyNotAutoPlaying", "{0} 未在挂机");
             ReplyStartAutoPlayFailed = GetConfig("ReplyStartAutoPlayFailed", "，无法开始挂机");
             ReplyStopAutoPlayFailed = GetConfig("ReplyStopAutoPlayFailed", "，无法结束挂机");
-            ReplyRandomPunish = GetConfig("ReplyRandomPunish", "每{0}会从所有鲲中抽选一个赐予天罚，体重越大抽到的概率更大");
+            ReplyRandomPunish = GetConfig("ReplyRandomPunish", "每{0}会从所有鲲中抽选一个赐予天罚，体重越大抽到的概率更大\n下次天罚时间 {1}");
             ReplyRandomPunishFinished = GetConfig("ReplyRandomPunishFinished", "天罚降下，{0} 被五雷轰顶，{1} 损失了 {2} kg，现在体重 {3} kg");
             ReplyRandomPunishSkipped = GetConfig("ReplyRandomPunishSkipped", "本周天罚无事");
             ReplyRandomPunishFinishedAndDead = GetConfig("ReplyRandomPunishFinishedAndDead", "天罚降下，{0} 被五雷轰顶，{1} 直接暴毙！");
