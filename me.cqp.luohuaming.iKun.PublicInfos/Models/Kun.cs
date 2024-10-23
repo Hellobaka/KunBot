@@ -789,7 +789,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public string ToStringFull()
         {
             StringBuilder stringBuilder = new();
-            stringBuilder.AppendLine(this.ToString() + $" {Weight.ToShortNumber()} 千克");
+            stringBuilder.AppendLine(this.ToString() + $" {Weight.ToShortNumber()} {AppConfig.WeightUnit}");
             foreach (var item in PetAttributeA.Description)
             {
                 stringBuilder.AppendLine(item.ToString());

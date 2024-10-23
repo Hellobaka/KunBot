@@ -102,6 +102,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ToShortNumber(this double value)
         {
+            value /= AppConfig.WeightUnitBase;
             if (AppConfig.ShortNumberType == Enums.ShortNumberType.Normal)
             {
                 return value.ToString("f2");

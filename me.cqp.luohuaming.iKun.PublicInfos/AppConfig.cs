@@ -22,6 +22,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static ShortNumberType ShortNumberType { get; set; }
 
+        public static int WeightUnitBase { get; set; } = 1;
+
+        public static string WeightUnit { get; set; } = "kg";
+
         public static string CommandRegister { get; set; } = "";
 
         public static string CommandLogin { get; set; } = "";
@@ -347,6 +351,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         {
             EnableAt = GetConfig("EnableAt", false);
             EnableRandomPunish = GetConfig("EnableRandomPunish", false);
+            WeightUnitBase = GetConfig("WeightUnitBase", 1);
+            WeightUnit = GetConfig("WeightUnit", "kg");
             ShortNumberType = GetConfig("ShortNumberType", ShortNumberType.Normal);
 
             CommandAscend = GetConfig("CommandAscend", "#渡劫");

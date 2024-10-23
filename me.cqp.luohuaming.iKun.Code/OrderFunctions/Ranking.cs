@@ -36,7 +36,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 kuns[i].Initialize();
                 var info = e.FromGroup.GetGroupMemberInfo(kuns[i].PlayerID);
                 string name = string.IsNullOrWhiteSpace(info.Card) ? info.Nick : info.Card;
-                stringBuilder.AppendLine($"{i + 1}. [{name}] {kuns[i]} {kuns[i].Weight.ToShortNumber()} 千克");
+                stringBuilder.AppendLine($"{i + 1}. [{name}] {kuns[i]} {kuns[i].Weight.ToShortNumber()} {AppConfig.WeightUnit}");
             }
             stringBuilder.RemoveNewLine();
 
