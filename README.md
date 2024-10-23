@@ -150,6 +150,20 @@
 |ReplyStopAutoPlayFailed|停止挂机失败的附加回复|，无法结束挂机|
 |ValueAutoPlayDeadProbablity|挂机后暴毙的概率|5|
 |ValueMaxAutoPlayDuration|最大可挂机时长(h)|24|
+|EnableRandomPunish|是否启用天罚功能|False|
+|WeightUnitBase|重量单位的基数，输出数值会除以这个值|1|
+|WeightUnit|重量单位的名称|kg|
+|CommandRandomPunish|获取天罚的描述|#天罚|
+|ReplyRandomPunish|天罚指令的描述|每{0}会从所有鲲中抽选一个赐予天罚，体重越大抽到的概率更大\n下次天罚时间 {1}|
+|ReplyRandomPunishFinished|天罚完成的回复|天罚降下，{0} 被五雷轰顶，{1} 损失了 {2} kg，现在体重 {3} kg|
+|ReplyRandomPunishSkipped|天罚未发生的群发|本周天罚无事|
+|ReplyRandomPunishFinishedAndDead|天罚致死的回复|天罚降下，{0} 被五雷轰顶，{1} 直接暴毙！|
+|ValueRandomPunishProbablity|天罚成功的概率|80|
+|ValueRandomPunishMinimalDecrement|天罚损失体重的最小百分比|50|
+|ValueRandomPunishMaximalDecrement|天罚损失体重的最大百分比|80|
+|ValueRandomPunishDeadProbablity|天罚致死的概率|10|
+|ValueRandomPunishExecuteDay|天罚每周发生的周期（星期n）|4|
+|ValueRandomPunishExecuteTime|天罚发生的时间（需保证格式不变，两位数字，仅T之后的时间部分生效）|0001-01-01T00:00:00|
 
 ### 物品配置
 | 键                        | 描述                       | 默认值           |
