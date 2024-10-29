@@ -49,7 +49,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                         infos = e.FromGroup.GetGroupMemberList();
                         MainSave.GroupMemberInfos[e.FromGroup] = infos;
                     }
-                    target = infos.FirstOrDefault(x => x.Nick.Contains(raw) || x.Card.Contains(raw)).QQ;
+                    var info = infos.FirstOrDefault(x => x.Nick.Contains(raw) || x.Card.Contains(raw));
+                    if (info != null) 
+                    {
+                        target = info.QQ;
+                    }
                 }
             }
 
