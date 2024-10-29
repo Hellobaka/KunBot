@@ -11,7 +11,7 @@
 - [System.Data.SQLite.dll](https://github.com/Hellobaka/WordCloud/releases/download/1.0.0/System.Data.SQLite.dll)
 
 ### Mirai-Native框架用户
-> 下载 System.Data.SQLite.dll 与 SQLite.Interop.dll 文件 放入mirai根目录的 jre\bin 中
+放入mirai根目录的 `jre\bin` 中
 
 ### 其他框架用户
-> 下载 System.Data.SQLite.dll 与 SQLite.Interop.dll 文件 放在框架主体exe下即可
+放在框架主体exe下即可
