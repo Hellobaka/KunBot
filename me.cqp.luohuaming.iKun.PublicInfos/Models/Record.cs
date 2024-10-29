@@ -27,6 +27,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return db.Queryable<Record>().Where(x => x.Group == groupID).ToList();
         }
 
+        public static List<Record> GetRecordsByQQList(List<long> qq)
+        {
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<Record>().Where(x => qq.Contains(x.QQ)).ToList();
+        }
+
         public static Record? GetRecordByKunID(int kunId)
         {
             var db = SQLHelper.GetInstance();

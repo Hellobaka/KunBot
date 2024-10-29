@@ -34,6 +34,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string CommandRanking { get; set; } = "";
 
+        public static string CommandRankingGroup { get; set; } = "";
+
         public static string CommandInventory { get; set; } = "";
 
         public static string CommandHatch { get; set; } = "";
@@ -197,6 +199,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyRankingHeader { get; set; } = "";
 
+        public static string ReplyRankingGroupHeader { get; set; } = "";
+
         public static string ReplyEmptyInventory { get; set; } = "";
 
         public static string ReplyAttackSelf { get; set; } = "";
@@ -222,6 +226,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string ReplyRandomPunishFinished { get; set; } = "";
        
         public static string ReplyRandomPunishFinishedAndDead { get; set; } = "";
+
+        public static string ReplyRankingAutoPlaying { get; set; } = "";
+
+        public static string ReplyRankingWorking { get; set; } = "";
 
         public static double ProbablityNone { get; set; }
 
@@ -367,6 +375,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandOpenBlindBox = GetConfig("CommandOpenBlindBox", "#开盲盒");
             CommandOpenEgg = GetConfig("CommandOpenEgg", "#开鲲蛋");
             CommandRanking = GetConfig("CommandRanking", "#排行");
+            CommandRankingGroup = GetConfig("CommandRankingGroup", "#群排行");
             CommandReleaseKun = GetConfig("CommandReleaseKun", "#放生");
             CommandResurrect = GetConfig("CommandResurrect", "#复活");
             CommandTransmogrify = GetConfig("CommandTransmogrify", "#幻化");
@@ -435,6 +444,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyWeightLimit = GetConfig("ReplyWeightLimit", "体重已达上限，需进行渡劫提高体重上限");
             ReplyResurrectFailed = GetConfig("ReplyResurrectFailed", "，无法复活");
             ReplyRankingHeader = GetConfig("ReplyRankingHeader", "排行如下：");
+            ReplyRankingGroupHeader = GetConfig("ReplyRankingGroupHeader", "群排行如下：");
             ReplyEmptyInventory = GetConfig("ReplyEmptyInventory", "仓库为空");
             ReplyAttackSelf = GetConfig("ReplyAttackSelf", "不能自己攻击自己");
             ReplyDevourSelf = GetConfig("ReplyDevourSelf", "不能自己攻击自己");
@@ -450,6 +460,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyRandomPunishFinished = GetConfig("ReplyRandomPunishFinished", "天罚降下，{0} 被五雷轰顶，{1} 损失了 {2} kg，现在体重 {3} kg");
             ReplyRandomPunishSkipped = GetConfig("ReplyRandomPunishSkipped", "本周天罚无事");
             ReplyRandomPunishFinishedAndDead = GetConfig("ReplyRandomPunishFinishedAndDead", "天罚降下，{0} 被五雷轰顶，{1} 直接暴毙！");
+            ReplyRankingAutoPlaying = GetConfig("ReplyRankingAutoPlaying", "[挂机中]");
+            ReplyRankingWorking = GetConfig("ReplyRankingWorking", "[打工中]");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);

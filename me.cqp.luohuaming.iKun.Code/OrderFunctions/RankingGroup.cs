@@ -7,11 +7,11 @@ using System.Text;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
-    public class Ranking : IOrderModel
+    public class RankingGroup : IOrderModel
     {
         public bool ImplementFlag { get; set; } = true;
 
-        public string GetOrderStr() => AppConfig.CommandRanking;
+        public string GetOrderStr() => AppConfig.CommandRankingGroup;
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
 
@@ -29,25 +29,27 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             result.SendObject.Add(sendText);
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(AppConfig.ReplyRankingHeader);
-            var kuns = Kun.GetRankingKun(AppConfig.ValueRankingCount);
-            for (int i = 0; i < kuns.Count; i++)
+            var memberList = e.FromGroup.GetGroupMemberList();
+            if (memberList == null || memberList.Count == 0)
+            {
+                sendText.MsgToSend.Add("获取群成员列表失败");
+                return result;
+            }
+            var records = Record.GetRecordsByQQList(memberList.Select(x => x.QQ.Id).ToList());
+            var kuns = Kun.GetKunByRecords(records).OrderByDescending(x => x.Weight).ToList();
+            for (int i = 0; i < Math.Min(AppConfig.ValueRankingCount, kuns.Count); i++)
             {
                 kuns[i].Initialize();
                 bool autoPlaying = AutoPlay.CheckKunAutoPlay(kuns[i]);
-                var record = Record.GetRecordByKunID(kuns[i].Id);
-                if (record == null)
-                {
-                    continue;
-                }
                 try
                 {
-                    var info = e.CQApi.GetGroupMemberInfo(record.Group, record.QQ);
+                    var info = e.FromGroup.GetGroupMemberInfo(kuns[i].PlayerID);
                     string name = string.IsNullOrWhiteSpace(info.Card) ? info.Nick : info.Card;
                     stringBuilder.AppendLine($"{i + 1}. [{name}] {kuns[i]} {kuns[i].Weight.ToShortNumber()} {AppConfig.WeightUnit}{(autoPlaying ? $" {AppConfig.ReplyRankingAutoPlaying}" : "")}");
                 }
                 catch (Exception exc)
                 {
-                    e.CQLog.Info("获取成员名片", $"获取失败，群={record.Group}，QQ={record.QQ}\n{exc.Message}，{exc.StackTrace}");
+                    e.CQLog.Info("获取成员名片", $"获取失败，群={e.FromGroup}，QQ={kuns[i].PlayerID}\n{exc.Message}，{exc.StackTrace}");
                     continue;
                 }
             }

@@ -693,6 +693,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return db.Queryable<Kun>().Where(x => x.Alive && !x.Abandoned).ToList();
         }
 
+        public static List<Kun> GetRankingKun(int count)
+        {
+            var db = SQLHelper.GetInstance();
+            return db.Queryable<Kun>().Where(x => x.Alive && !x.Abandoned).OrderByDescending(x => x.Weight).Take(count).ToList();
+        }
+
         public static List<Kun> GetDeadKun(Player player)
         {
             var db = SQLHelper.GetInstance();
