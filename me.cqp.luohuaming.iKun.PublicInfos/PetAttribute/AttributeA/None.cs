@@ -5,7 +5,7 @@
         public None()
         {
             ID = Enums.Attribute.None;
-            Name = "无属性";
+            Name = "无";
             Description = [];
         }
     }
