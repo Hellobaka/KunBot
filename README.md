@@ -164,6 +164,10 @@
 |ValueRandomPunishDeadProbablity|天罚致死的概率|10|
 |ValueRandomPunishExecuteDay|天罚每周发生的周期（星期n）|4|
 |ValueRandomPunishExecuteTime|天罚发生的时间（需保证格式不变，两位数字，仅T之后的时间部分生效）|0001-01-01T00:00:00|
+|CommandRankingGroup|群排行功能|#群排行|
+|ReplyRankingGroupHeader|群排行的前置文本|群排行如下：|
+|ReplyRankingAutoPlaying|排行中显示挂机中的文本|[挂机中]|
+|ReplyRankingWorking|排行中显示打工中的文本|[打工中]|
 
 ### 物品配置
 | 键                        | 描述                       | 默认值           |
