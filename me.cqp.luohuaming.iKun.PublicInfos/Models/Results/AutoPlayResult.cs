@@ -10,6 +10,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models.Results
 
         public TimeSpan Duration { get; set; }
 
+        public int CurrentCoin { get; set; }
+
         public double CurrentWeight { get; set; }
 
         public double Increment { get; set; }

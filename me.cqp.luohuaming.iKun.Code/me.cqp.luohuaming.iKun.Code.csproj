@@ -64,6 +64,8 @@
     <Compile Include="Event_StartUp.cs" />
     <Compile Include="OrderFunctions\RandomPunish.cs" />
     <Compile Include="OrderFunctions\RankingGroup.cs" />
+    <Compile Include="OrderFunctions\StartWorking.cs" />
+    <Compile Include="OrderFunctions\StopWorking.cs" />
     <Compile Include="OrderFunctions\StopAutoPlay.cs" />
     <Compile Include="OrderFunctions\StartAutoPlay.cs" />
     <Compile Include="OrderFunctions\OpenBlindBox.cs" />

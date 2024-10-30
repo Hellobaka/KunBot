@@ -77,6 +77,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string CommandStopAutoPlay { get; set; } = "";
 
+        public static string CommandStartWorking { get; set; } = "";
+
+        public static string CommandStopWorking { get; set; } = "";
+
         public static string CommandRandomPunish { get; set; } = "";
 
         public static string ReplyDuplicateRegister { get; set; } = "";
@@ -211,6 +215,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyAutoPlayStarted { get; set; } = "";
 
+        public static string ReplyWorkingStarted { get; set; } = "";
+
         public static string ReplyAutoPlayFinished { get; set; } = "";
        
         public static string ReplyAutoPlayFinishedButDead { get; set; } = "";
@@ -234,6 +240,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string ReplyAutoPlayInCD { get; set; } = "";
 
         public static string ReplyWorkingInCD { get; set; } = "";
+
+        public static string ReplyWorking { get; set; } = "";
+
+        public static string ReplyNotWorking { get; set; } = "";
+
+        public static string ReplyWorkingFinished { get; set; } = "";
 
         public static double ProbablityNone { get; set; }
 
@@ -351,6 +363,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueWorkingCDHour {  get; set; }
 
+        public static int ValueWorkingCoinRewardPerHour {  get; set; }
+
         public static List<string> BlindBoxContents { get; set; } = [];
 
         public static bool BlindBoxEnableMultiContents {  get; set; }
@@ -392,6 +406,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandQueryDeadKuns = GetConfig("CommandQueryDeadKuns", "#查询已死亡鲲");
             CommandStartAutoPlay = GetConfig("CommandStartAutoPlay", "#开始挂机");
             CommandStopAutoPlay = GetConfig("CommandStopAutoPlay", "#停止挂机");
+            CommandStartWorking = GetConfig("CommandStartWorking", "#开始打工");
+            CommandStopWorking = GetConfig("CommandStopWorking", "#停止打工");
             CommandRandomPunish = GetConfig("CommandRandomPunish", "#天罚");
 
             ReplyDuplicateRegister = GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
@@ -458,10 +474,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyDevourSelf = GetConfig("ReplyDevourSelf", "不能自己攻击自己");
             ReplyKunToString = GetConfig("ReplyKunToString", "[%PetAttributeA%] %PetAttributeB%鲲 %LongLevel%");
             ReplyAutoPlayFinished = GetConfig("ReplyAutoPlayFinished", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重，当前体重 {3} kg");
+            ReplyWorkingFinished = GetConfig("ReplyWorkingFinished", "打工完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} 个金币，当前金币 {3} 个");
             ReplyAutoPlayFinishedButDead = GetConfig("ReplyAutoPlayFinishedButDead", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重\n但是却因走火入魔而暴毙！");
             ReplyAutoPlayStarted = GetConfig("ReplyAutoPlayStarted", "挂机开始！\n预计结束时间 {0} 预计获得体重 {1} kg");
+            ReplyWorkingStarted = GetConfig("ReplyWorkingStarted", "打工开始！\n预计结束时间 {0} 预计获得金币 {1} 个");
             ReplyAutoPlaying = GetConfig("ReplyAutoPlaying", "{0} 正在挂机中");
-            ReplyNotAutoPlaying = GetConfig("ReplyNotAutoPlaying", "{0} 未在挂机");
+            ReplyWorking = GetConfig("ReplyWorking", "{0} 正在打工中");
+            ReplyNotAutoPlaying = GetConfig("ReplyNotAutoPlaying", "{0} 未在打工");
+            ReplyNotWorking = GetConfig("ReplyNotWorking", "{0} 未在打工");
             ReplyStartAutoPlayFailed = GetConfig("ReplyStartAutoPlayFailed", "，无法开始挂机");
             ReplyStopAutoPlayFailed = GetConfig("ReplyStopAutoPlayFailed", "，无法结束挂机");
             ReplyRandomPunish = GetConfig("ReplyRandomPunish", "每{0}会从所有鲲中抽选一个赐予天罚，体重越大抽到的概率更大\n下次天罚时间 {1}");
@@ -532,6 +552,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueRandomPunishExecuteTime = GetConfig("ValueRandomPunishExecuteTime", new DateTime());
             ValueAutoPlayCDHour = GetConfig("ValueAutoPlayCDHour", 12);
             ValueWorkingCDHour = GetConfig("ValueWorkingCDHour", 12);
+            ValueWorkingCoinRewardPerHour = GetConfig("ValueWorkingCoinRewardPerHour", 10);
             
             BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|8" });
             BlindBoxEnableMultiContents = GetConfig("BlindBoxEnableMultiContents", false);

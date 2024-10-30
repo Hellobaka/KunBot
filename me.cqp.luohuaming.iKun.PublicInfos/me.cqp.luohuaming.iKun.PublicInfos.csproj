@@ -75,6 +75,7 @@
     <Compile Include="ConfigBase.cs" />
     <Compile Include="Enums\AttributeBAction.cs" />
     <Compile Include="Enums\Attributes.cs" />
+    <Compile Include="Enums\AutoPlayType.cs" />
     <Compile Include="Enums\Items.cs" />
     <Compile Include="Enums\ShortNumberType.cs" />
     <Compile Include="FunctionResult.cs" />

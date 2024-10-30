@@ -22,10 +22,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static bool CreateDB()
         {
-            if (File.Exists(DBPath))
-            {
-                return true;
-            }
             try
             {
                 using var db = GetInstance();
