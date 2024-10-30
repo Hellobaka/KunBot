@@ -53,9 +53,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return db.Queryable<AutoPlay>().Where(x => x.Running && x.GroupId == groupId).ToList();
         }
 
-        public static AutoPlay? GetKunAutoPlay(Kun kun)
+        public static AutoPlay? GetKunAutoPlay(Kun kun, bool fromDB = false)
         {
-            if (RunningAutoPlay != null)
+            if (!fromDB && RunningAutoPlay != null)
             {
                 return RunningAutoPlay.FirstOrDefault(x => x.KunID == kun.Id);
             }
@@ -219,6 +219,18 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             };
             Logger.Info($"星级={level}，挂机经验速度={expSpeed}");
             return expSpeed * (endTime - startTime).TotalHours;
+        }
+
+        public static bool CheckAutoPlayInCD(Kun kun, out DateTime availableTime)
+        {
+            var autoPlay = GetKunAutoPlay(kun, true);
+            availableTime = DateTime.Now;
+            if (autoPlay == null)
+            {
+                return true;
+            }
+            availableTime = autoPlay.EndTime.AddHours(AppConfig.ValueAutoPlayCDHour);
+            return availableTime < DateTime.Now;
         }
     }
 }

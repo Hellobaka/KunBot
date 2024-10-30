@@ -231,6 +231,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyRankingWorking { get; set; } = "";
 
+        public static string ReplyAutoPlayInCD { get; set; } = "";
+
+        public static string ReplyWorkingInCD { get; set; } = "";
+
         public static double ProbablityNone { get; set; }
 
         public static double ProbablityJin { get; set; }
@@ -342,6 +346,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static int ValueRandomPunishExecuteDay { get; set; }
 
         public static DateTime ValueRandomPunishExecuteTime {  get; set; }
+
+        public static int ValueAutoPlayCDHour {  get; set; }
+
+        public static int ValueWorkingCDHour {  get; set; }
 
         public static List<string> BlindBoxContents { get; set; } = [];
 
@@ -462,6 +470,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyRandomPunishFinishedAndDead = GetConfig("ReplyRandomPunishFinishedAndDead", "天罚降下，{0} 被五雷轰顶，{1} 直接暴毙！");
             ReplyRankingAutoPlaying = GetConfig("ReplyRankingAutoPlaying", "[挂机中]");
             ReplyRankingWorking = GetConfig("ReplyRankingWorking", "[打工中]");
+            ReplyAutoPlayInCD = GetConfig("ReplyAutoPlayInCD", "挂机暂时不可用，下次可挂机时间：{0}");
+            ReplyWorkingInCD = GetConfig("ReplyWorkingInCD", "打工暂时不可用，下次可打工时间：{0}");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);
@@ -520,6 +530,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueRandomPunishDeadProbablity = GetConfig("ValueRandomPunishDeadProbablity", 10);
             ValueRandomPunishExecuteDay = GetConfig("ValueRandomPunishExecuteDay", 4);
             ValueRandomPunishExecuteTime = GetConfig("ValueRandomPunishExecuteTime", new DateTime());
+            ValueAutoPlayCDHour = GetConfig("ValueAutoPlayCDHour", 12);
+            ValueWorkingCDHour = GetConfig("ValueWorkingCDHour", 12);
             
             BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|8" });
             BlindBoxEnableMultiContents = GetConfig("BlindBoxEnableMultiContents", false);

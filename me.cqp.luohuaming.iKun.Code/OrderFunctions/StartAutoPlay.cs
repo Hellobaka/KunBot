@@ -70,6 +70,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
                 return result;
             }
+            if (!AutoPlay.CheckAutoPlayInCD(kun, out DateTime availableTime))
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlayInCD, availableTime.ToString("G")));
+                return result;
+            }
             var start = DateTime.Now;
             var end = start.AddHours(duration);
             var autoPlay = new AutoPlay
