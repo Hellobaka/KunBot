@@ -63,7 +63,7 @@ namespace me.cqp.luohuaming.iKun.Code
 
         private void AutoPlay_AutoPlayFinished(AutoPlay autoPlay, AutoPlayResult autoPlayResult, Kun kun)
         {
-            if (autoPlayResult == null)
+            if (autoPlayResult == null || !kun.Alive || kun.Abandoned || kun.Level <= 0 || kun.Weight <= 0)
             {
                 return;
             }
