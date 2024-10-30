@@ -65,12 +65,17 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
             kun.Initialize();
-            if (AutoPlay.CheckKunAutoPlay(kun))
+            if (AutoPlay.CheckKunAutoPlay(kun, PublicInfos.Enums.AutoPlayType.Exp))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
                 return result;
             }
-            if (!AutoPlay.CheckAutoPlayInCD(kun, out DateTime availableTime))
+            if (AutoPlay.CheckKunAutoPlay(kun, PublicInfos.Enums.AutoPlayType.Coin))
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyWorking, kun));
+                return result;
+            }
+            if (!AutoPlay.CheckAutoPlayInCD(kun, PublicInfos.Enums.AutoPlayType.Exp, out DateTime availableTime))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlayInCD, availableTime.ToString("G")));
                 return result;
@@ -84,6 +89,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 KunID = kun.Id,
                 StartTime = start,
                 EndTime = end,
+                AutoPlayType = PublicInfos.Enums.AutoPlayType.Exp
             };
             AutoPlay.AddAutoPlay(autoPlay);
             var exp = AutoPlay.CalcAutoPlayExp(kun.Level, start, end);

@@ -1,4 +1,5 @@
-﻿using me.cqp.luohuaming.iKun.PublicInfos.Models.Results;
+﻿using me.cqp.luohuaming.iKun.PublicInfos.Enums;
+using me.cqp.luohuaming.iKun.PublicInfos.Models.Results;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public bool Running { get; set; }
 
+        public AutoPlayType AutoPlayType { get; set; } = AutoPlayType.Exp;
+
         [SugarColumn(IsIgnore = true)]
         public static Logger Logger { get; set; } = new Logger("挂机管理");
 
@@ -47,20 +50,20 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return db.Queryable<AutoPlay>().Where(x => x.Running).ToList();
         }
 
-        public static List<AutoPlay> GetAllRunningAutoPlayByGroupId(long groupId)
+        public static List<AutoPlay> GetAllRunningAutoPlayByGroupId(long groupId, AutoPlayType autoPlayType)
         {
             var db = SQLHelper.GetInstance();
-            return db.Queryable<AutoPlay>().Where(x => x.Running && x.GroupId == groupId).ToList();
+            return db.Queryable<AutoPlay>().Where(x => x.Running && x.GroupId == groupId && x.AutoPlayType == autoPlayType).ToList();
         }
 
-        public static AutoPlay? GetKunAutoPlay(Kun kun, bool fromDB = false)
+        public static AutoPlay? GetKunAutoPlay(Kun kun, AutoPlayType autoPlayType, bool fromDB = false)
         {
             if (!fromDB && RunningAutoPlay != null)
             {
-                return RunningAutoPlay.FirstOrDefault(x => x.KunID == kun.Id);
+                return RunningAutoPlay.FirstOrDefault(x => x.KunID == kun.Id && x.AutoPlayType == autoPlayType);
             }
             var db = SQLHelper.GetInstance();
-            return db.Queryable<AutoPlay>().Where(x => x.KunID == kun.Id).OrderByDescending(x => x.StartTime).First();
+            return db.Queryable<AutoPlay>().Where(x => x.KunID == kun.Id && x.AutoPlayType == autoPlayType).OrderByDescending(x => x.StartTime).First();
         }
 
         public static void LoadAutoPlays()
@@ -115,6 +118,46 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public AutoPlayResult SettleAutoPlayResult(out Kun kun)
         {
+            kun = null;
+            return AutoPlayType switch
+            {
+                AutoPlayType.Exp => SettleAutoPlayExpResult(out kun),
+                AutoPlayType.Coin => SettleAutoPlayCoinResult(out kun),
+                _ => null,
+            };
+        }
+
+        private AutoPlayResult SettleAutoPlayCoinResult(out Kun kun)
+        {
+            int increment = (int)(EndTime - StartTime).TotalHours * AppConfig.ValueWorkingCoinRewardPerHour;
+            kun = Kun.GetKunByID(KunID);
+            if (kun == null)
+            {
+                Logger.Info($"未找到鲲");
+                return null;
+            }
+            kun.Initialize();
+            var player = Player.GetPlayer(kun.PlayerID);
+            if (player == null)
+            {
+                Logger.Info($"未找到鲲对应的玩家");
+                return null;
+            }
+            player.GiveItem([Items.Coin(increment)]);
+            AutoPlayResult r = new()
+            {
+                CurrentCoin = InventoryItem.GetItemCount(player, Enums.Items.Coin),
+                Duration = EndTime - StartTime,
+                StartTime = StartTime,
+                EndTime = EndTime,
+                Increment = increment,                
+            };
+            Logger.Info($"挂机结束，开始时间={r.StartTime}，时长={r.Duration.TotalHours:f2}h，金币增加={r.Increment}");
+            return r;
+        }
+
+        private AutoPlayResult SettleAutoPlayExpResult(out Kun kun)
+        {
             kun = Kun.GetKunByID(KunID);
             if (kun == null || !kun.Alive || kun.Abandoned)
             {
@@ -154,6 +197,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public static void SetTaskRunning(AutoPlay task, bool running)
         {
+            if (task == null)
+            {
+                return;
+            }
             task.Running = running;
             if (!running)
             {
@@ -194,14 +241,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             autoPlay.Running = true;
         }
 
-        public static bool CheckKunAutoPlay(Kun kun)
+        public static bool CheckKunAutoPlay(Kun kun, AutoPlayType autoPlayType = AutoPlayType.Exp)
         {
             if (RunningAutoPlay != null)
             {
-                return RunningAutoPlay.Any(x => x.KunID == kun.Id);
+                return RunningAutoPlay.Any(x => x.KunID == kun.Id && x.AutoPlayType == autoPlayType);
             }
             var db = SQLHelper.GetInstance();
-            return db.Queryable<AutoPlay>().Where(x => x.KunID == kun.Id).OrderByDescending(x => x.StartTime).First()?.Running ?? false;
+            return db.Queryable<AutoPlay>().Where(x => x.KunID == kun.Id && x.AutoPlayType == autoPlayType).OrderByDescending(x => x.StartTime).First()?.Running ?? false;
         }
 
         public static double CalcAutoPlayExp(int level, DateTime startTime, DateTime endTime)
@@ -221,15 +268,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return expSpeed * (endTime - startTime).TotalHours;
         }
 
-        public static bool CheckAutoPlayInCD(Kun kun, out DateTime availableTime)
+        public static bool CheckAutoPlayInCD(Kun kun, AutoPlayType autoPlayType, out DateTime availableTime)
         {
-            var autoPlay = GetKunAutoPlay(kun, true);
+            var autoPlay = GetKunAutoPlay(kun, autoPlayType, true);
             availableTime = DateTime.Now;
             if (autoPlay == null)
             {
                 return true;
             }
-            availableTime = autoPlay.EndTime.AddHours(AppConfig.ValueAutoPlayCDHour);
+            availableTime = autoPlay.EndTime.AddHours(autoPlayType == AutoPlayType.Exp ? AppConfig.ValueAutoPlayCDHour : AppConfig.ValueWorkingCDHour);
             return availableTime < DateTime.Now;
         }
     }

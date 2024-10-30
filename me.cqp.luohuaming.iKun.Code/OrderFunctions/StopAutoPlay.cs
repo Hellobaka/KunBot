@@ -55,7 +55,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
 
-            var autoPlay = AutoPlay.GetKunAutoPlay(kun);
+            var autoPlay = AutoPlay.GetKunAutoPlay(kun, PublicInfos.Enums.AutoPlayType.Exp);
             if (autoPlay == null)
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyNotAutoPlaying, kun));

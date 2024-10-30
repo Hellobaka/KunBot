@@ -119,6 +119,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 targetKun.Alive = false;
                 targetKun.DeadAt = DateTime.Now;
                 targetKun.Update();
+                AutoPlay.SetTaskRunning(AutoPlay.GetKunAutoPlay(targetKun, Enums.AutoPlayType.Exp), false);
+                AutoPlay.SetTaskRunning(AutoPlay.GetKunAutoPlay(targetKun, Enums.AutoPlayType.Coin), false);
                 SendGroupMessage(groupId, string.Format(AppConfig.ReplyRandomPunishFinishedAndDead,
                     CQApi.CQCode_At(qq), targetKun));
                 Logger.Info("天罚结束，鲲已死亡");

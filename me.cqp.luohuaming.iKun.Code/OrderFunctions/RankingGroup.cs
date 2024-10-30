@@ -41,11 +41,15 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 kuns[i].Initialize();
                 bool autoPlaying = AutoPlay.CheckKunAutoPlay(kuns[i]);
+                bool working = AutoPlay.CheckKunAutoPlay(kuns[i], PublicInfos.Enums.AutoPlayType.Coin);
                 try
                 {
                     var info = e.FromGroup.GetGroupMemberInfo(kuns[i].PlayerID);
                     string name = string.IsNullOrWhiteSpace(info.Card) ? info.Nick : info.Card;
-                    stringBuilder.AppendLine($"{i + 1}. [{name}] {kuns[i]} {kuns[i].Weight.ToShortNumber()} {AppConfig.WeightUnit}{(autoPlaying ? $" {AppConfig.ReplyRankingAutoPlaying}" : "")}");
+                    stringBuilder.AppendLine($"{i + 1}. [{name}] {kuns[i]} {kuns[i].Weight.ToShortNumber()}" +
+                        $" {AppConfig.WeightUnit}" +
+                        $"{(autoPlaying ? $" {AppConfig.ReplyRankingAutoPlaying}" : "")}" +
+                        $"{(working ? $" {AppConfig.ReplyRankingWorking}" : "")}");
                 }
                 catch (Exception exc)
                 {

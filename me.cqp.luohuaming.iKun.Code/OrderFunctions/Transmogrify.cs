@@ -47,6 +47,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
                 return result;
             }
+            if (AutoPlay.CheckKunAutoPlay(kun, PublicInfos.Enums.AutoPlayType.Coin))
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyWorking, kun));
+                return result;
+            }
             int currentCoin = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.Coin);
             int currentPill = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.TransmogrifyPill);
             if (currentCoin < AppConfig.ValueTranmogifyCoinConsume)

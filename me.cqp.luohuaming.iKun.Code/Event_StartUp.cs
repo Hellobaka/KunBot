@@ -69,12 +69,26 @@ namespace me.cqp.luohuaming.iKun.Code
             }
             if (AppConfig.Groups.Contains(autoPlay.GroupId))
             {
-                string msg = string.Format(AppConfig.ReplyAutoPlayFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, autoPlayResult.Increment.ToShortNumber(), kun.Weight.ToShortNumber());
-                if (autoPlayResult.WeightLimit)
+                string msg = "";
+                switch (autoPlay.AutoPlayType)
                 {
-                    msg += $"\n{AppConfig.ReplyWeightLimit}";
+                    case PublicInfos.Enums.AutoPlayType.Exp:
+                        msg = string.Format(AppConfig.ReplyAutoPlayFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, autoPlayResult.Increment.ToShortNumber(), kun.Weight.ToShortNumber());
+                        if (autoPlayResult.WeightLimit)
+                        {
+                            msg += $"\n{AppConfig.ReplyWeightLimit}";
+                        }
+                        break;
+                    case PublicInfos.Enums.AutoPlayType.Coin:
+                        msg = string.Format(AppConfig.ReplyWorkingFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, (int)autoPlayResult.Increment, autoPlayResult.CurrentCoin);
+                        break;
+                    default:
+                        break;
                 }
-                MainSave.CQApi.SendGroupMessage(autoPlay.GroupId, msg);
+                if (!string.IsNullOrEmpty(msg))
+                {
+                    MainSave.CQApi.SendGroupMessage(autoPlay.GroupId, msg);
+                }
             }
         }
     }

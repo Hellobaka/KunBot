@@ -42,6 +42,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
                 return result;
             }
+            if (AutoPlay.CheckKunAutoPlay(kun, PublicInfos.Enums.AutoPlayType.Coin))
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyWorking, kun));
+                return result;
+            }
             if (kun.Release())
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyReleaseSuccess, kun.ToString()));

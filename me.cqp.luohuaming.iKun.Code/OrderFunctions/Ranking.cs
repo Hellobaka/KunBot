@@ -33,7 +33,8 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             for (int i = 0; i < kuns.Count; i++)
             {
                 kuns[i].Initialize();
-                bool autoPlaying = AutoPlay.CheckKunAutoPlay(kuns[i]);
+                bool autoPlaying = AutoPlay.CheckKunAutoPlay(kuns[i], PublicInfos.Enums.AutoPlayType.Exp);
+                bool working = AutoPlay.CheckKunAutoPlay(kuns[i], PublicInfos.Enums.AutoPlayType.Coin);
                 var record = Record.GetRecordByKunID(kuns[i].Id);
                 if (record == null)
                 {
@@ -43,7 +44,10 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 {
                     var info = e.CQApi.GetGroupMemberInfo(record.Group, record.QQ);
                     string name = string.IsNullOrWhiteSpace(info.Card) ? info.Nick : info.Card;
-                    stringBuilder.AppendLine($"{i + 1}. [{name}] {kuns[i]} {kuns[i].Weight.ToShortNumber()} {AppConfig.WeightUnit}{(autoPlaying ? $" {AppConfig.ReplyRankingAutoPlaying}" : "")}");
+                    stringBuilder.AppendLine($"{i + 1}. [{name}] {kuns[i]} {kuns[i].Weight.ToShortNumber()}" +
+                        $" {AppConfig.WeightUnit}" +
+                        $"{(autoPlaying ? $" {AppConfig.ReplyRankingAutoPlaying}" : "")}" +
+                        $"{(working ? $" {AppConfig.ReplyRankingWorking}" : "")}");
                 }
                 catch (Exception exc)
                 {
