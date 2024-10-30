@@ -448,6 +448,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     Level -= AppConfig.ValuePerEighteenHourLevelLoss;
                 }
+                Level = Math.Max(Level, 1);
                 Update();
 
                 var r = new ResurrectResult
