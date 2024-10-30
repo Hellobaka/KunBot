@@ -63,32 +63,39 @@ namespace me.cqp.luohuaming.iKun.Code
 
         private void AutoPlay_AutoPlayFinished(AutoPlay autoPlay, AutoPlayResult autoPlayResult, Kun kun)
         {
-            if (autoPlayResult == null || !kun.Alive || kun.Abandoned || kun.Level <= 0 || kun.Weight <= 0)
+            try
             {
-                return;
+                if (autoPlayResult == null || !kun.Alive || kun.Abandoned || kun.Level <= 0 || kun.Weight <= 0)
+                {
+                    return;
+                }
+                if (AppConfig.Groups.Contains(autoPlay.GroupId))
+                {
+                    string msg = "";
+                    switch (autoPlay.AutoPlayType)
+                    {
+                        case PublicInfos.Enums.AutoPlayType.Exp:
+                            msg = string.Format(AppConfig.ReplyAutoPlayFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, autoPlayResult.Increment.ToShortNumber(), kun.Weight.ToShortNumber());
+                            if (autoPlayResult.WeightLimit)
+                            {
+                                msg += $"\n{AppConfig.ReplyWeightLimit}";
+                            }
+                            break;
+                        case PublicInfos.Enums.AutoPlayType.Coin:
+                            msg = string.Format(AppConfig.ReplyWorkingFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, (int)autoPlayResult.Increment, autoPlayResult.CurrentCoin);
+                            break;
+                        default:
+                            break;
+                    }
+                    if (!string.IsNullOrEmpty(msg))
+                    {
+                        MainSave.CQApi.SendGroupMessage(autoPlay.GroupId, msg);
+                    }
+                }
             }
-            if (AppConfig.Groups.Contains(autoPlay.GroupId))
+            catch (Exception ex)
             {
-                string msg = "";
-                switch (autoPlay.AutoPlayType)
-                {
-                    case PublicInfos.Enums.AutoPlayType.Exp:
-                        msg = string.Format(AppConfig.ReplyAutoPlayFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, autoPlayResult.Increment.ToShortNumber(), kun.Weight.ToShortNumber());
-                        if (autoPlayResult.WeightLimit)
-                        {
-                            msg += $"\n{AppConfig.ReplyWeightLimit}";
-                        }
-                        break;
-                    case PublicInfos.Enums.AutoPlayType.Coin:
-                        msg = string.Format(AppConfig.ReplyWorkingFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, (int)autoPlayResult.Increment, autoPlayResult.CurrentCoin);
-                        break;
-                    default:
-                        break;
-                }
-                if (!string.IsNullOrEmpty(msg))
-                {
-                    MainSave.CQApi.SendGroupMessage(autoPlay.GroupId, msg);
-                }
+                MainSave.CQLog.Error("挂机结算", $"异常发生：{ex.Message}\n{ex.StackTrace}");
             }
         }
     }
