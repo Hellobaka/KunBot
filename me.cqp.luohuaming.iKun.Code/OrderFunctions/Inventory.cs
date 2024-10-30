@@ -42,7 +42,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 kun.Initialize();
                 stringBuilder.AppendLine(kun.ToStringFull());
             }
-            stringBuilder.AppendLine("=============");
+            stringBuilder.AppendLine("----");
             var list = InventoryItem.GetItemsByQQ(e.FromQQ);
             if (list == null || list.Count == 0)
             {

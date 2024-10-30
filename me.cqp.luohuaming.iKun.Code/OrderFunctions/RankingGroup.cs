@@ -28,7 +28,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             };
             result.SendObject.Add(sendText);
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine(AppConfig.ReplyRankingHeader);
+            stringBuilder.AppendLine(AppConfig.ReplyRankingGroupHeader);
             var memberList = e.FromGroup.GetGroupMemberList();
             if (memberList == null || memberList.Count == 0)
             {

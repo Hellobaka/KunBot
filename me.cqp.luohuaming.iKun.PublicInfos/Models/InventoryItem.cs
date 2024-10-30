@@ -103,7 +103,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         public override string ToString()
         {
             var item = Items.GetItemByID((Enums.Items)ItemID);
-            return $"{item.Name} {Count}个 {item.Description}";
+            return $"{item.Name} {Count} 个 {item.Description}";
         }
     }
 }
