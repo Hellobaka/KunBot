@@ -529,7 +529,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                     PetAttributeB = AttributeB.RandomCreate();
 
                     AttributeAID = (int)PetAttributeA.ID;
-                    AttributeBID = (int)PetAttributeB.ID;
+                    AttributeBID = PetAttributeB.AttrbiuteBID;
                     Logger.Info($"幻化成功，主词缀与小词缀均已变化");
                 }
                 Update();
