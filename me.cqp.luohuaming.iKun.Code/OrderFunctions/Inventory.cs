@@ -1,6 +1,7 @@
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
+using System.Linq;
 using System.Text;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
@@ -43,7 +44,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 stringBuilder.AppendLine(kun.ToStringFull());
             }
             stringBuilder.AppendLine("----");
-            var list = InventoryItem.GetItemsByQQ(e.FromQQ);
+            var list = InventoryItem.GetItemsByQQ(e.FromQQ).Where(x => x.Count > 0).ToList();
             if (list == null || list.Count == 0)
             {
                 sendText.MsgToSend.Add(AppConfig.ReplyEmptyInventory);
