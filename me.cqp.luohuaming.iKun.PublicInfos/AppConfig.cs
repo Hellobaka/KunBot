@@ -480,7 +480,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyWorkingStarted = GetConfig("ReplyWorkingStarted", "打工开始！\n预计结束时间 {0} 预计获得金币 {1} 个");
             ReplyAutoPlaying = GetConfig("ReplyAutoPlaying", "{0} 正在挂机中");
             ReplyWorking = GetConfig("ReplyWorking", "{0} 正在打工中");
-            ReplyNotAutoPlaying = GetConfig("ReplyNotAutoPlaying", "{0} 未在打工");
+            ReplyNotAutoPlaying = GetConfig("ReplyNotAutoPlaying", "{0} 未在挂机");
             ReplyNotWorking = GetConfig("ReplyNotWorking", "{0} 未在打工");
             ReplyStartAutoPlayFailed = GetConfig("ReplyStartAutoPlayFailed", "，无法开始挂机");
             ReplyStopAutoPlayFailed = GetConfig("ReplyStopAutoPlayFailed", "，无法结束挂机");
