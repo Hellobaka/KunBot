@@ -788,7 +788,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return AppConfig.ReplyKunToString
                 .Replace("%PetAttributeA%", PetAttributeA.Name)
                 .Replace("%PetAttributeB%", PetAttributeB.Name)
-                .Replace("%LongLevel%", new string('★', Level))
+                .Replace("%LongLevel%", new string('★', Math.Max(0, Level)))
                 .Replace("%ShortLevel%", $"{Level}★")
                 .Replace("%Weight%", Weight.ToShortNumber());
         }

@@ -131,9 +131,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         {
             int increment = (int)(EndTime - StartTime).TotalHours * AppConfig.ValueWorkingCoinRewardPerHour;
             kun = Kun.GetKunByID(KunID);
-            if (kun == null)
+            if (kun == null || !kun.Alive || kun.Abandoned)
             {
-                Logger.Info($"未找到鲲");
+                Logger.Info($"目标鲲不存在或已死亡或已被抛弃");
                 return null;
             }
             kun.Initialize();

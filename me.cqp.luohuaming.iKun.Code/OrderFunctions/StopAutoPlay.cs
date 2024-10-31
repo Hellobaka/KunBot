@@ -62,6 +62,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
             var r = autoPlay.Stop();
+            if (r == null)
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunNotAlive, kun));
+                return result;
+            }
             string msg = "";
             if (r.Dead)
             {

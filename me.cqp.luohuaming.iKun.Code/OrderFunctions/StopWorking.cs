@@ -62,6 +62,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
             var r = autoPlay.Stop();
+            if (r == null)
+            {
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunNotAlive, kun));
+                return result;
+            }
             string msg = string.Format(AppConfig.ReplyWorkingFinished, kun, r.Duration.TotalHours.ToString("f2"), (int)r.Increment, r.CurrentCoin);
             sendText.MsgToSend.Add(msg);
             return result;
