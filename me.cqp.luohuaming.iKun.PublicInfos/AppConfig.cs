@@ -247,6 +247,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyWorkingFinished { get; set; } = "";
 
+        public static string ReplyNotInSameGroup { get; set; } = "";
+
         public static double ProbablityNone { get; set; }
 
         public static double ProbablityJin { get; set; }
@@ -492,6 +494,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyRankingWorking = GetConfig("ReplyRankingWorking", "[打工中]");
             ReplyAutoPlayInCD = GetConfig("ReplyAutoPlayInCD", "挂机暂时不可用，下次可挂机时间：{0}");
             ReplyWorkingInCD = GetConfig("ReplyWorkingInCD", "打工暂时不可用，下次可打工时间：{0}");
+            ReplyNotInSameGroup = GetConfig("ReplyNotInSameGroup", "对象未在同一群内，无法操作");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);

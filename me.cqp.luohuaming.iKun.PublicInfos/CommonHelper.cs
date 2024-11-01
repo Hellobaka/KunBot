@@ -1,3 +1,4 @@
+using me.cqp.luohuaming.iKun.Sdk.Cqp.Model;
 using System;
 using System.IO;
 using System.Linq;
@@ -132,6 +133,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             {
                 return value.ToString("f2") + Units.Last();
             }
+        }
+
+        public static bool CheckSameGroup(long target, long fromGroup)
+        {
+            if (!MainSave.GroupMemberInfos.TryGetValue(fromGroup, out var infos))
+            {
+                infos = MainSave.CQApi.GetGroupMemberList(fromGroup);
+                MainSave.GroupMemberInfos[fromGroup] = infos;
+            }
+            return infos.Any(x => x.QQ == target);
         }
     }
 }

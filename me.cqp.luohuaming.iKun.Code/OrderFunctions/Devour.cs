@@ -55,7 +55,6 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                     }
                 }
             }
-
             if (target < QQ.MinValue)
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, $"，示例：{GetOrderStr()} [QQ|At|昵称|卡片]"));
@@ -64,6 +63,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             if (target == e.FromQQ)
             {
                 sendText.MsgToSend.Add(AppConfig.ReplyDevourSelf);
+                return result;
+            }
+            if (!CommonHelper.CheckSameGroup(target, e.FromGroup))
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyNotInSameGroup);
                 return result;
             }
 

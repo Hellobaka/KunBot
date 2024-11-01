@@ -67,6 +67,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyAttackSelf);
                 return result;
             }
+            if (!CommonHelper.CheckSameGroup(target, e.FromGroup))
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyNotInSameGroup);
+                return result;
+            }
 
             var player = Player.GetPlayer(e.FromQQ);
             if (player == null)
