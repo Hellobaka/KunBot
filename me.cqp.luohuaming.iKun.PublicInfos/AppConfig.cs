@@ -20,6 +20,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static bool EnableRandomPunish { get; set; }
 
+        public static bool EnableNotSameGroupAttackBoardcast { get; set; }
+
+        public static bool EnableNotSameGroupDevourBoardcast { get; set; }
+
         public static ShortNumberType ShortNumberType { get; set; }
 
         public static int WeightUnitBase { get; set; } = 1;
@@ -249,6 +253,16 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyNotInSameGroup { get; set; } = "";
 
+        public static string ReplyAttackedNotSameGroup { get; set; } = "";
+
+        public static string ReplyAttackedNotSameGroupAndDead { get; set; } = "";
+
+        public static string ReplyAttackedNotSameGroupButEscaped { get; set; } = "";
+
+        public static string ReplyDevouredNotSameGroup { get; set; } = "";
+
+        public static string ReplyDevouredNotSameGroupButEscaped { get; set; } = "";
+
         public static double ProbablityNone { get; set; }
 
         public static double ProbablityJin { get; set; }
@@ -383,6 +397,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         {
             EnableAt = GetConfig("EnableAt", false);
             EnableRandomPunish = GetConfig("EnableRandomPunish", false);
+            EnableNotSameGroupAttackBoardcast = GetConfig("EnableNotSameGroupAttackBoardcast", true);
+            EnableNotSameGroupDevourBoardcast = GetConfig("EnableNotSameGroupDevourBoardcast", true);
             WeightUnitBase = GetConfig("WeightUnitBase", 1);
             WeightUnit = GetConfig("WeightUnit", "kg");
             ShortNumberType = GetConfig("ShortNumberType", ShortNumberType.Normal);
@@ -477,8 +493,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyKunToString = GetConfig("ReplyKunToString", "[%PetAttributeA%] %PetAttributeB%鲲 %LongLevel%");
             ReplyAutoPlayFinished = GetConfig("ReplyAutoPlayFinished", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重，当前体重 {3} kg");
             ReplyWorkingFinished = GetConfig("ReplyWorkingFinished", "打工完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} 个金币，当前金币 {3} 个");
-            ReplyAutoPlayFinishedButDead = GetConfig("ReplyAutoPlayFinishedButDead", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重\n但是却因走火入魔而暴毙！");
-            ReplyAutoPlayStarted = GetConfig("ReplyAutoPlayStarted", "挂机开始！\n预计结束时间 {0} 预计获得体重 {1} kg");
+            ReplyAutoPlayFinishedButDead = GetConfig("ReplyAutoPlayFinishedButDead", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重\n但是却因走火入魔而暴毙！"); ReplyAutoPlayStarted = GetConfig("ReplyAutoPlayStarted", "挂机开始！\n预计结束时间 {0} 预计获得体重 {1} kg");
             ReplyWorkingStarted = GetConfig("ReplyWorkingStarted", "打工开始！\n预计结束时间 {0} 预计获得金币 {1} 个");
             ReplyAutoPlaying = GetConfig("ReplyAutoPlaying", "{0} 正在挂机中");
             ReplyWorking = GetConfig("ReplyWorking", "{0} 正在打工中");
@@ -495,6 +510,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyAutoPlayInCD = GetConfig("ReplyAutoPlayInCD", "挂机暂时不可用，下次可挂机时间：{0}");
             ReplyWorkingInCD = GetConfig("ReplyWorkingInCD", "打工暂时不可用，下次可打工时间：{0}");
             ReplyNotInSameGroup = GetConfig("ReplyNotInSameGroup", "对象未在同一群内，无法操作");
+            ReplyAttackedNotSameGroup = GetConfig("ReplyAttackedNotSameGroup", "{0} 你的鲲在另一个群被攻击了，损失 {1} kg，还剩 {2} kg");
+            ReplyAttackedNotSameGroupAndDead = GetConfig("ReplyAttackedNotSameGroupAndDead", "{0} 你的鲲在另一个群被攻击致死");
+            ReplyAttackedNotSameGroupButEscaped = GetConfig("ReplyAttackedNotSameGroupButEscaped", "{0} 你的鲲在另一个群被尝试攻击，但是你的鲲逃脱了");
+            ReplyDevouredNotSameGroup = GetConfig("ReplyDevouredNotSameGroup", "{0} 你的鲲在另一个群被吞噬了");
+            ReplyDevouredNotSameGroupButEscaped = GetConfig("ReplyDevouredNotSameGroupButEscaped", "{0} 你的鲲在另一个群被尝试吞噬，但是你的鲲逃脱了");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);

@@ -1,5 +1,6 @@
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
+using me.cqp.luohuaming.iKun.Sdk.Cqp;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.Model;
 using System;
@@ -65,11 +66,6 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyDevourSelf);
                 return result;
             }
-            if (!CommonHelper.CheckSameGroup(target, e.FromGroup))
-            {
-                sendText.MsgToSend.Add(AppConfig.ReplyNotInSameGroup);
-                return result;
-            }
 
             var player = Player.GetPlayer(e.FromQQ);
             if (player == null)
@@ -119,6 +115,30 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
 
+            bool sameGroup = CommonHelper.CheckSameGroup(target, e.FromGroup);
+            long notSameGroupId = 0;
+            if (!sameGroup)
+            {
+                var record = Record.GetRecordByKunID(targetKun.Id);
+                if (record != null)
+                {
+                    notSameGroupId = record.Group;
+                }
+            }
+            string playerInfo = "";
+            if (AppConfig.EnableAt)
+            {
+                playerInfo = $"[CQ:at,qq={target}]";
+            }
+            else if (sameGroup)
+            {
+                playerInfo = e.FromGroup.GetGroupMemberInfo(target)?.Card ?? target.ToString();
+            }
+            else
+            {
+                playerInfo = e.CQApi.GetGroupMemberInfo(notSameGroupId, target)?.Card ?? target.ToString();
+            }
+
             var r = kun.Devour(targetKun);
             if (r.Success is false)
             {
@@ -127,7 +147,6 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             player.DevourAt = DateTime.Now;
             player.Update();
-            string playerInfo = AppConfig.EnableAt ? $"[CQ:at,qq={target}]" : e.FromGroup.GetGroupMemberInfo(target).Card;
             if (r.Dead)
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourFailAndDead, kun.ToString(), playerInfo, targetKun.ToString(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
@@ -148,6 +167,18 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                     send += $"\n{AppConfig.ReplyWeightLimit}";
                 }
                 sendText.MsgToSend.Add(send);
+            }
+
+            if (!sameGroup && AppConfig.EnableNotSameGroupDevourBoardcast)
+            {
+                if (r.Escaped)
+                {
+                    e.CQApi.SendGroupMessage(notSameGroupId, string.Format(AppConfig.ReplyDevouredNotSameGroupButEscaped, CQApi.CQCode_At(target)));
+                }
+                else
+                {
+                    e.CQApi.SendGroupMessage(notSameGroupId, string.Format(AppConfig.ReplyDevouredNotSameGroup, CQApi.CQCode_At(target)));
+                }
             }
             return result;
         }

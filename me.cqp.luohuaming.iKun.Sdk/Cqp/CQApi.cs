@@ -793,26 +793,18 @@ namespace me.cqp.luohuaming.iKun.Sdk.Cqp
 			string data = CQP.CQ_getGroupMemberInfoV2 (this.AppInfo.AuthCode, groupId, qqId, notCache).ToString (CQApi.DefaultEncoding);
 			if (string.IsNullOrEmpty (data))
 			{
-#if DEBUG
-				throw new InvalidDataException ("获取的数据流格式无效");
-#else
-				return null;
-#endif
-			}
+                return null;
+            }
 
-			try
+            try
 			{
 				return new GroupMemberInfo (this, data);
 			}
 			catch
 			{
-#if DEBUG
-				throw;
-#else
-				return null;
-#endif
-			}
-		}
+                return null;
+            }
+        }
 		/// <summary>
 		/// 获取群成员列表
 		/// </summary>
@@ -831,26 +823,18 @@ namespace me.cqp.luohuaming.iKun.Sdk.Cqp
 			string data = CQP.CQ_getGroupMemberList (this.AppInfo.AuthCode, groupId).ToString (CQApi.DefaultEncoding);
 			if (string.IsNullOrEmpty (data))
 			{
-#if DEBUG
-				throw new InvalidDataException ("获取的数据流格式无效");
-#else
-				return null;
-#endif
-			}
+                return null;
+            }
 
-			try
+            try
 			{
 				return new GroupMemberInfoCollection (this, data);
 			}
 			catch
 			{
-#if DEBUG
-				throw;
-#else
-				return null;
-#endif
-			}
-		}
+                return null;
+            }
+        }
 		/// <summary>
 		/// 获取群信息
 		/// </summary>
