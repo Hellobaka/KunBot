@@ -2,6 +2,7 @@ using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Items;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.PublicInfos.Models.Results;
+using me.cqp.luohuaming.iKun.Sdk.Cqp;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.Interface;
 using System;
@@ -65,7 +66,7 @@ namespace me.cqp.luohuaming.iKun.Code
         {
             try
             {
-                if (autoPlayResult == null || !kun.Alive || kun.Abandoned || kun.Level <= 0 || kun.Weight <= 0)
+                if (autoPlayResult == null || kun.Level <= 0 || kun.Weight <= 0 || kun.Abandoned)
                 {
                     return;
                 }
@@ -75,14 +76,25 @@ namespace me.cqp.luohuaming.iKun.Code
                     switch (autoPlay.AutoPlayType)
                     {
                         case PublicInfos.Enums.AutoPlayType.Exp:
-                            msg = string.Format(AppConfig.ReplyAutoPlayFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, autoPlayResult.Increment.ToShortNumber(), kun.Weight.ToShortNumber());
-                            if (autoPlayResult.WeightLimit)
+                            if (autoPlayResult.Dead)
                             {
-                                msg += $"\n{AppConfig.ReplyWeightLimit}";
+                                msg = string.Format(CQApi.CQCode_At(kun.PlayerID) + AppConfig.ReplyAutoPlayFinishedButDead, kun.ToString(), autoPlayResult.Duration.TotalHours, autoPlayResult.Increment.ToShortNumber());
+                            }
+                            else
+                            {
+                                msg = string.Format(CQApi.CQCode_At(kun.PlayerID) + AppConfig.ReplyAutoPlayFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, autoPlayResult.Increment.ToShortNumber(), kun.Weight.ToShortNumber());
+                                if (autoPlayResult.WeightLimit)
+                                {
+                                    msg += $"\n{AppConfig.ReplyWeightLimit}";
+                                }
                             }
                             break;
                         case PublicInfos.Enums.AutoPlayType.Coin:
-                            msg = string.Format(AppConfig.ReplyWorkingFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, (int)autoPlayResult.Increment, autoPlayResult.CurrentCoin);
+                            if (!kun.Alive)
+                            {
+                                return;
+                            }
+                            msg = string.Format(CQApi.CQCode_At(kun.PlayerID) + AppConfig.ReplyWorkingFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, (int)autoPlayResult.Increment, autoPlayResult.CurrentCoin);
                             break;
                         default:
                             break;
