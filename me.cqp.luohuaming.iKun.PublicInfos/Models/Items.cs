@@ -24,6 +24,8 @@
 
         public static Items UpgradePill(int count = 1) => new PublicInfos.Items.UpgradePill(count);
 
+        public static Items AscendPill(int count = 1) => new PublicInfos.Items.AscendPill(count);
+
         public static Items GetItemByID(Enums.Items id)
         {
             switch (id)
@@ -45,6 +47,9 @@
 
                 case Enums.Items.UpgradePill:
                     return new PublicInfos.Items.UpgradePill();
+
+                case Enums.Items.AscendPill:
+                    return new PublicInfos.Items.AscendPill();
 
                 default:
                     break;

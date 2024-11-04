@@ -14,6 +14,8 @@
 
         TransmogrifyPill,
 
-        UpgradePill
+        UpgradePill,
+
+        AscendPill,
     }
 }

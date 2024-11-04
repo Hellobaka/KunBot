@@ -87,6 +87,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string CommandRandomPunish { get; set; } = "";
 
+        public static string CommandConsumeAscendPill { get; set; } = "";
+
         public static string ReplyDuplicateRegister { get; set; } = "";
 
         public static string ReplyNewRegister { get; set; } = "";
@@ -263,6 +265,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyDevouredNotSameGroupButEscaped { get; set; } = "";
 
+        public static string ReplyConsumeAscendPill { get; set; } = "";
+
         public static double ProbablityNone { get; set; }
 
         public static double ProbablityJin { get; set; }
@@ -381,6 +385,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueWorkingCoinRewardPerHour {  get; set; }
 
+        public static int ValueAscendPillMaxConsumeCount {  get; set; }
+
+        public static int ValueAscendPillPerIncrement {  get; set; }
+
         public static List<string> BlindBoxContents { get; set; } = [];
 
         public static bool BlindBoxEnableMultiContents {  get; set; }
@@ -427,6 +435,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandStartWorking = GetConfig("CommandStartWorking", "#开始打工");
             CommandStopWorking = GetConfig("CommandStopWorking", "#停止打工");
             CommandRandomPunish = GetConfig("CommandRandomPunish", "#天罚");
+            CommandConsumeAscendPill = GetConfig("CommandConsumeAscendPill", "#使用渡劫丹");
 
             ReplyDuplicateRegister = GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
             ReplyDuplicateLogin = GetConfig("ReplyLoginDuplicate", "你今天已经签到过了，不能重复签到");
@@ -515,6 +524,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyAttackedNotSameGroupButEscaped = GetConfig("ReplyAttackedNotSameGroupButEscaped", "{0} 你的鲲在另一个群被尝试攻击，但是你的鲲逃脱了");
             ReplyDevouredNotSameGroup = GetConfig("ReplyDevouredNotSameGroup", "{0} 你的鲲在另一个群被吞噬了");
             ReplyDevouredNotSameGroupButEscaped = GetConfig("ReplyDevouredNotSameGroupButEscaped", "{0} 你的鲲在另一个群被尝试吞噬，但是你的鲲逃脱了");
+            ReplyConsumeAscendPill = GetConfig("ReplyConsumeAscendPill", "使用了 {0} 个渡劫丹，下次渡劫成功率 +{1}%");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);
@@ -576,8 +586,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueAutoPlayCDHour = GetConfig("ValueAutoPlayCDHour", 12);
             ValueWorkingCDHour = GetConfig("ValueWorkingCDHour", 12);
             ValueWorkingCoinRewardPerHour = GetConfig("ValueWorkingCoinRewardPerHour", 10);
+            ValueAscendPillPerIncrement = GetConfig("ValueAscendPillPerIncrement", 10);
+            ValueAscendPillMaxConsumeCount = GetConfig("ValueAscendPillMaxConsumeCount", 3);
             
-            BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|8" });
+            BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|7", "7|1" });
             BlindBoxEnableMultiContents = GetConfig("BlindBoxEnableMultiContents", false);
             BlindBoxMultiContentMustHasItem = GetConfig("BlindBoxMultiContentMustHasItem", false);
             BlindBoxMultiContentProbablity = GetConfig("BlindBoxMultiContentProbablity", 10);

@@ -18,6 +18,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public DateTime DevourAt { get; set; }
 
+        /// <summary>
+        /// 挂起的渡劫丹消耗数量
+        /// </summary>
+        public int AscendPillComsume {  get; set; }
+
         public static bool Exists(long qq) => SQLHelper.GetInstance().Queryable<Player>().Any(p => p.QQ == qq);
 
         public static Player? Create(long qq)

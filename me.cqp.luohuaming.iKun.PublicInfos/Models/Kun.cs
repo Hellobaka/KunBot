@@ -48,6 +48,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         [SugarColumn(IsIgnore = true)]
         public IPetAttribute PetAttributeB { get; set; }
 
+        [SugarColumn(IsIgnore = true)]
+        public double AscendProbablityIncrement { get; set; }
+
         private static PetAttributeRandomInsatantiator RandomInsatantiator { get; set; } = null;
 
         #region 数值实例
@@ -72,7 +75,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             try
             {
                 Monitor.Enter(LockObject);
-                Logger.Info($"进入渡劫方法，ID={Id}");
+                Logger.Info($"进入渡劫方法，ID={Id}，额外加成倍率={AscendProbablityIncrement}");
                 if (!Alive || Abandoned)
                 {
                     Logger.Error("目标鲲已死亡或已被抛弃");
@@ -83,6 +86,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Logger.Info($"基础成功率：{success * 100}%");
                 success = PetAttributeB.GetAscendSuccessRate(PetAttributeA.GetAscendSuccessRate(success));
                 Logger.Info($"词缀加成后成功率：{success * 100}%");
+                success += AscendProbablityIncrement / 100;
+                Logger.Info($"额外加成后成功率：{success * 100}%");
 
                 double diff = PetAttributeA.Ascend(success);
                 diff = PetAttributeB.Ascend(success, diff);

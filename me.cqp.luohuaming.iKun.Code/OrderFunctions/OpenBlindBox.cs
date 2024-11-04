@@ -136,7 +136,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 string[] split = item.Split('|');
                 int index = int.TryParse(split[0], out int value) ? value : -1;
                 double probablity = double.TryParse(split[1], out double doubleValue) ? doubleValue : -1;
-                if (index >= 0 && index <= 6)
+                if (index >= 0 && index <= 7)
                 {
                     BlindBoxes.Add(((PublicInfos.Enums.Items)index, probablity));
                 }

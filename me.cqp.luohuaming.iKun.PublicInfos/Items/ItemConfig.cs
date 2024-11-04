@@ -35,6 +35,10 @@
 
         public static string UpgradePillDescription { get; set; }
 
+        public static string AscendPillName { get; set; }
+
+        public static string AscendPillDescription { get; set; }
+
         public override void LoadConfig()
         {
             BlindBoxName = GetConfig("BlindBoxName", "盲盒");
@@ -43,6 +47,7 @@
             ResurrectPillName = GetConfig("ResurrectPillName", "复活丸");
             TransmogrifyPillName = GetConfig("TransmogrifyPillName", "幻化丸");
             UpgradePillName = GetConfig("UpgradePillName", "强化丸");
+            AscendPillName = GetConfig("AscendPillName", "渡劫丹");
 
             BlindBoxDescription = GetConfig("BlindBoxDescription", "能获得随机材料");
             CoinDescription = GetConfig("CoinDescription", "大陆上通用的货币");
@@ -50,6 +55,7 @@
             ResurrectPillDescription = GetConfig("ResurrectPillDescription", "用于复活的道具，能复活鲲");
             TransmogrifyPillDescription = GetConfig("TransmogrifyPillDescription", "用于幻化的道具，能够随机更改鲲的词缀");
             UpgradePillDescription = GetConfig("UpgradePillDescription", "用于强化的道具，能用于强化鲲");
+            AscendPillDescription = GetConfig("AscendPillDescription", "能够临时提升渡劫成功率的道具");
         }
     }
 }

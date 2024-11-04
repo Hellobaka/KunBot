@@ -62,6 +62,7 @@
     <Compile Include="Event_PrivateMessage.cs" />
     <Compile Include="Event_GroupMessage.cs" />
     <Compile Include="Event_StartUp.cs" />
+    <Compile Include="OrderFunctions\ConsumeAscendPill.cs" />
     <Compile Include="OrderFunctions\RandomPunish.cs" />
     <Compile Include="OrderFunctions\RankingGroup.cs" />
     <Compile Include="OrderFunctions\StartWorking.cs" />

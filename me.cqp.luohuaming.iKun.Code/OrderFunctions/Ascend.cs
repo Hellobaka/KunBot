@@ -1,4 +1,5 @@
 using me.cqp.luohuaming.iKun.PublicInfos;
+using me.cqp.luohuaming.iKun.PublicInfos.Items;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 
@@ -30,6 +31,19 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoPlayer);
                 return result;
             }
+            int ascendPillComsume = 0;
+            if (player.AscendPillComsume > 0)
+            {
+                if (!InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.AscendPill, player.AscendPillComsume, out int currentPill))
+                {
+                    sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.AscendPill().Name, player.AscendPillComsume, currentPill));
+                    return result;
+                }
+                ascendPillComsume = player.AscendPillComsume;
+                player.AscendPillComsume = 0;
+                player.Update();
+            }
+
             var kun = Kun.GetKunByQQ(player.QQ);
             if (kun == null)
             {
@@ -37,6 +51,9 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
             kun.Initialize();
+
+            kun.AscendProbablityIncrement = ascendPillComsume * AppConfig.ValueAscendPillPerIncrement;
+
             if (AutoPlay.CheckKunAutoPlay(kun))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAutoPlaying, kun));
