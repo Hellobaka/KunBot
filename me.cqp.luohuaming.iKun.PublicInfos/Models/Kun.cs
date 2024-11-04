@@ -290,6 +290,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                         Logger.Info($"判定失败");
                     }
                 }
+                else if (weightDiff.Item1 == 1 && weightDiff.Item2 == 1)
+                {
+                    Logger.Info($"对方鲲触发逃脱");
+                }
                 else
                 {
                     Logger.Info($"由于吞噬成功，被攻击方鲲触发死亡");
