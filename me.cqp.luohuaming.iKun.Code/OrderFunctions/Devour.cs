@@ -175,7 +175,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 {
                     e.CQApi.SendGroupMessage(notSameGroupId, string.Format(AppConfig.ReplyDevouredNotSameGroupButEscaped, CQApi.CQCode_At(target)));
                 }
-                else
+                else if (r.Increment > 0)
                 {
                     e.CQApi.SendGroupMessage(notSameGroupId, string.Format(AppConfig.ReplyDevouredNotSameGroup, CQApi.CQCode_At(target)));
                 }

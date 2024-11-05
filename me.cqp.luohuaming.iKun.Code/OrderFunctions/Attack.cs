@@ -183,7 +183,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 }
                 else if (r.TargetDead)
                 {
-                    e.CQApi.SendGroupMessage(notSameGroupId, string.Format(AppConfig.ReplyAttackedNotSameGroupButEscaped, CQApi.CQCode_At(target)));
+                    e.CQApi.SendGroupMessage(notSameGroupId, string.Format(AppConfig.ReplyAttackedNotSameGroupAndDead, CQApi.CQCode_At(target)));
                 }
                 else if (r.Increment > 0)
                 {
