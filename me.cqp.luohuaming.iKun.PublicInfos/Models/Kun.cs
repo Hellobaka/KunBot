@@ -804,8 +804,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public string ToStringFull()
         {
+            bool autoPlaying = AutoPlay.CheckKunAutoPlay(this, Enums.AutoPlayType.Exp);
+            bool working = AutoPlay.CheckKunAutoPlay(this, Enums.AutoPlayType.Coin);
+
             StringBuilder stringBuilder = new();
-            stringBuilder.AppendLine(this.ToString() + $" {Weight.ToShortNumber()} {AppConfig.WeightUnit}");
+            stringBuilder.AppendLine(this.ToString() + $" {Weight.ToShortNumber()} {AppConfig.WeightUnit}" +
+                    $"{(autoPlaying ? $" {AppConfig.ReplyRankingAutoPlaying}" : "")}" +
+                    $"{(working ? $" {AppConfig.ReplyRankingWorking}" : "")}");
             foreach (var item in PetAttributeA.Description)
             {
                 stringBuilder.AppendLine(item.ToString());
