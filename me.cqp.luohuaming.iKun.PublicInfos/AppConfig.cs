@@ -571,8 +571,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueFeedWeightBaseIncrement = GetConfig("ValueFeedWeightBaseIncrement", 10);
             ValueFeedWeightMinimumIncrement = GetConfig("ValueFeedWeightMinimumIncrement", 5);
             ValueFeedWeightMaximumIncrement = GetConfig("ValueFeedWeightMaximumIncrement", 10);
-            ValueAttackWeightMinimumDecrement = GetConfig("ValueAttackWeightMinimumDecrement", 5);
-            ValueAttackWeightMaximumDecrement = GetConfig("ValueAttackWeightMaximumDecrement", 10);
+            ValueAttackWeightMinimumDecrement = GetConfig("ValueAttackWeightMinimumDecrement", 30);
+            ValueAttackWeightMaximumDecrement = GetConfig("ValueAttackWeightMaximumDecrement", 100);
             ValueRankingCount = GetConfig("ValueRankingCount", 10);
             ValueDevourDrawPercentage = GetConfig("ValueDevourDrawPercentage", 10);
             ValueLoginCoinReward = GetConfig("ValueLoginCoinReward", 100);
