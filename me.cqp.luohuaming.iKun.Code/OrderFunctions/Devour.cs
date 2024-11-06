@@ -149,7 +149,10 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             player.Update();
             if (r.Dead)
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourFailAndDead, kun.ToString(), playerInfo, targetKun.ToString(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
+                if (AppConfig.EnableNotSameGroupDevourEscapeBoardcast)
+                {
+                    sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourFailAndDead, kun.ToString(), playerInfo, targetKun.ToString(), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
+                }
             }
             else if (r.Increment < 0)
             {

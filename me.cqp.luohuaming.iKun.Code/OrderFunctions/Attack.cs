@@ -177,7 +177,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 
             if (!sameGroup && AppConfig.EnableNotSameGroupAttackBoardcast)
             {
-                if (r.Escaped)
+                if (r.Escaped && AppConfig.EnableNotSameGroupAttackEscapeBoardcast)
                 {
                     e.CQApi.SendGroupMessage(notSameGroupId, string.Format(AppConfig.ReplyAttackedNotSameGroupButEscaped, CQApi.CQCode_At(target)));
                 }
@@ -187,7 +187,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 }
                 else if (r.Increment > 0)
                 {
-                    e.CQApi.SendGroupMessage(notSameGroupId, string.Format(AppConfig.ReplyAttackedNotSameGroup, CQApi.CQCode_At(target), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
+                    double loss = r.TargetDecrement / (r.TargetCurrentWeight + r.TargetDecrement) * 100;
+                    if (loss > AppConfig.ValueNotSameGroupNoticeMinimalPercent)
+                    {
+                        e.CQApi.SendGroupMessage(notSameGroupId, string.Format(AppConfig.ReplyAttackedNotSameGroup, CQApi.CQCode_At(target), r.TargetDecrement.ToShortNumber(), r.TargetCurrentWeight.ToShortNumber()));
+                    }
                 }
             }
             return result;
