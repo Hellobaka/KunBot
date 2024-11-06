@@ -24,6 +24,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static bool EnableNotSameGroupDevourBoardcast { get; set; }
 
+        public static bool EnableNotSameGroupAttackEscapeBoardcast { get; set; }
+
+        public static bool EnableNotSameGroupDevourEscapeBoardcast { get; set; }
+
         public static ShortNumberType ShortNumberType { get; set; }
 
         public static int WeightUnitBase { get; set; } = 1;
@@ -230,7 +234,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string ReplyWorkingStarted { get; set; } = "";
 
         public static string ReplyAutoPlayFinished { get; set; } = "";
-       
+
         public static string ReplyAutoPlayFinishedButDead { get; set; } = "";
 
         public static string ReplyAutoPlaying { get; set; } = "";
@@ -238,11 +242,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string ReplyNotAutoPlaying { get; set; } = "";
 
         public static string ReplyRandomPunish { get; set; } = "";
-        
+
         public static string ReplyRandomPunishSkipped { get; set; } = "";
-        
+
         public static string ReplyRandomPunishFinished { get; set; } = "";
-       
+
         public static string ReplyRandomPunishFinishedAndDead { get; set; } = "";
 
         public static string ReplyRankingAutoPlaying { get; set; } = "";
@@ -380,32 +384,34 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static int ValueRandomPunishProbablity { get; set; }
 
         public static int ValueRandomPunishMinimalDecrement { get; set; }
-       
+
         public static int ValueRandomPunishMaximalDecrement { get; set; }
-       
+
         public static int ValueRandomPunishDeadProbablity { get; set; }
-       
+
         public static int ValueRandomPunishExecuteDay { get; set; }
 
-        public static DateTime ValueRandomPunishExecuteTime {  get; set; }
+        public static DateTime ValueRandomPunishExecuteTime { get; set; }
 
-        public static int ValueAutoPlayCDHour {  get; set; }
+        public static int ValueAutoPlayCDHour { get; set; }
 
-        public static int ValueWorkingCDHour {  get; set; }
+        public static int ValueWorkingCDHour { get; set; }
 
-        public static int ValueWorkingCoinRewardPerHour {  get; set; }
+        public static int ValueWorkingCoinRewardPerHour { get; set; }
 
-        public static int ValueAscendPillMaxConsumeCount {  get; set; }
+        public static int ValueAscendPillMaxConsumeCount { get; set; }
 
-        public static int ValueAscendPillPerIncrement {  get; set; }
+        public static int ValueAscendPillPerIncrement { get; set; }
+
+        public static double ValueNotSameGroupNoticeMinimalPercent { get; set; }
 
         public static List<string> BlindBoxContents { get; set; } = [];
 
-        public static bool BlindBoxEnableMultiContents {  get; set; }
+        public static bool BlindBoxEnableMultiContents { get; set; }
 
         public static int BlindBoxMultiContentProbablity { get; set; } = 10;
 
-        public static bool BlindBoxMultiContentMustHasItem {  get; set; }
+        public static bool BlindBoxMultiContentMustHasItem { get; set; }
 
         public static List<long> Groups { get; set; } = [];
 
@@ -417,6 +423,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             EnableRandomPunish = GetConfig("EnableRandomPunish", false);
             EnableNotSameGroupAttackBoardcast = GetConfig("EnableNotSameGroupAttackBoardcast", true);
             EnableNotSameGroupDevourBoardcast = GetConfig("EnableNotSameGroupDevourBoardcast", true);
+            EnableNotSameGroupAttackEscapeBoardcast = GetConfig("EnableNotSameGroupAttackEscapeBoardcast", false);
+            EnableNotSameGroupDevourEscapeBoardcast = GetConfig("EnableNotSameGroupDevourEscapeBoardcast", false);
             WeightUnitBase = GetConfig("WeightUnitBase", 1);
             WeightUnit = GetConfig("WeightUnit", "kg");
             ShortNumberType = GetConfig("ShortNumberType", ShortNumberType.Normal);
@@ -603,7 +611,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueWorkingCoinRewardPerHour = GetConfig("ValueWorkingCoinRewardPerHour", 10);
             ValueAscendPillPerIncrement = GetConfig("ValueAscendPillPerIncrement", 10);
             ValueAscendPillMaxConsumeCount = GetConfig("ValueAscendPillMaxConsumeCount", 3);
-            
+            ValueNotSameGroupNoticeMinimalPercent = GetConfig("ValueNotSameGroupNoticeMinimalPercent", 10);
+
             BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|7", "7|1" });
             BlindBoxEnableMultiContents = GetConfig("BlindBoxEnableMultiContents", false);
             BlindBoxMultiContentMustHasItem = GetConfig("BlindBoxMultiContentMustHasItem", false);

@@ -59,9 +59,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             Logger.Info($"攻击体重损失下限={AppConfig.ValueAttackWeightMinimumDecrement}，上限={AppConfig.ValueAttackWeightMaximumDecrement}");
             double random = CommonHelper.Random.NextDouble(AppConfig.ValueAttackWeightMinimumDecrement / 100.0, AppConfig.ValueAttackWeightMaximumDecrement / 100.0);
             double decrement = random * diff;
-            decrement = Math.Min(source, decrement);
-            double value = target * decrement;
-            double increment = value / source;
+            double value = source * decrement;// 造成的伤害
+            double increment = value / source;// 攻方的增百分比
+            decrement = value / target; // 被攻方的减百分比
             Logger.Info($"倍率随机数={random}，被攻击方损失倍率={decrement}，攻击方增加倍率={increment}");
             var r = (baseAttack.Item1 + increment, baseAttack.Item2 - decrement);
             Logger.Info($"退出攻击词缀计算方法，最终倍率={r.Item1}，{r.Item2}");
