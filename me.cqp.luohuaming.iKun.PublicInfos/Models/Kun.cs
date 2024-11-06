@@ -39,6 +39,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public DateTime DeadAt { get; set; }
 
+        public string NickName { get; set; } = "";
+
         private static Logger Logger { get; set; } = new Logger("鲲");
 
         [SugarColumn(IsIgnore = true)]
@@ -824,13 +826,24 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public override string ToString()
         {
-            return AppConfig.ReplyKunToString
-                .Replace("%PetAttributeA%", PetAttributeA.Name)
-                .Replace("%PetAttributeB%", PetAttributeB.Name)
-                .Replace("%PetAttributeC%", PetAttributeC.Name)
-                .Replace("%LongLevel%", new string('★', Math.Max(0, Level)))
-                .Replace("%ShortLevel%", $"{Level}★")
-                .Replace("%Weight%", Weight.ToShortNumber());
+            if (string.IsNullOrEmpty(NickName))
+            {
+                return AppConfig.ReplyKunToString
+                    .Replace("%PetAttributeA%", PetAttributeA.Name)
+                    .Replace("%PetAttributeB%", PetAttributeB.Name)
+                    .Replace("%PetAttributeC%", PetAttributeC.Name)
+                    .Replace("%LongLevel%", new string('★', Math.Max(0, Level)))
+                    .Replace("%ShortLevel%", $"{Level}★")
+                    .Replace("%Weight%", Weight.ToShortNumber());
+            }
+            else
+            {
+                return AppConfig.ReplyKunNickNameToString
+                    .Replace("%PetNickName%", NickName)
+                    .Replace("%LongLevel%", new string('★', Math.Max(0, Level)))
+                    .Replace("%ShortLevel%", $"{Level}★")
+                    .Replace("%Weight%", Weight.ToShortNumber());
+            }
         }
 
         public string ToStringFull()

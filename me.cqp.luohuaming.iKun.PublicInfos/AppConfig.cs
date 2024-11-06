@@ -89,6 +89,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string CommandConsumeAscendPill { get; set; } = "";
 
+        public static string CommandUseCustomNickName { get; set; } = "";
+
+        public static string CommandUnuseCustomNickName { get; set; } = "";
+
         public static string ReplyDuplicateRegister { get; set; } = "";
 
         public static string ReplyNewRegister { get; set; } = "";
@@ -219,6 +223,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyKunToString { get; set; } = "";
 
+        public static string ReplyKunNickNameToString { get; set; } = "";
+
         public static string ReplyAutoPlayStarted { get; set; } = "";
 
         public static string ReplyWorkingStarted { get; set; } = "";
@@ -266,6 +272,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string ReplyDevouredNotSameGroupButEscaped { get; set; } = "";
 
         public static string ReplyConsumeAscendPill { get; set; } = "";
+
+        public static string ReplyCustomNickApplied { get; set; } = "";
+
+        public static string ReplyCustomNickDiscarded { get; set; } = "";
 
         public static double ProbablityNone { get; set; }
 
@@ -436,6 +446,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandStopWorking = GetConfig("CommandStopWorking", "#停止打工");
             CommandRandomPunish = GetConfig("CommandRandomPunish", "#天罚");
             CommandConsumeAscendPill = GetConfig("CommandConsumeAscendPill", "#使用渡劫丹");
+            CommandUseCustomNickName = GetConfig("CommandUseCustomNickName", "#自定义名称");
+            CommandUnuseCustomNickName = GetConfig("CommandUnuseCustomNickName", "#恢复名称");
 
             ReplyDuplicateRegister = GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
             ReplyDuplicateLogin = GetConfig("ReplyLoginDuplicate", "你今天已经签到过了，不能重复签到");
@@ -500,6 +512,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyAttackSelf = GetConfig("ReplyAttackSelf", "不能自己攻击自己");
             ReplyDevourSelf = GetConfig("ReplyDevourSelf", "不能自己攻击自己");
             ReplyKunToString = GetConfig("ReplyKunToString", "[%PetAttributeA%] %PetAttributeB%%PetAttributeC%鲲 %LongLevel%");
+            ReplyKunNickNameToString = GetConfig("ReplyKunNickNameToString", "%PetNickName% %LongLevel%");
             ReplyAutoPlayFinished = GetConfig("ReplyAutoPlayFinished", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重，当前体重 {3} kg");
             ReplyWorkingFinished = GetConfig("ReplyWorkingFinished", "打工完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} 个金币，当前金币 {3} 个");
             ReplyAutoPlayFinishedButDead = GetConfig("ReplyAutoPlayFinishedButDead", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重\n但是却因走火入魔而暴毙！"); ReplyAutoPlayStarted = GetConfig("ReplyAutoPlayStarted", "挂机开始！\n预计结束时间 {0} 预计获得体重 {1} kg");
@@ -525,6 +538,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyDevouredNotSameGroup = GetConfig("ReplyDevouredNotSameGroup", "{0} 你的鲲在另一个群被吞噬了");
             ReplyDevouredNotSameGroupButEscaped = GetConfig("ReplyDevouredNotSameGroupButEscaped", "{0} 你的鲲在另一个群被尝试吞噬，但是你的鲲逃脱了");
             ReplyConsumeAscendPill = GetConfig("ReplyConsumeAscendPill", "使用了 {0} 个渡劫丹，下次渡劫成功率 +{1}%");
+            ReplyCustomNickApplied = GetConfig("ReplyCustomNickApplied", "自定义昵称已生效，你的鲲被命名为 {0}");
+            ReplyCustomNickDiscarded = GetConfig("ReplyCustomNickDiscarded", "自定义昵称抛弃，你的鲲名称恢复为 {0}");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);
