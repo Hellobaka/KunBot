@@ -83,7 +83,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             else
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyTransmogrifySuccess, $"[{r.OriginalAttributeA.Name}]{r.OriginalAttributeB.Name}鲲", $"[{r.CurrentAttributeA.Name}]{r.CurrentAttributeB.Name}鲲", r.Decrement.ToShortNumber(), r.CurrentWeight.ToShortNumber(), currentPill, currentCoin));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyTransmogrifySuccess, $"[{r.OriginalAttributeA.Name}]{r.OriginalAttributeB.Name}{r.OriginalAttributeC.Name}鲲", $"[{r.CurrentAttributeA.Name}]{r.CurrentAttributeB.Name}{r.CurrentAttributeC.Name}鲲", r.Decrement.ToShortNumber(), r.CurrentWeight.ToShortNumber(), currentPill, currentCoin));
             }
             return result;
         }

@@ -499,7 +499,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyEmptyInventory = GetConfig("ReplyEmptyInventory", "仓库为空");
             ReplyAttackSelf = GetConfig("ReplyAttackSelf", "不能自己攻击自己");
             ReplyDevourSelf = GetConfig("ReplyDevourSelf", "不能自己攻击自己");
-            ReplyKunToString = GetConfig("ReplyKunToString", "[%PetAttributeA%] %PetAttributeB%鲲 %LongLevel%");
+            ReplyKunToString = GetConfig("ReplyKunToString", "[%PetAttributeA%] %PetAttributeB%%PetAttributeC%鲲 %LongLevel%");
             ReplyAutoPlayFinished = GetConfig("ReplyAutoPlayFinished", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重，当前体重 {3} kg");
             ReplyWorkingFinished = GetConfig("ReplyWorkingFinished", "打工完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} 个金币，当前金币 {3} 个");
             ReplyAutoPlayFinishedButDead = GetConfig("ReplyAutoPlayFinishedButDead", "挂机完成！\n你的 {0} 共挂机了 {1} 小时，获得了 {2} kg体重\n但是却因走火入魔而暴毙！"); ReplyAutoPlayStarted = GetConfig("ReplyAutoPlayStarted", "挂机开始！\n预计结束时间 {0} 预计获得体重 {1} kg");

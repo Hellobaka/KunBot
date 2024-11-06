@@ -25,6 +25,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         public int AttributeBID { get; set; }
 
+        public int AttributeCID { get; set; }
+
         public bool CanResurrect { get; set; }
 
         public int Level { get; set; }
@@ -47,6 +49,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         [SugarColumn(IsIgnore = true)]
         public IPetAttribute PetAttributeB { get; set; }
+
+        [SugarColumn(IsIgnore = true)]
+        public IPetAttribute PetAttributeC { get; set; }
 
         [SugarColumn(IsIgnore = true)]
         public double AscendProbablityIncrement { get; set; }
@@ -85,12 +90,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 double success = CalcAscendSuccessRate(Level);
                 Logger.Info($"基础成功率：{success * 100}%");
                 success = PetAttributeB.GetAscendSuccessRate(PetAttributeA.GetAscendSuccessRate(success));
-                Logger.Info($"词缀加成后成功率：{success * 100}%");
+                Logger.Info($"词缀1加成后成功率：{success * 100}%");
+                success = PetAttributeC.GetAscendSuccessRate(success);
+                Logger.Info($"词缀2加成后成功率：{success * 100}%");
                 success += AscendProbablityIncrement / 100;
                 Logger.Info($"额外加成后成功率：{success * 100}%");
 
                 double diff = PetAttributeA.Ascend(success);
                 diff = PetAttributeB.Ascend(success, diff);
+                diff = PetAttributeC.Ascend(success, diff);
 
                 Weight *= diff;
                 if (diff >= 1)
@@ -171,9 +179,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Logger.Info($"被攻击方主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
                 weightDiff = PetAttributeB.Attack(Weight, target.Weight, weightDiff, baseAttackRate);
-                Logger.Info($"攻击方小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                Logger.Info($"攻击方小词缀1计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
                 weightDiff = target.PetAttributeB.BeingAttacked(Weight, target.Weight, weightDiff);
-                Logger.Info($"被攻击方小词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                Logger.Info($"被攻击方小词缀1计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+
+                weightDiff = PetAttributeC.Attack(Weight, target.Weight, weightDiff, baseAttackRate);
+                Logger.Info($"攻击方小词缀2计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
+                weightDiff = target.PetAttributeC.BeingAttacked(Weight, target.Weight, weightDiff);
+                Logger.Info($"被攻击方小词缀2计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
                 Weight *= weightDiff.Item1;
                 target.Weight *= weightDiff.Item2;
@@ -263,9 +276,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 Logger.Info($"被吞噬主词缀计算，变化值={weightDiff.Item1}，{weightDiff.Item2}");
 
                 weightDiff = PetAttributeB.Devour(Weight, target.Weight).Multiple(weightDiff);
-                Logger.Info($"吞噬小词缀计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
+                Logger.Info($"吞噬小词缀1计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
                 weightDiff = target.PetAttributeB.BeingDevoured(target.Weight, Weight, weightDiff);
-                Logger.Info($"被吞噬小词缀计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
+                Logger.Info($"被吞噬小词缀1计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
+
+                weightDiff = PetAttributeC.Devour(Weight, target.Weight).Multiple(weightDiff);
+                Logger.Info($"吞噬小词缀2计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
+                weightDiff = target.PetAttributeC.BeingDevoured(target.Weight, Weight, weightDiff);
+                Logger.Info($"被吞噬小词缀2计算，变化值={weightDiff.Item1} ，{weightDiff.Item2}");
 
                 Weight += weightDiff.Item1;
                 target.Weight += weightDiff.Item2;
@@ -363,6 +381,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 }
                 double diff = PetAttributeA.Feed(count);
                 diff = PetAttributeB.Feed(count, diff);
+                diff = PetAttributeC.Feed(count, diff);
 
                 Weight *= (1 + diff);
                 Weight += count * AppConfig.ValueFeedWeightBaseIncrement;
@@ -501,14 +520,17 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 }
                 var originalAttributeA = RandomInsatantiator.GetInstanceByID(true, AttributeAID);
                 var originalAttributeB = RandomInsatantiator.GetInstanceByID(false, AttributeBID);
+                var originalAttributeC = RandomInsatantiator.GetInstanceByID(false, AttributeCID);
                 var originalWeight = Weight;
 
                 double random = CommonHelper.Random.NextDouble();
                 double failRate = PetAttributeB.GetTransmogrifyFailRate(PetAttributeA.GetTransmogrifyFailRate(0.1));
+                failRate = PetAttributeC.GetTransmogrifyFailRate(failRate);
                 Logger.Info($"随机数={random}，成功临界={1 - failRate}");
                 bool success = random > failRate;
 
                 double loss = PetAttributeB.GetTransmogrifyFailWeightLostRate(PetAttributeA.GetTransmogrifyFailWeightLostRate(0.05));
+                loss = PetAttributeC.GetTransmogrifyFailWeightLostRate(loss);
                 Logger.Info($"体重损失倍率={1 - loss}");
                 Weight *= loss;
                 Logger.Info($"计算后体重为={Weight}，死亡临界点={AppConfig.ValueTransmoirgifyDeadWeightLimit}");
@@ -536,9 +558,11 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     PetAttributeA = RandomInsatantiator.GetRandomInstance();
                     PetAttributeB = AttributeB.RandomCreate();
+                    PetAttributeC = AttributeB.RandomCreate();
 
                     AttributeAID = (int)PetAttributeA.ID;
                     AttributeBID = PetAttributeB.AttrbiuteBID;
+                    AttributeCID = PetAttributeC.AttrbiuteBID;
                     Logger.Info($"幻化成功，主词缀与小词缀均已变化");
                 }
                 Update();
@@ -546,10 +570,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     CurrentAttributeA = PetAttributeA,
                     CurrentAttributeB = PetAttributeB,
+                    CurrentAttributeC = PetAttributeC,
                     CurrentWeight = Weight,
                     Decrement = originalWeight - Weight,
                     OriginalAttributeA = originalAttributeA,
                     OriginalAttributeB = originalAttributeB,
+                    OriginalAttributeC = originalAttributeC,
                     Dead = !Alive
                 };
                 Logger.Info($"幻化方法结束，{r}");
@@ -586,6 +612,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 double original = Weight;
                 double diff = PetAttributeA.Upgrade(count);
                 diff = PetAttributeB.Upgrade(count, diff);
+                diff = PetAttributeC.Upgrade(count, diff);
 
                 Weight *= diff;
                 Weight = Math.Min(Weight, GetLevelWeightLimit(Level));
@@ -756,11 +783,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         {
             IPetAttribute attributeA = RandomInsatantiator.GetRandomInstance();
             IPetAttribute attributeB = AttributeB.RandomCreate();
+            IPetAttribute attributeC = AttributeB.RandomCreate();
 
             Kun kun = new()
             {
                 AttributeAID = (int)attributeA.ID,
                 AttributeBID = attributeB.AttrbiuteBID,
+                AttributeCID = attributeC.AttrbiuteBID,
                 PlayerID = player.QQ,
                 Weight = CommonHelper.Random.Next(AppConfig.ValueHatchWeightMin, AppConfig.ValueHatchWeightMax),
                 Abandoned = false,
@@ -790,6 +819,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
         {
             PetAttributeA = RandomInsatantiator.GetInstanceByID(true, AttributeAID);
             PetAttributeB = RandomInsatantiator.GetInstanceByID(false, AttributeBID);
+            PetAttributeC = RandomInsatantiator.GetInstanceByID(false, AttributeCID);
         }
 
         public override string ToString()
@@ -797,6 +827,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             return AppConfig.ReplyKunToString
                 .Replace("%PetAttributeA%", PetAttributeA.Name)
                 .Replace("%PetAttributeB%", PetAttributeB.Name)
+                .Replace("%PetAttributeC%", PetAttributeC.Name)
                 .Replace("%LongLevel%", new string('★', Math.Max(0, Level)))
                 .Replace("%ShortLevel%", $"{Level}★")
                 .Replace("%Weight%", Weight.ToShortNumber());
@@ -816,6 +847,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 stringBuilder.AppendLine(item.ToString());
             }
             foreach (var item in PetAttributeB.Description)
+            {
+                stringBuilder.AppendLine(item.ToString());
+            }
+            foreach (var item in PetAttributeC.Description)
             {
                 stringBuilder.AppendLine(item.ToString());
             }

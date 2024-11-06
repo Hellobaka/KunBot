@@ -19,6 +19,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
                 string.Format(ActionName[AttributeBAction], AppendValueName[AppendValue])
             ];
             Logger = new Logger($"小词缀_{Name}");
+            if (Name == "无")
+            {
+                Name = "";
+            }
         }
 
         private Logger Logger { get; set; }
