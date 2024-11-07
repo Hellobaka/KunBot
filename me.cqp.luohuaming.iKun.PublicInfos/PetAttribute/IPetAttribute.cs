@@ -60,6 +60,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
             double random = CommonHelper.Random.NextDouble(AppConfig.ValueAttackWeightMinimumDecrement / 100.0, AppConfig.ValueAttackWeightMaximumDecrement / 100.0);
             double decrement = random * diff;
             double value = source * decrement;// 造成的伤害
+            value = Math.Min(value, target);
             double increment = value / source;// 攻方的增百分比
             decrement = value / target; // 被攻方的减百分比
             Logger.Info($"倍率随机数={random}，被攻击方损失倍率={decrement}，攻击方增加倍率={increment}");
