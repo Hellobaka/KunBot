@@ -281,6 +281,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyCustomNickDiscarded { get; set; } = "";
 
+        public static string ReplyCustomNickInvalid { get; set; } = "";
+
         public static double ProbablityNone { get; set; }
 
         public static double ProbablityJin { get; set; }
@@ -405,6 +407,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static double ValueNotSameGroupNoticeMinimalPercent { get; set; }
 
+        public static List<string> NickNameFilter { get; set; } = [];
+
         public static List<string> BlindBoxContents { get; set; } = [];
 
         public static bool BlindBoxEnableMultiContents { get; set; }
@@ -428,6 +432,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             WeightUnitBase = GetConfig("WeightUnitBase", 1);
             WeightUnit = GetConfig("WeightUnit", "kg");
             ShortNumberType = GetConfig("ShortNumberType", ShortNumberType.Normal);
+            NickNameFilter = GetConfig("NickNameFilter", new List<string>() { "[cq:" });
 
             CommandAscend = GetConfig("CommandAscend", "#渡劫");
             CommandAttack = GetConfig("CommandAttack", "#攻击");
@@ -548,6 +553,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyConsumeAscendPill = GetConfig("ReplyConsumeAscendPill", "使用了 {0} 个渡劫丹，下次渡劫成功率 +{1}%");
             ReplyCustomNickApplied = GetConfig("ReplyCustomNickApplied", "自定义昵称已生效，你的鲲被命名为 {0}");
             ReplyCustomNickDiscarded = GetConfig("ReplyCustomNickDiscarded", "自定义昵称抛弃，你的鲲名称恢复为 {0}");
+            ReplyCustomNickInvalid = GetConfig("ReplyCustomNickInvalid", "昵称存在非法词汇，无法使用");
 
             ProbablityNone = GetConfig("ProbablityNone", 70);
             ProbablityJin = GetConfig("ProbablityJin", 5);

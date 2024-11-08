@@ -1,6 +1,7 @@
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
+using System.Linq;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
@@ -44,6 +45,11 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
             kun.Initialize();
+            if (AppConfig.NickNameFilter.Any(x => nickName.ToLower().Contains(x)))
+            {
+                sendText.MsgToSend.Add(AppConfig.ReplyCustomNickInvalid);
+                return result;
+            }
             kun.NickName = nickName;
             kun.Update();
 
