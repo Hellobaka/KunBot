@@ -4,7 +4,7 @@
     {
         public Yang()
         {
-            ID = Enums.Attribute.Yin;
+            ID = Enums.Attribute.Yang;
             Name = "阳";
             Description = [
                 "◆被攻击时有大概率大幅度降低受到伤害",
