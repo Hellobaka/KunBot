@@ -66,7 +66,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             if (kun.Weight < Kun.GetLevelWeightLimit(kun.Level))
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAscendNoWeightLimit, kun.Weight.ToShortNumber(), Kun.GetLevelWeightLimit(kun.Level)));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAscendNoWeightLimit, kun.Weight.ToShortNumber(), Kun.GetLevelWeightLimit(kun.Level).ToShortNumber()));
                 return result;
             }
             if (!InventoryItem.TryRemoveItem(player, Items.Coin().ID, AppConfig.ValueAscendCoinConsume, out int currentCoin))
