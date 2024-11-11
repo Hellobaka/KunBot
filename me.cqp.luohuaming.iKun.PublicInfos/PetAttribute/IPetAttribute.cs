@@ -249,6 +249,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
                     Enums.Attribute.Feng => new Feng(),
                     Enums.Attribute.Lei => new Lei(),
                     Enums.Attribute.Yin => new Yin(),
+                    Enums.Attribute.Yang => new Yang(),
                     _ => new None(),
                 };
             }
