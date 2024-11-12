@@ -103,6 +103,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ToShortNumber(this double value)
         {
+            bool nagivate = value < 0;
             value /= AppConfig.WeightUnitBase;
             if (AppConfig.ShortNumberType == Enums.ShortNumberType.Normal)
             {
@@ -112,6 +113,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             {
                 return value <= 1000000 ? value.ToString("f2") : value.ToString("E2");
             }
+            value = Math.Abs(value);
             int index = -1;
             while (value > 10000 && index < Units.Length)
             {
@@ -123,15 +125,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             }
             if (index < 0)
             {
-                return value.ToString("f2");
+                return (nagivate ? "-" : "") + value.ToString("f2");
             }
             else if (index < Units.Length)
             {
-                return value.ToString("f2") + Units[index];
+                return (nagivate ? "-" : "") + value.ToString("f2") + Units[index];
             }
             else
             {
-                return value.ToString("f2") + Units.Last();
+                return (nagivate ? "-" : "") + value.ToString("f2") + Units.Last();
             }
         }
 
