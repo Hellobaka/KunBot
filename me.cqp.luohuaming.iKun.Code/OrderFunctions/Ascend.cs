@@ -31,17 +31,14 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoPlayer);
                 return result;
             }
-            int ascendPillComsume = 0;
             if (player.AscendPillComsume > 0)
             {
-                if (!InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.AscendPill, player.AscendPillComsume, out int currentPill))
+                int currentCount = InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.AscendPill);
+                if (currentCount < player.AscendPillComsume)
                 {
-                    sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.AscendPill().Name, player.AscendPillComsume, currentPill));
+                    sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.AscendPill().Name, player.AscendPillComsume, currentCount));
                     return result;
                 }
-                ascendPillComsume = player.AscendPillComsume;
-                player.AscendPillComsume = 0;
-                player.Update();
             }
 
             var kun = Kun.GetKunByQQ(player.QQ);
@@ -52,7 +49,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
             kun.Initialize();
 
-            kun.AscendProbablityIncrement = ascendPillComsume * AppConfig.ValueAscendPillPerIncrement;
+            kun.AscendProbablityIncrement = player.AscendPillComsume * AppConfig.ValueAscendPillPerIncrement;
 
             if (AutoPlay.CheckKunAutoPlay(kun))
             {
@@ -79,6 +76,16 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 sendText.MsgToSend.Add("渡劫方法过程发生异常，查看日志获取更多信息");
                 return result;
+            }
+            if (player.AscendPillComsume > 0)
+            {
+                if (!InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.AscendPill, player.AscendPillComsume, out int currentPill))
+                {
+                    sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.AscendPill().Name, player.AscendPillComsume, currentPill));
+                    return result;
+                }
+                player.AscendPillComsume = 0;
+                player.Update();
             }
             if (r.Dead)
             {
