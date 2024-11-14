@@ -395,9 +395,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static DateTime ValueRandomPunishExecuteTime { get; set; }
 
-        public static int ValueAutoPlayCDHour { get; set; }
+        public static double ValueAutoPlayCDHour { get; set; }
 
-        public static int ValueWorkingCDHour { get; set; }
+        public static double ValueWorkingCDHour { get; set; }
 
         public static int ValueWorkingCoinRewardPerHour { get; set; }
 
@@ -555,14 +555,14 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyCustomNickDiscarded = GetConfig("ReplyCustomNickDiscarded", "自定义昵称抛弃，你的鲲名称恢复为 {0}");
             ReplyCustomNickInvalid = GetConfig("ReplyCustomNickInvalid", "昵称存在非法词汇，无法使用");
 
-            ProbablityNone = GetConfig("ProbablityNone", 70);
-            ProbablityJin = GetConfig("ProbablityJin", 5);
-            ProbablityMu = GetConfig("ProbablityMu", 5);
-            ProbablityShui = GetConfig("ProbablityShui", 5);
-            ProbablityTu = GetConfig("ProbablityTu", 5);
-            ProbablityHuo = GetConfig("ProbablityHuo", 5);
-            ProbablityFeng = GetConfig("ProbablityFeng", 2);
-            ProbablityLei = GetConfig("ProbablityLei", 2);
+            ProbablityNone = GetConfig("ProbablityNone", 70.0);
+            ProbablityJin = GetConfig("ProbablityJin", 5.0);
+            ProbablityMu = GetConfig("ProbablityMu", 5.0);
+            ProbablityShui = GetConfig("ProbablityShui", 5.0);
+            ProbablityTu = GetConfig("ProbablityTu", 5.0);
+            ProbablityHuo = GetConfig("ProbablityHuo", 5.0);
+            ProbablityFeng = GetConfig("ProbablityFeng", 2.0);
+            ProbablityLei = GetConfig("ProbablityLei", 2.0);
             ProbablityYin = GetConfig("ProbablityYin", 0.5);
             ProbablityYang = GetConfig("ProbablityYang", 0.5);
 
@@ -583,12 +583,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueDevourDrawPercentage = GetConfig("ValueDevourDrawPercentage", 10);
             ValueLoginCoinReward = GetConfig("ValueLoginCoinReward", 100);
             ValueLoginEggReward = GetConfig("ValueLoginEggReward", 10);
-            ValueAscendFailDeadProbablity = GetConfig("ValueAscendFailDeadProbablity", 10);
-            ValueDevourFailDeadProbablity = GetConfig("ValueDevourFailDeadProbablity", 20);
-            ValueTransmoirgifyDeadWeightLimit = GetConfig("ValueTransmoirgifyFailDeadWeightLimit", 10);
-            ValueTransmoirgifyFailDeadProbablity = GetConfig("ValueTransmoirgifyFailDeadProbablity", 10);
-            ValueAttackCD = GetConfig("ValueAttackCD", 30);
-            ValueDevourCD = GetConfig("ValueDevourCD", 30);
+            ValueAscendFailDeadProbablity = GetConfig("ValueAscendFailDeadProbablity", 10.0);
+            ValueDevourFailDeadProbablity = GetConfig("ValueDevourFailDeadProbablity", 20.0);
+            ValueTransmoirgifyDeadWeightLimit = GetConfig("ValueTransmoirgifyFailDeadWeightLimit", 10.0);
+            ValueTransmoirgifyFailDeadProbablity = GetConfig("ValueTransmoirgifyFailDeadProbablity", 10.0);
+            ValueAttackCD = GetConfig("ValueAttackCD", 30.0);
+            ValueDevourCD = GetConfig("ValueDevourCD", 30.0);
             ValueKunEggToBlindBoxRate = GetConfig("ValueKunEggToCoinRate", 1);
             ValueMaxResurrectHour = GetConfig("ValueMaxDeadHour", 81);
             ValuePerTwoHourWeightLoss = GetConfig("ValuePerTwoHourWeightLoss", 1);
@@ -612,8 +612,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueRandomPunishDeadProbablity = GetConfig("ValueRandomPunishDeadProbablity", 10);
             ValueRandomPunishExecuteDay = GetConfig("ValueRandomPunishExecuteDay", 4);
             ValueRandomPunishExecuteTime = GetConfig("ValueRandomPunishExecuteTime", new DateTime());
-            ValueAutoPlayCDHour = GetConfig("ValueAutoPlayCDHour", 12);
-            ValueWorkingCDHour = GetConfig("ValueWorkingCDHour", 12);
+            ValueAutoPlayCDHour = GetConfig("ValueAutoPlayCDHour", 12.0);
+            ValueWorkingCDHour = GetConfig("ValueWorkingCDHour", 12.0);
             ValueWorkingCoinRewardPerHour = GetConfig("ValueWorkingCoinRewardPerHour", 10);
             ValueAscendPillPerIncrement = GetConfig("ValueAscendPillPerIncrement", 10);
             ValueAscendPillMaxConsumeCount = GetConfig("ValueAscendPillMaxConsumeCount", 3);
