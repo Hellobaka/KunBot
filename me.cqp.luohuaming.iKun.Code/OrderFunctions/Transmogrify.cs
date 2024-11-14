@@ -77,7 +77,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyTransmogrifyFailAndDead, currentPill, currentCoin));
             }
-            else if (r.CurrentAttributeA.ID == r.OriginalAttributeA.ID && r.CurrentAttributeB.ID == r.OriginalAttributeB.ID)
+            else if (r.CurrentAttributeA.ID == r.OriginalAttributeA.ID && r.CurrentAttributeB.AttrbiuteBID == r.OriginalAttributeB.AttrbiuteBID && r.OriginalAttributeC.AttrbiuteBID == r.CurrentAttributeC.AttrbiuteBID)
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyTransmogrifyFail, r.Decrement.ToShortNumber(), r.CurrentWeight.ToShortNumber(), currentPill, currentCoin));
             }
