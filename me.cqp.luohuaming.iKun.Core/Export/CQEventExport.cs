@@ -64,7 +64,7 @@ namespace me.cqp.luohuaming.iKunApp.Export
 			// 反射获取 AppData 实例	
 			Type appDataType = typeof (AppData);	
 			// 注册一个 CQApi 实例	
-			AppInfo appInfo = new AppInfo ("me.cqp.luohuaming.iKun", 1, 9, "鲲鲲物语", "1.0.20", 1, "落花茗", "养鲲 斗鲲", authCode);	
+			AppInfo appInfo = new AppInfo ("me.cqp.luohuaming.iKun", 1, 9, "鲲鲲物语", "1.0.21", 1, "落花茗", "养鲲 斗鲲", authCode);	
 			appDataType.GetRuntimeProperty ("CQApi").GetSetMethod (true).Invoke (null, new object[] { new CQApi (appInfo) });	
 			AppData.UnityContainer.RegisterInstance<CQApi> ("me.cqp.luohuaming.iKun", AppData.CQApi);	
 			// 向容器注册一个 CQLog 实例	
