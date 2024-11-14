@@ -113,7 +113,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 
             if (DateTime.Now - player.AttackAt < TimeSpan.FromMinutes(AppConfig.ValueAttackCD))
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAttackInCD, (player.AttackAt.AddMinutes(30)).ToString("G")));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyAttackInCD, (player.AttackAt.AddMinutes(AppConfig.ValueAttackCD)).ToString("G")));
                 return result;
             }
 

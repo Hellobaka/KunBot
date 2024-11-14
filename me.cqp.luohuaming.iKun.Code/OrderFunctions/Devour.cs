@@ -135,7 +135,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             // 检查冷却时间
             if (DateTime.Now - player.DevourAt < TimeSpan.FromMinutes(AppConfig.ValueDevourCD))
             {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourInCD, (player.DevourAt.AddMinutes(30)).ToString("G")));
+                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyDevourInCD, (player.DevourAt.AddMinutes(AppConfig.ValueDevourCD)).ToString("G")));
                 return result;
             }
 
