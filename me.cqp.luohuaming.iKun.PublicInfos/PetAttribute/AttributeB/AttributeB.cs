@@ -147,7 +147,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
             {
                 if (diff < 1)
                 {
-                    diff = 1 - ((1 - diff) * AppendValue);
+                    diff = 1 - ((1 - diff) * (AppendValue + 1));
                     Logger.Info($"降低渡劫失败损失体重，倍率={AppendValue}，处理后倍率={diff}");
                 }
             }
@@ -155,7 +155,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeB
             {
                 if (diff > 1)
                 {
-                    diff = 1 + ((diff - 1) * AppendValue);
+                    diff = 1 + ((diff - 1) * (AppendValue + 1));
                     Logger.Info($"提升渡劫成功后获得体重，倍率={AppendValue}，处理后倍率={diff}");
                 }
             }
