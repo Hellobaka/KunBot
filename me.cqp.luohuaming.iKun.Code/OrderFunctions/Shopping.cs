@@ -3,7 +3,6 @@ using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
@@ -16,7 +15,8 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
 
-        private static List<(Items, Items)> ShoppingList { get; set; } = null;
+        private static List<(Items, Items)> ShoppingList { get; set; } = [];
+
         public FunctionResult Execute(CQGroupMessageEventArgs e)
         {
             FunctionResult result = new FunctionResult
@@ -29,7 +29,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 SendID = e.FromGroup,
             };
             result.SendObject.Add(sendText);
-            var param = e.Message.Text.Substring(GetOrderStr().Length).Trim().Split(new char[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
+            var param = e.Message.Text.Substring(GetOrderStr().Length).Trim().Split([' '], StringSplitOptions.RemoveEmptyEntries);
             if (param.Length < 1)
             {
                 GetShoppingList();
@@ -45,14 +45,13 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                         .Replace("%CoinName%", coin.Name)
                         .Replace("%CoinCount%", $"{coin.Count}")
                         .Replace("%CoinDesc%", coin.Description)
-                        .Replace("%Index%", $"{i}")
-                        );
+                        .Replace("%Index%", $"{i}"));
                 }
                 stringBuilder.Append($"示例：{GetOrderStr()} 序号 数量");
                 sendText.MsgToSend.Add(stringBuilder.ToString());
                 return result;
             }
-            if (!int.TryParse(param[0], out int index) || param.Length < 2 || !int.TryParse(param[1], out int count))
+            if (param.Length != 2 || !int.TryParse(param[0], out int index) || !int.TryParse(param[1], out int count))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, $"，示例：{GetOrderStr()} 序号 数量"));
                 return result;
@@ -67,10 +66,15 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             }
 
             GetShoppingList();
-            if (1 <= index && index <= ShoppingList.Count)
+            if (index >= 1 && index <= ShoppingList.Count)
             {
                 var (item, coin) = ShoppingList[index - 1];
 
+                if (1.0 * count * coin.Count > int.MaxValue)
+                {
+                    sendText.MsgToSend.Add(string.Format(AppConfig.ReplyParamInvalid, ""));
+                    return result;
+                }
                 int comsume = count * coin.Count;
                 if (!InventoryItem.TryRemoveItem(player, coin.ID, comsume, out int currentCount))
                 {
@@ -85,9 +89,20 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 return result;
             }
 
-            sendText.MsgToSend.Add(AppConfig.ReplyItemCantBuy);
+            sendText.MsgToSend.Add(AppConfig.ReplyItemCannotBuy);
             return result;
         }
+
+        public FunctionResult Execute(CQPrivateMessageEventArgs e)
+        {
+            FunctionResult result = new FunctionResult
+            {
+                Result = false,
+                SendFlag = false,
+            };
+            return result;
+        }
+
         private static void GetShoppingList()
         {
             ShoppingList = [];
@@ -107,15 +122,6 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                     ShoppingList.Add((item, coin));
                 }
             }
-        }
-        public FunctionResult Execute(CQPrivateMessageEventArgs e)
-        {
-            FunctionResult result = new FunctionResult
-            {
-                Result = false,
-                SendFlag = false,
-            };
-            return result;
         }
     }
 }
