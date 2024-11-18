@@ -26,7 +26,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
             sendText.MsgToSend.Add(string.Format(AppConfig.ReplyMenu, AppConfig.CommandRegister, AppConfig.CommandLogin
                 , AppConfig.CommandFeed, AppConfig.CommandUpgrade
                 , AppConfig.CommandHatch, AppConfig.CommandInventory
-                , AppConfig.CommandBuyEgg, AppConfig.CommandOpenBlindBox
+                , AppConfig.CommandShopping, AppConfig.CommandOpenBlindBox
                 , AppConfig.CommandOpenEgg, AppConfig.CommandTransmogrify
                 , AppConfig.CommandAttack, AppConfig.CommandDevour
                 , AppConfig.CommandQueryDeadKuns, AppConfig.CommandReleaseKun

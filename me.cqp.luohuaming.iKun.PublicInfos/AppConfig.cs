@@ -75,7 +75,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string CommandAttack { get; set; } = "";
 
-        public static string CommandBuyEgg { get; set; } = "";
+        public static string CommandShopping { get; set; } = "";
 
         public static string CommandOpenEgg { get; set; } = "";
 
@@ -171,7 +171,12 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyDuplicateResurrect { get; set; } = "";
 
-        public static string ReplyBuyEgg { get; set; } = "";
+        public static string ReplyBuyItem { get; set; } = "";
+
+        public static string ReplyShoppingHeader { get; set; } = "";
+
+        public static string ReplyShoppingDetail { get; set; } = "";
+        public static string ReplyItemCantBuy { get; set; } = "";
 
         public static string ReplyHatchFail { get; set; } = "";
 
@@ -408,7 +413,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static double ValueNotSameGroupNoticeMinimalPercent { get; set; }
 
         public static List<string> NickNameFilter { get; set; } = [];
-
+        public static List<string> ShoppingList { get; set; } = [];
         public static List<string> BlindBoxContents { get; set; } = [];
 
         public static bool BlindBoxEnableMultiContents { get; set; }
@@ -436,7 +441,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
             CommandAscend = GetConfig("CommandAscend", "#渡劫");
             CommandAttack = GetConfig("CommandAttack", "#攻击");
-            CommandBuyEgg = GetConfig("CommandBuyEgg", "#买鲲蛋");
+            CommandShopping = GetConfig("CommandShopping", "#购物");
             CommandDevour = GetConfig("CommandDevour", "#吞噬");
             CommandFeed = GetConfig("CommandFeed", "#喂养");
             CommandHatch = GetConfig("CommandHatch", "#孵蛋");
@@ -482,7 +487,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyHatchFail = GetConfig("ReplyHatchFail", "孵化失败\n-------------------\n剩余 {0} 颗鲲蛋");
             ReplyHatchKun = GetConfig("ReplyHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n剩余 {2} 颗鲲蛋");
             ReplyMultiHatchKun = GetConfig("ReplyMultiHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n共消耗 {2} 个蛋 剩余 {3} 颗鲲蛋");
-            ReplyBuyEgg = GetConfig("ReplyBuyEgg", "购买成功，消耗金币 {0} 枚，获得 {1} 枚鲲蛋\n-------------------\n剩余金币 {2} 枚，鲲蛋 {3} 枚");
+            ReplyBuyItem = GetConfig("ReplyBuyItem", "购买成功，消耗{0} 枚{1}，获得 {2} 枚{3}\n-------------------\n剩余{1} {4} 枚，当前{3}共{5}枚");
+            ReplyShoppingHeader = GetConfig("ReplyShoppingHeader", "购买列表如下：\n-------------------");
+            ReplyShoppingDetail = GetConfig("ReplyShoppingDetail", "%Index%：%CoinCount%%CoinName% => %ItemCount%%ItemName%");
+            ReplyItemCantBuy = GetConfig("ReplyItemCantBuy", "购买失败，序号不存在");
             ReplyAscendNoWeightLimit = GetConfig("ReplyAscendNoWeightLimit", "无法渡劫，由于体重未达到上限\n当前体重 {0} kg，上限体重 {1} kg");
             ReplyAscendSuccess = GetConfig("ReplyAscendSuccess", "渡劫成功，体重增加了 {0} kg，等级加一\n当前体重 {1} kg，当前等级 {2}");
             ReplyAscendFailAndDead = GetConfig("ReplyAscendFailAndDead", "渡劫失败，你的鲲已死亡");
@@ -618,6 +626,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueAscendPillPerIncrement = GetConfig("ValueAscendPillPerIncrement", 10);
             ValueAscendPillMaxConsumeCount = GetConfig("ValueAscendPillMaxConsumeCount", 3);
             ValueNotSameGroupNoticeMinimalPercent = GetConfig("ValueNotSameGroupNoticeMinimalPercent", 10);
+
+            ShoppingList = GetConfig("ShoppingList", new List<string>() { "1|2|100|1" });
 
             BlindBoxContents = GetConfig("BlindBoxContents", new List<string>() { "0|75", "4|8", "5|8", "6|7", "7|1" });
             BlindBoxEnableMultiContents = GetConfig("BlindBoxEnableMultiContents", false);
