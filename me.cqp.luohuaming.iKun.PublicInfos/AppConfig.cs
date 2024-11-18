@@ -176,7 +176,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string ReplyShoppingHeader { get; set; } = "";
 
         public static string ReplyShoppingDetail { get; set; } = "";
-        public static string ReplyItemCantBuy { get; set; } = "";
+
+        public static string ReplyItemCannotBuy { get; set; } = "";
 
         public static string ReplyHatchFail { get; set; } = "";
 
@@ -413,7 +414,9 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static double ValueNotSameGroupNoticeMinimalPercent { get; set; }
 
         public static List<string> NickNameFilter { get; set; } = [];
+
         public static List<string> ShoppingList { get; set; } = [];
+
         public static List<string> BlindBoxContents { get; set; } = [];
 
         public static bool BlindBoxEnableMultiContents { get; set; }
@@ -487,10 +490,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyHatchFail = GetConfig("ReplyHatchFail", "孵化失败\n-------------------\n剩余 {0} 颗鲲蛋");
             ReplyHatchKun = GetConfig("ReplyHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n剩余 {2} 颗鲲蛋");
             ReplyMultiHatchKun = GetConfig("ReplyMultiHatchKun", "恭喜你获得一只{0}\n体重 {1} 千克\n-------------------\n共消耗 {2} 个蛋 剩余 {3} 颗鲲蛋");
-            ReplyBuyItem = GetConfig("ReplyBuyItem", "购买成功，消耗{0} 枚{1}，获得 {2} 枚{3}\n-------------------\n剩余{1} {4} 枚，当前{3}共{5}枚");
-            ReplyShoppingHeader = GetConfig("ReplyShoppingHeader", "购买列表如下：\n-------------------");
-            ReplyShoppingDetail = GetConfig("ReplyShoppingDetail", "%Index%：%CoinCount%%CoinName% => %ItemCount%%ItemName%");
-            ReplyItemCantBuy = GetConfig("ReplyItemCantBuy", "购买失败，序号不存在");
+            ReplyBuyItem = GetConfig("ReplyBuyItem", "购买成功，消耗 {0} 枚{1}，获得 {2} 枚{3}\n-------------------\n剩余{1} {4} 枚，当前{3}共{5}枚");
+            ReplyShoppingHeader = GetConfig("ReplyShoppingHeader", "商店列表如下：\n-------------------");
+            ReplyShoppingDetail = GetConfig("ReplyShoppingDetail", "%Index%：%CoinCount% %CoinName% => %ItemCount% %ItemName%");
+            ReplyItemCannotBuy = GetConfig("ReplyItemCantBuy", "购买失败，序号不存在");
             ReplyAscendNoWeightLimit = GetConfig("ReplyAscendNoWeightLimit", "无法渡劫，由于体重未达到上限\n当前体重 {0} kg，上限体重 {1} kg");
             ReplyAscendSuccess = GetConfig("ReplyAscendSuccess", "渡劫成功，体重增加了 {0} kg，等级加一\n当前体重 {1} kg，当前等级 {2}");
             ReplyAscendFailAndDead = GetConfig("ReplyAscendFailAndDead", "渡劫失败，你的鲲已死亡");
