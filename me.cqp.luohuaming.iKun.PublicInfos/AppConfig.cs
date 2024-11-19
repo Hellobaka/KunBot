@@ -493,7 +493,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyBuyItem = GetConfig("ReplyBuyItem", "购买成功，消耗 {0} 枚{1}，获得 {2} 枚{3}\n-------------------\n剩余{1} {4} 枚，当前{3}共{5}枚");
             ReplyShoppingHeader = GetConfig("ReplyShoppingHeader", "商店列表如下：\n-------------------");
             ReplyShoppingDetail = GetConfig("ReplyShoppingDetail", "%Index%：%CoinCount% %CoinName% => %ItemCount% %ItemName%");
-            ReplyItemCannotBuy = GetConfig("ReplyItemCantBuy", "购买失败，序号不存在");
+            ReplyItemCannotBuy = GetConfig("ReplyItemCannotBuy", "购买失败，序号不存在");
             ReplyAscendNoWeightLimit = GetConfig("ReplyAscendNoWeightLimit", "无法渡劫，由于体重未达到上限\n当前体重 {0} kg，上限体重 {1} kg");
             ReplyAscendSuccess = GetConfig("ReplyAscendSuccess", "渡劫成功，体重增加了 {0} kg，等级加一\n当前体重 {1} kg，当前等级 {2}");
             ReplyAscendFailAndDead = GetConfig("ReplyAscendFailAndDead", "渡劫失败，你的鲲已死亡");
