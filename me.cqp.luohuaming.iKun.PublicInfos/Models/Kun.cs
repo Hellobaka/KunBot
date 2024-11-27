@@ -478,6 +478,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 {
                     Level -= AppConfig.ValuePerEighteenHourLevelLoss;
                 }
+                Weight = Math.Max(GetLevelWeightLimit(Level) * (AppConfig.ValueResurrectWeightBase / 100.0), Weight);
+
                 Level = Math.Max(Level, 1);
                 Update();
 

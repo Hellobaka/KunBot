@@ -413,6 +413,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static double ValueNotSameGroupNoticeMinimalPercent { get; set; }
 
+        public static int ValueResurrectWeightBase { get; set; }
+
         public static List<string> NickNameFilter { get; set; } = [];
 
         public static List<string> ShoppingList { get; set; } = [];
@@ -629,6 +631,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueAscendPillPerIncrement = GetConfig("ValueAscendPillPerIncrement", 10);
             ValueAscendPillMaxConsumeCount = GetConfig("ValueAscendPillMaxConsumeCount", 3);
             ValueNotSameGroupNoticeMinimalPercent = GetConfig("ValueNotSameGroupNoticeMinimalPercent", 10);
+            ValueResurrectWeightBase = GetConfig("ValueResurrectWeightBase", 1);
 
             ShoppingList = GetConfig("ShoppingList", new List<string>() { "1|2|100|1" });
 

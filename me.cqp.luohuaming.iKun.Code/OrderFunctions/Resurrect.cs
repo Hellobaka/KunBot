@@ -65,17 +65,12 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunAlive, AppConfig.ReplyResurrectFailed));
                 return result;
             }
-            if (kun.Weight <= 0)
-            {
-                sendText.MsgToSend.Add(string.Format(AppConfig.ReplyKunWeightZero, AppConfig.ReplyResurrectFailed));
-                return result;
-            }
             if ((DateTime.Now - kun.DeadAt).TotalHours >= AppConfig.ValueMaxResurrectHour)
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyResurrectHourLimit, AppConfig.ValueMaxResurrectHour, (int)(DateTime.Now - kun.DeadAt).TotalHours));
                 return result;
             }
-            int consume = kun.ResurrectCount + 1;
+            int consume = kun.ResurrectCount + 1;           
             if (!InventoryItem.TryRemoveItem(player, PublicInfos.Enums.Items.ResurrectPill, consume, out int currentCount))
             {
                 sendText.MsgToSend.Add(string.Format(AppConfig.ReplyItemLeak, Items.ResurrectPill().Name, consume, currentCount));
