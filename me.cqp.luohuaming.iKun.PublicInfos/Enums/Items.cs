@@ -17,5 +17,9 @@
         UpgradePill,
 
         AscendPill,
+
+        LevelPill,
+
+        WeightPill
     }
 }

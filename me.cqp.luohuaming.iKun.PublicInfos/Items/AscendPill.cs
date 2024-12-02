@@ -9,6 +9,7 @@
             Description = ItemConfig.AscendPillDescription;
             Stackable = true;
             Count = count;
+            Usable = true;
         }
     }
 }

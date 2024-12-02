@@ -9,6 +9,7 @@
             Description = ItemConfig.BlindBoxDescription;
             Stackable = true;
             Count = count;
+            Usable = false;
         }
     }
 }

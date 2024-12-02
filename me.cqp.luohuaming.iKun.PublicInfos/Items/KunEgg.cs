@@ -9,6 +9,7 @@
             Description = ItemConfig.KunEggDescription;
             Stackable = true;
             Count = count;
+            Usable = false;
         }
     }
 }

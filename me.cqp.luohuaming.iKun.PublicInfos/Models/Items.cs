@@ -12,6 +12,8 @@
 
         public int Count { get; set; }
 
+        public bool Usable { get; set; }
+
         public static Items Coin(int count = 1) => new PublicInfos.Items.Coin(count);
 
         public static Items KunEgg(int count = 1) => new PublicInfos.Items.KunEgg(count);
@@ -56,6 +58,20 @@
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// 使用物品
+        /// 默认完成了道具扣除
+        /// 要求对象可用，使用前检查对象状态
+        /// 方法内不针对对象进行二次检查
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="kun"></param>
+        /// <returns>使用是否成功，使用反馈</returns>
+        public virtual (bool, string) UseItem(int count, Player player, Kun kun)
+        {
+            return (false, "物品没有使用效果");
         }
 
         public override string ToString()

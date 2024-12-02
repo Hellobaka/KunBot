@@ -9,6 +9,7 @@
             Description = ItemConfig.UpgradePillDescription;
             Stackable = true;
             Count = count;
+            Usable = true;
         }
     }
 }

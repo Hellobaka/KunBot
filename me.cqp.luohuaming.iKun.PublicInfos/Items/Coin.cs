@@ -9,6 +9,7 @@
             Description = ItemConfig.CoinDescription;
             Stackable = true;
             Count = count;
+            Usable = false;
         }
     }
 }
