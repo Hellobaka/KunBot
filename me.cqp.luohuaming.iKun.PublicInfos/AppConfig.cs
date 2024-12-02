@@ -415,6 +415,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueResurrectWeightBase { get; set; }
 
+        public static int ValueUpgradeExpHour { get; set; } = 24;
+
         public static List<string> NickNameFilter { get; set; } = [];
 
         public static List<string> ShoppingList { get; set; } = [];
@@ -632,6 +634,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueAscendPillMaxConsumeCount = GetConfig("ValueAscendPillMaxConsumeCount", 3);
             ValueNotSameGroupNoticeMinimalPercent = GetConfig("ValueNotSameGroupNoticeMinimalPercent", 10);
             ValueResurrectWeightBase = GetConfig("ValueResurrectWeightBase", 1);
+            ValueUpgradeExpHour = GetConfig("ValueUpgradeExpHour", 24);
 
             ShoppingList = GetConfig("ShoppingList", new List<string>() { "1|2|100|1" });
 

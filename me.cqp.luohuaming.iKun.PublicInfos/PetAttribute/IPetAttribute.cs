@@ -1,4 +1,5 @@
-﻿using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA;
+﻿using me.cqp.luohuaming.iKun.PublicInfos.Models;
+using me.cqp.luohuaming.iKun.PublicInfos.PetAttribute.AttributeA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -189,38 +190,13 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.PetAttribute
 
         /// <summary>
         /// 默认完成了道具扣除
-        /// 强化目标是体重的50%
-        /// 每个次数提供10%的概率
-        /// 超出100%的部分额外倍率提升
-        /// 强化失败损失体重的20%-50%
-        /// 仅完成数值计算，不进行数值更改
+        /// 每个次数提供挂机x小时的体重
         /// </summary>
         /// <param name="diff">最终值变化附加数值(%)(乘算)</param>
         /// <returns>体重变化(0.x)</returns>
         public virtual double Upgrade(int count, double diff = 1)
         {
             Logger.Info($"进入强化词缀计算方法，数量={count}，Diff={diff}");
-            int successRandom = CommonHelper.Random.Next(0, 100);
-            Logger.Info($"成功判定随机数：{successRandom}，临界：{count * 10}");
-            if (successRandom >= count * 10)
-            {
-                int rd = CommonHelper.Random.Next(80, 90);
-                Logger.Info($"判定失败，结果随机数：{rd}");
-                diff = rd / 100.0 * diff;
-                Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
-                return diff;
-            }
-            Logger.Info($"判定成功");
-            if (count <= 10)
-            {
-                Logger.Info($"基础倍率");
-
-                diff = 1.5 * diff;
-                Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
-                return diff;
-            }
-            Logger.Info($"额外倍率");
-            diff = count / 10.0 * 1.5 * diff;
             Logger.Info($"退出强化词缀计算方法，计算结果：{diff}");
             return diff;
         }
