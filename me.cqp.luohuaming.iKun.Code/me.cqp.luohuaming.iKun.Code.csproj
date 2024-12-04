@@ -63,6 +63,7 @@
     <Compile Include="Event_GroupMessage.cs" />
     <Compile Include="Event_StartUp.cs" />
     <Compile Include="OrderFunctions\ConsumeAscendPill.cs" />
+    <Compile Include="OrderFunctions\MyKun.cs" />
     <Compile Include="OrderFunctions\RandomPunish.cs" />
     <Compile Include="OrderFunctions\UnuseNickName.cs" />
     <Compile Include="OrderFunctions\UseNickName.cs" />

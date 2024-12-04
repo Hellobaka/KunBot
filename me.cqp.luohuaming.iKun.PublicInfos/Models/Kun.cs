@@ -850,7 +850,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             }
         }
 
-        public string ToStringFull()
+        public string ToStringFull(bool showAttribute)
         {
             bool autoPlaying = AutoPlay.CheckKunAutoPlay(this, Enums.AutoPlayType.Exp);
             bool working = AutoPlay.CheckKunAutoPlay(this, Enums.AutoPlayType.Coin);
@@ -859,17 +859,20 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             stringBuilder.AppendLine(this.ToString() + $" {Weight.ToShortNumber()} {AppConfig.WeightUnit}" +
                     $"{(autoPlaying ? $" {AppConfig.ReplyRankingAutoPlaying}" : "")}" +
                     $"{(working ? $" {AppConfig.ReplyRankingWorking}" : "")}");
-            foreach (var item in PetAttributeA.Description)
+            if (showAttribute)
             {
-                stringBuilder.AppendLine(item.ToString());
-            }
-            foreach (var item in PetAttributeB.Description)
-            {
-                stringBuilder.AppendLine(item.ToString());
-            }
-            foreach (var item in PetAttributeC.Description)
-            {
-                stringBuilder.AppendLine(item.ToString());
+                foreach (var item in PetAttributeA.Description)
+                {
+                    stringBuilder.AppendLine(item.ToString());
+                }
+                foreach (var item in PetAttributeB.Description)
+                {
+                    stringBuilder.AppendLine(item.ToString());
+                }
+                foreach (var item in PetAttributeC.Description)
+                {
+                    stringBuilder.AppendLine(item.ToString());
+                }
             }
             stringBuilder.RemoveNewLine();
             return stringBuilder.ToString();

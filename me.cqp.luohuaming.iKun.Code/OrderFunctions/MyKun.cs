@@ -1,16 +1,14 @@
 using me.cqp.luohuaming.iKun.PublicInfos;
 using me.cqp.luohuaming.iKun.PublicInfos.Models;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.EventArgs;
-using System.Linq;
-using System.Text;
 
 namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
 {
-    public class Inventory : IOrderModel
+    public class MyKun : IOrderModel
     {
         public bool ImplementFlag { get; set; } = true;
 
-        public string GetOrderStr() => AppConfig.CommandInventory;
+        public string GetOrderStr() => AppConfig.CommandMyKun;
 
         public bool Judge(string destStr) => destStr.Replace("＃", "#").StartsWith(GetOrderStr());
 
@@ -32,37 +30,16 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 sendText.MsgToSend.Add(AppConfig.ReplyNoPlayer);
                 return result;
             }
-            StringBuilder stringBuilder = new();
             var kun = Kun.GetKunByQQ(player.QQ);
             if (kun == null)
             {
-                stringBuilder.AppendLine(AppConfig.ReplyNoKun);
+                sendText.MsgToSend.Add(AppConfig.ReplyNoKun);
             }
             else
             {
                 kun.Initialize();
-                stringBuilder.AppendLine(kun.ToStringFull(false));
+                sendText.MsgToSend.Add(kun.ToStringFull(true));
             }
-            stringBuilder.AppendLine("----");
-            var list = InventoryItem.GetItemsByQQ(e.FromQQ).Where(x => x.Count > 0).ToList();
-            if (list == null || list.Count == 0)
-            {
-                stringBuilder.AppendLine(AppConfig.ReplyEmptyInventory);
-            }
-            else
-            {
-                foreach (var item in list)
-                {
-                    var items = Items.GetItemByID((PublicInfos.Enums.Items)item.ItemID);
-                    if (items == null)
-                    {
-                        continue;
-                    }
-                    stringBuilder.AppendLine(item.ToString());
-                }
-            }
-            stringBuilder.RemoveNewLine();
-            sendText.MsgToSend.Add(stringBuilder.ToString());
             return result;
         }
 

@@ -96,6 +96,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string CommandUseCustomNickName { get; set; } = "";
 
         public static string CommandUnuseCustomNickName { get; set; } = "";
+       
+        public static string CommandMyKun { get; set; } = "";
 
         public static string ReplyDuplicateRegister { get; set; } = "";
 
@@ -473,6 +475,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandConsumeAscendPill = GetConfig("CommandConsumeAscendPill", "#使用渡劫丹");
             CommandUseCustomNickName = GetConfig("CommandUseCustomNickName", "#自定义名称");
             CommandUnuseCustomNickName = GetConfig("CommandUnuseCustomNickName", "#恢复名称");
+            CommandMyKun = GetConfig("CommandMyKun", "#我的鲲");
 
             ReplyDuplicateRegister = GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
             ReplyDuplicateLogin = GetConfig("ReplyLoginDuplicate", "你今天已经签到过了，不能重复签到");
