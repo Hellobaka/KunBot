@@ -66,6 +66,7 @@
     <Compile Include="OrderFunctions\MyKun.cs" />
     <Compile Include="OrderFunctions\RandomPunish.cs" />
     <Compile Include="OrderFunctions\UnuseNickName.cs" />
+    <Compile Include="OrderFunctions\UseItem.cs" />
     <Compile Include="OrderFunctions\UseNickName.cs" />
     <Compile Include="OrderFunctions\RankingGroup.cs" />
     <Compile Include="OrderFunctions\StartWorking.cs" />

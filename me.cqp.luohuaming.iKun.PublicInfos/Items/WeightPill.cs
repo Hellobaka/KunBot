@@ -22,7 +22,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Items
                 kun.Weight = Kun.GetLevelWeightLimit(kun.Level);
                 kun.Update();
 
-                return (true, string.Format(ItemConfig.UseWeightPill, kun.Weight));
+                return (true, string.Format(ItemConfig.UseWeightPill, kun.Weight.ToShortNumber()));
             }
             catch (Exception e)
             {

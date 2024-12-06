@@ -9,7 +9,7 @@
             Description = ItemConfig.ResurrectPillDescription;
             Stackable = true;
             Count = count;
-            Usable = true;
+            Usable = false;
         }
     }
 }

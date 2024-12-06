@@ -113,7 +113,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 int itemIndex = int.TryParse(split[1], out intValue) ? intValue : -1;
                 int price = int.TryParse(split[2], out intValue) ? intValue : -1;
                 int coinIndex = int.TryParse(split[3], out intValue) ? intValue : -1;
-                if (count > 0 && itemIndex > 0 && itemIndex <= 7 && price > 0 && coinIndex > 0 && coinIndex <= 7)
+                if (count > 0 && itemIndex > 0 && itemIndex <= CommonHelper.GetMaxItemValue() && price > 0 && coinIndex > 0 && coinIndex <= CommonHelper.GetMaxItemValue())
                 {
                     var item = Items.GetItemByID((PublicInfos.Enums.Items)itemIndex);
                     item.Count = count;

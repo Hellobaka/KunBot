@@ -1,3 +1,4 @@
+using me.cqp.luohuaming.iKun.PublicInfos.Enums;
 using me.cqp.luohuaming.iKun.Sdk.Cqp.Model;
 using System;
 using System.IO;
@@ -146,5 +147,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             }
             return infos.Any(x => x.QQ == target);
         }
+
+        public static int GetMaxItemValue() => Enum.GetValues(typeof(Enums.Items))
+                           .Cast<Enums.Items>()
+                           .Select(x => (int)x)
+                           .Max();
     }
 }

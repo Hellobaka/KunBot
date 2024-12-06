@@ -98,6 +98,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
         public static string CommandUnuseCustomNickName { get; set; } = "";
        
         public static string CommandMyKun { get; set; } = "";
+       
+        public static string CommandUseItem { get; set; } = "";
 
         public static string ReplyDuplicateRegister { get; set; } = "";
 
@@ -291,6 +293,10 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static string ReplyCustomNickInvalid { get; set; } = "";
 
+        public static string ReplyItemCannotUse { get; set; } = "";
+
+        public static string ReplyItemUseFailed { get; set; } = "";
+
         public static double ProbablityNone { get; set; }
 
         public static double ProbablityJin { get; set; }
@@ -476,6 +482,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             CommandUseCustomNickName = GetConfig("CommandUseCustomNickName", "#自定义名称");
             CommandUnuseCustomNickName = GetConfig("CommandUnuseCustomNickName", "#恢复名称");
             CommandMyKun = GetConfig("CommandMyKun", "#我的鲲");
+            CommandUseItem = GetConfig("CommandUseItem", "#使用物品");
 
             ReplyDuplicateRegister = GetConfig("ReplyDuplicateRegister", "你已经注册过了，不能重复注册");
             ReplyDuplicateLogin = GetConfig("ReplyLoginDuplicate", "你今天已经签到过了，不能重复签到");
@@ -572,6 +579,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ReplyCustomNickApplied = GetConfig("ReplyCustomNickApplied", "自定义昵称已生效，你的鲲被命名为 {0}");
             ReplyCustomNickDiscarded = GetConfig("ReplyCustomNickDiscarded", "自定义昵称抛弃，你的鲲名称恢复为 {0}");
             ReplyCustomNickInvalid = GetConfig("ReplyCustomNickInvalid", "昵称存在非法词汇，无法使用");
+            ReplyItemCannotUse = GetConfig("ReplyItemCannotUse", "此物品无法通过这种方式使用");
+            ReplyItemUseFailed = GetConfig("ReplyItemUseFailed", "物品使用失败，数量已返还");
 
             ProbablityNone = GetConfig("ProbablityNone", 70.0);
             ProbablityJin = GetConfig("ProbablityJin", 5.0);
