@@ -129,7 +129,6 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
 
         private AutoPlayResult SettleAutoPlayCoinResult(out Kun kun)
         {
-            int increment = (int)(EndTime - StartTime).TotalHours * AppConfig.ValueWorkingCoinRewardPerHour;
             kun = Kun.GetKunByID(KunID);
             if (kun == null || !kun.Alive || kun.Abandoned)
             {
@@ -137,6 +136,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 return null;
             }
             kun.Initialize();
+            int increment = (int)CalcAutoPlayCoin(kun.Level, StartTime, EndTime);
+
             var player = Player.GetPlayer(kun.PlayerID);
             if (player == null)
             {
@@ -266,6 +267,15 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
             };
             Logger.Info($"星级={level}，挂机经验速度={expSpeed}");
             return expSpeed * (endTime - startTime).TotalHours;
+        }
+
+        public static double CalcAutoPlayCoin(int level, DateTime startTime, DateTime endTime)
+        {
+            double increment = (endTime - startTime).TotalHours * AppConfig.ValueWorkingCoinRewardPerHour;
+            increment += increment * level * (AppConfig.ValueWorkLevelBouns / 100.0);
+
+            Logger.Info($"星级={level}，挂机金币速度={increment}");
+            return increment;
         }
 
         public static bool CheckAutoPlayInCD(Kun kun, AutoPlayType autoPlayType, out DateTime availableTime)

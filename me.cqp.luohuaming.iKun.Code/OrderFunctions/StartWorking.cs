@@ -87,7 +87,7 @@ namespace me.cqp.luohuaming.iKun.Code.OrderFunctions
                 AutoPlayType = PublicInfos.Enums.AutoPlayType.Coin
             };
             AutoPlay.AddAutoPlay(autoPlay);
-            int increment = (int)(end - start).TotalHours * AppConfig.ValueWorkingCoinRewardPerHour;
+            int increment = (int)AutoPlay.CalcAutoPlayCoin(kun.Level, start, end);
             sendText.MsgToSend.Add(string.Format(AppConfig.ReplyWorkingStarted, end.ToString("G"), increment));
             return result;
         }

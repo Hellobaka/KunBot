@@ -425,6 +425,8 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static int ValueUpgradeExpHour { get; set; } = 24;
 
+        public static int ValueWorkLevelBouns { get; set; } = 10;
+
         public static List<string> NickNameFilter { get; set; } = [];
 
         public static List<string> ShoppingList { get; set; } = [];
@@ -647,6 +649,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
             ValueNotSameGroupNoticeMinimalPercent = GetConfig("ValueNotSameGroupNoticeMinimalPercent", 10);
             ValueResurrectWeightBase = GetConfig("ValueResurrectWeightBase", 1);
             ValueUpgradeExpHour = GetConfig("ValueUpgradeExpHour", 24);
+            ValueWorkLevelBouns = GetConfig("ValueWorkLevelBouns", 5);
 
             ShoppingList = GetConfig("ShoppingList", new List<string>() { "1|2|100|1" });
 

@@ -27,7 +27,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos
 
         public static Random Random { get; set; } = new Random();
 
-        public static string[] Units { get; set; } = ["万", "亿", "兆", "京", "垓"];
+        public static string[] Units { get; set; } = ["万", "亿", "兆", "京", "垓", "秭", "穰", "沟", "涧", "正", "载", "极"];
 
         public static string ParseLongNumber(int num)
         {
