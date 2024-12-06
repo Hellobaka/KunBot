@@ -50,13 +50,15 @@
             // 受到攻击时 30% 的几率降低 50% 受到的伤害
             if (random <= 0.3)
             {
-                double diff = 1 + 0.5;
-                Logger.Info($"加成增量={diff}");
-                double increment = source * (baseAttack.Item1 - 1);
-                double decrement = target * (1 - baseAttack.Item2) * diff;
-                Logger.Info($"攻方增量={increment}，被攻方减量={decrement}");
+                double diff = 0.5;
+                Logger.Info($"减少伤害倍率={diff}");
+                double decrement = target * (1 - baseAttack.Item2);
+                Logger.Info($"被攻方减量={decrement}");
 
-                baseAttack = (1 + (increment - decrement) / source, baseAttack.Item2);
+                decrement *= diff;
+                Logger.Info($"使用减伤计算后，被攻方减量={decrement}");
+
+                baseAttack = (baseAttack.Item1, 1 - (decrement / target));
             }
             Logger.Info($"退出词缀计算方法，计算结果={baseAttack.Item1}，{baseAttack.Item2}");
             return baseAttack;
