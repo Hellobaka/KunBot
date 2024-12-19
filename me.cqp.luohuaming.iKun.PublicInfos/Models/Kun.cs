@@ -615,6 +615,7 @@ namespace me.cqp.luohuaming.iKun.PublicInfos.Models
                 }
                 double original = Weight;
                 double increment = AutoPlay.CalcAutoPlayExp(Level, DateTime.Now, DateTime.Now.AddHours(AppConfig.ValueUpgradeExpHour));
+                increment *= count;
                 double diff = 1 + (increment / Weight);
                 diff = PetAttributeA.Upgrade(count, diff);
                 diff = PetAttributeB.Upgrade(count, diff);
