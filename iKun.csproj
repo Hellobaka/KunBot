@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <AssemblyName>iKun</AssemblyName>
+    <RootNamespace>me.cqp.luohuaming.iKun</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Another-Mirai-Native.Abstractions" Version="1.2.4" />
+    <!-- 与框架 DependencyManifest 中的 SqlSugar 5.1.4.211 同名同版本，构建时去重不合并 -->
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.211" />
+    <!-- 框架内置 Newtonsoft.Json 13.x，构建时去重不合并 -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>
