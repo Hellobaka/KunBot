@@ -26,6 +26,8 @@ public class Entry : PluginBase
     {
         // 1. 运行环境
         Runtime.Init(API);
+        Log.InitFileLogging(Runtime.DataDirectory);
+        Log.Info("初始化日志");
 
         // 2. 配置（含热重载）
         Log.Info("加载配置");
@@ -55,6 +57,7 @@ public class Entry : PluginBase
         RandomPunishService.Stop();
         IdleScheduler.Instance.Shutdown();
         AutoPlaySettlementNotifier.Detach();
+        Log.ShutdownFileLogging();
         await Task.CompletedTask;
     }
 }

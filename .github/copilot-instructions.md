@@ -42,4 +42,4 @@ dotnet build          # 无测试、无 lint 配置；验证方式就是构建 +
 - **SqlSugar 映射**：运行期字段必须 `[SugarColumn(IsIgnore = true)]`；表模型加 `[SugarTable]`
 - **文案全部走配置**：回复文本来自 `CoreConfiguration.Replies` / `ItemConfiguration`（含 `{0}` 占位符或 `%Token%` 替换），不在代码里硬编码中文回复；新增配置键需同时在 `LoadConfig()` 提供 `Get(key, 默认值)` 以生成默认配置
 - **NuGet 版本锁定**：必须精确版本且程序集版本与框架 `DependencyManifest-dotnet9.json` 完全一致才会被 ILRepack 去重。SqlSugar 必须用 `SqlSugarCore 5.1.4.211`（其程序集名为 SqlSugar 5.1.4.211 与框架一致）；升到 5.1.4.217 会导致 SqlSugar 整个内嵌进插件 DLL，框架反射扫描类型时因 Npgsql/MySqlConnector 等悬空引用抛 ReflectionTypeLoadException、插件加载失败
-- **日志**：用 `Infrastructure.Logging.Log.For(tag)` 封装，不要直接引用框架 ILogger
+- **日志**：用 `Infrastructure.Logging.Log.For(tag)` 封装，不要直接引用框架 ILogger。该门面双路输出：框架 ILogger + NLog 文件日志（插件数据目录 `Logs\log.txt`，按天压缩归档到 `Logs\Archives`，保留 30 份，样式同原版 KunBot）。NLog 由 `Log.InitFileLogging` 在 `OnEnableAsync` 中初始化、`Log.ShutdownFileLogging` 在 `OnDisableAsync` 中关闭，勿改动
