@@ -1,5 +1,7 @@
-﻿using Another_Mirai_Native.Abstractions;
+using System.IO;
+using Another_Mirai_Native.Abstractions;
 using Another_Mirai_Native.Abstractions.Attributes;
+using me.cqp.luohuaming.iKun.Admin;
 using me.cqp.luohuaming.iKun.Background;
 using me.cqp.luohuaming.iKun.Domain.Configuration;
 using me.cqp.luohuaming.iKun.Infrastructure;
@@ -57,6 +59,8 @@ public class Entry : PluginBase
         RandomPunishService.Stop();
         IdleScheduler.Instance.Shutdown();
         AutoPlaySettlementNotifier.Detach();
+        // 管理窗口须先于文件日志关闭：窗口关闭过程中的 Log 调用仍需 NLog 落盘
+        AdminWindowEntry.Shutdown();
         Log.ShutdownFileLogging();
         await Task.CompletedTask;
     }

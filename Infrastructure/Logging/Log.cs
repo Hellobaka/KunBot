@@ -1,3 +1,4 @@
+using System.IO;
 using NLog;
 
 namespace me.cqp.luohuaming.iKun.Infrastructure.Logging;

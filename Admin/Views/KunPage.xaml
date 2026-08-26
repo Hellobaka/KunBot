@@ -1,0 +1,60 @@
+<UserControl x:Class="me.cqp.luohuaming.iKun.Admin.Views.KunPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 工具栏：搜索过滤 / 状态过滤 / 刷新 / 编辑 / 删除 / 数量提示 -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+            <hc:WatermarkTextBox x:Name="SearchBox" Width="240" VerticalAlignment="Center"
+                                 Watermark="搜索归属QQ / 群 / 昵称 / 词缀名..."
+                                 TextChanged="SearchBox_TextChanged" />
+            <hc:ComboBox x:Name="StatusCombo" Width="100" Margin="8,0,0,0"
+                         VerticalAlignment="Center" SelectionChanged="StatusCombo_SelectionChanged" />
+            <Button x:Name="RefreshButton" Content="刷新" Margin="8,0,0,0" Padding="14,0"
+                    Click="RefreshButton_Click" />
+            <Button Content="编辑" Margin="8,0,0,0" Padding="14,0" Click="EditButton_Click" />
+            <Button Content="删除鲲" Margin="8,0,0,0" Padding="14,0"
+                    Style="{DynamicResource ButtonDangerPrimary}" Click="DeleteButton_Click" />
+            <TextBlock x:Name="CountText" Margin="16,0,0,0" VerticalAlignment="Center"
+                       Foreground="#FF888888" />
+        </StackPanel>
+
+        <!-- 鲲列表 -->
+        <DataGrid Grid.Row="1" x:Name="KunGrid"
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  SelectionMode="Single" HeadersVisibility="Column"
+                  CanUserAddRows="False" CanUserDeleteRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="56" />
+                <DataGridTextColumn Header="词缀A(主)" Binding="{Binding AffixA}" Width="90" />
+                <DataGridTextColumn Header="词缀B" Binding="{Binding AffixB}" Width="80" />
+                <DataGridTextColumn Header="词缀C" Binding="{Binding AffixC}" Width="80" />
+                <DataGridTextColumn Header="等级" Binding="{Binding Level}" Width="56" />
+                <DataGridTextColumn Header="体重" Binding="{Binding WeightText}" Width="84" />
+                <DataGridTextColumn Header="上限" Binding="{Binding LimitText}" Width="84" />
+                <DataGridTextColumn Header="存活" Binding="{Binding AliveText}" Width="48" />
+                <DataGridTextColumn Header="弃置" Binding="{Binding AbandonedText}" Width="48" />
+                <DataGridTextColumn Header="可复活" Binding="{Binding CanResurrectText}" Width="56" />
+                <DataGridTextColumn Header="复活次数" Binding="{Binding ResurrectCount}" Width="64" />
+                <DataGridTextColumn Header="死亡时间" Binding="{Binding DeadAtText}" Width="130" />
+                <DataGridTextColumn Header="群" Binding="{Binding Groups}" Width="100" />
+                <DataGridTextColumn Header="归属QQ" Binding="{Binding OwnerQQ}" Width="96" />
+                <DataGridTextColumn Header="挂机/打工" Binding="{Binding IdleText}" Width="72" />
+                <DataGridTextColumn Header="挂机结束" Binding="{Binding IdleEndText}" Width="130" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- 底部提示 -->
+        <TextBlock Grid.Row="2" Margin="0,8,0,0" Foreground="#FF888888"
+                   Text="提示：编辑正在挂机/打工中的鲲可能影响其结算结果，请谨慎修改等级、体重等数值。" />
+    </Grid>
+</UserControl>

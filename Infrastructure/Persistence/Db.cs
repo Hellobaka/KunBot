@@ -1,3 +1,4 @@
+using System.IO;
 using me.cqp.luohuaming.iKun.Domain.Models;
 using me.cqp.luohuaming.iKun.Infrastructure.Logging;
 using SqlSugar;

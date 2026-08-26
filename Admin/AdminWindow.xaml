@@ -1,0 +1,48 @@
+<hc:Window x:Class="me.cqp.luohuaming.iKun.Admin.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="iKun 管理面板"
+        Width="1280" Height="800"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="900" MinHeight="600"
+        Loaded="OnWindowLoaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 左侧：标题 + 侧边菜单 -->
+        <DockPanel Grid.Column="0" Background="{DynamicResource RegionBrush}">
+            <TextBlock DockPanel.Dock="Top"
+                       Text="iKun 管理面板"
+                       FontSize="16" FontWeight="Bold"
+                       Margin="16,16,16,8"
+                       Foreground="{DynamicResource PrimaryTextBrush}" />
+            <hc:SideMenu x:Name="SideMenuCtl"
+                         Header="iKun 管理面板"
+                         AutoSelect="True">
+                <hc:SideMenuItem Header="用户概况" Icon="👤" Tag="0" Selected="OnMenuItemSelected" />
+                <hc:SideMenuItem Header="鲲管理" Icon="🐋" Tag="1" Selected="OnMenuItemSelected" />
+                <hc:SideMenuItem Header="指令配置" Icon="⌨" Tag="2" Selected="OnMenuItemSelected" />
+                <hc:SideMenuItem Header="文案配置" Icon="✍" Tag="3" Selected="OnMenuItemSelected" />
+                <hc:SideMenuItem Header="开关与数值" Icon="⚙" Tag="4" Selected="OnMenuItemSelected" />
+                <hc:SideMenuItem Header="物品配置" Icon="📦" Tag="5" Selected="OnMenuItemSelected" />
+            </hc:SideMenu>
+        </DockPanel>
+
+        <!-- 中间：页面宿主（懒加载 + 缓存，页面切换保留编辑状态） -->
+        <ContentControl x:Name="PageHost" Grid.Column="1" />
+
+        <!-- Growl 通知宿主：3.5.1 中静态 Growl.*  API 投递到 GrowlPanel，
+             由面板的 GrowlParent 附加属性登记；无背景色故空白处不拦截点击，
+             最后声明使其渲染在最上层。 -->
+        <StackPanel x:Name="GrowlHost"
+                    Grid.ColumnSpan="2"
+                    hc:Growl.GrowlParent="True"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Margin="0,10,10,0" />
+    </Grid>
+</hc:Window>

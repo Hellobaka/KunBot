@@ -1,4 +1,5 @@
-﻿using me.cqp.luohuaming.iKun.Infrastructure.Logging;
+﻿using System.IO;
+using me.cqp.luohuaming.iKun.Infrastructure.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -46,6 +47,53 @@ public abstract class JsonConfigFile
             Root[key] = JToken.FromObject(value);
             File.WriteAllText(Path, Root.ToString(Formatting.Indented));
         }
+    }
+
+    /// <summary>批量更新多个配置键并原子重写整个文件（单次写盘）。若启用了自动重载，FileSystemWatcher 会随后热重载生效。</summary>
+    public void SaveKeys(IReadOnlyDictionary<string, object> values)
+    {
+        lock (_writeLock)
+        {
+            foreach (var kv in values)
+            {
+                Root[kv.Key] = kv.Value is JToken t ? t : JToken.FromObject(kv.Value);
+            }
+
+            // 先写同目录临时文件再原子替换，读取方/监视器不会看到半截文件
+            var tmp = Path + ".tmp";
+            File.WriteAllText(tmp, Root.ToString(Formatting.Indented));
+            try
+            {
+                ReplaceIntoPlace();
+            }
+            catch
+            {
+                // 目标文件可能正被短暂占用，稍等重试一次
+                Thread.Sleep(100);
+                try
+                {
+                    ReplaceIntoPlace();
+                }
+                catch
+                {
+                    try { File.Delete(tmp); } catch { /* 临时文件删除失败可忽略 */ }
+                    throw;
+                }
+            }
+            void ReplaceIntoPlace()
+            {
+                if (File.Exists(Path))
+                {
+                    File.Replace(tmp, Path, null);
+                }
+                else
+                {
+                    File.Move(tmp, Path);
+                }
+            }
+        }
+        // 不调用 Load()/Reload()：内存中的 Root 已更新，即便没有监视器缓存状态也一致；
+        // 若启用了自动重载，FileSystemWatcher 会随后热重载生效
     }
 
     /// <summary>子类加载入口：文件重载与热重载时都会调用</summary>
