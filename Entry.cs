@@ -1,109 +1,60 @@
-using Another_Mirai_Native.Abstractions;
+﻿using Another_Mirai_Native.Abstractions;
 using Another_Mirai_Native.Abstractions.Attributes;
-using me.cqp.luohuaming.iKun.PublicInfos;
-using me.cqp.luohuaming.iKun.PublicInfos.Enums;
-using me.cqp.luohuaming.iKun.PublicInfos.Items;
-using me.cqp.luohuaming.iKun.PublicInfos.Models;
-using me.cqp.luohuaming.iKun.PublicInfos.Models.Results;
+using me.cqp.luohuaming.iKun.Background;
+using me.cqp.luohuaming.iKun.Domain.Configuration;
+using me.cqp.luohuaming.iKun.Infrastructure;
+using me.cqp.luohuaming.iKun.Infrastructure.Logging;
+using me.cqp.luohuaming.iKun.Infrastructure.Persistence;
 
 namespace me.cqp.luohuaming.iKun;
 
+/// <summary>
+/// 插件入口：仅负责启动装配与停用清理。
+/// 初始化顺序有依赖：App → 配置 → 数据库 → 挂机任务恢复 → 天罚线程。
+/// </summary>
 [PluginInfo(
     appId: "me.cqp.luohuaming.iKun",
     name: "iKun",
-    version: "2.0.0",
-    description: "养鲲插件，移植自酷Q版 KunBot",
+    version: "2.1.0",
+    description: "养鲲插件，移植自酷Q版 KunBot（分层架构）",
     author: "Hellobaka")]
 public class Entry : PluginBase
 {
+    private static readonly Log Log = Log.For("初始化");
+
     public override async Task OnEnableAsync(CancellationToken ct)
     {
-        MainSave.API = API;
-        MainSave.AppDirectory = API.AppApi.GetAppDirectory();
-        MainSave.ImageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "data", "image");
+        // 1. 运行环境
+        Runtime.Init(API);
 
-        API.Logger.Info("初始化", "加载配置");
-        AppConfig appConfig = new(Path.Combine(MainSave.AppDirectory, "Config.json"));
-        appConfig.LoadConfig();
-        appConfig.EnableAutoReload();
+        // 2. 配置（含热重载）
+        Log.Info("加载配置");
+        CoreConfiguration.CreateCurrent(Path.Combine(Runtime.DataDirectory, "Config.json"));
+        ItemConfiguration.CreateCurrent(Path.Combine(Runtime.DataDirectory, "Items.json"));
 
-        ItemConfig itemConfig = new(Path.Combine(MainSave.AppDirectory, "Items.json"));
-        itemConfig.LoadConfig();
-        itemConfig.EnableAutoReload();
+        // 3. 数据库
+        Log.Info("创建数据库");
+        Db.Initialize();
 
-        API.Logger.Info("初始化", "创建数据库");
-        SQLHelper.CreateDB();
-        Kun.InitiazlizeRandom();
+        // 4. 挂机调度器与结算通知
+        Log.Info("恢复挂机任务");
+        AutoPlaySettlementNotifier.Attach();
+        IdleScheduler.Instance.ResumeFromDatabase(API.MessageApi);
 
-        API.Logger.Info("初始化", "加载挂机列表");
-        AutoPlay.AutoPlayFinished -= OnAutoPlayFinished;
-        AutoPlay.AutoPlayFinished += OnAutoPlayFinished;
-        AutoPlay.LoadAutoPlays(API.MessageApi);
+        // 5. 天罚
+        Log.Info("启动天罚服务");
+        RandomPunishService.Start();
 
-        API.Logger.Info("初始化", "启动天罚线程");
-        RandomPunish.Start();
-
-        API.Logger.Info("初始化", "初始化完成");
+        Log.Info("初始化完成");
         await Task.CompletedTask;
     }
 
     public override async Task OnDisableAsync(CancellationToken ct)
     {
-        API.Logger.Info("卸载", "停止后台任务");
-        RandomPunish.Stop();
-        AutoPlay.StopAll();
-        AutoPlay.AutoPlayFinished -= OnAutoPlayFinished;
+        Log.For("卸载").Info("停止后台任务");
+        RandomPunishService.Stop();
+        IdleScheduler.Instance.Shutdown();
+        AutoPlaySettlementNotifier.Detach();
         await Task.CompletedTask;
-    }
-
-    private static void OnAutoPlayFinished(AutoPlay autoPlay, AutoPlayResult autoPlayResult, Kun kun)
-    {
-        try
-        {
-            if (autoPlayResult == null || kun == null || kun.Level <= 0 || kun.Weight <= 0 || kun.Abandoned)
-            {
-                return;
-            }
-            if (AppConfig.Groups.Contains(autoPlay.GroupId))
-            {
-                string msg = "";
-                switch (autoPlay.AutoPlayType)
-                {
-                    case AutoPlayType.Exp:
-                        if (autoPlayResult.Dead)
-                        {
-                            msg = string.Format(CommonHelper.CQCode_At(kun.PlayerID) + AppConfig.ReplyAutoPlayFinishedButDead, kun.ToString(), autoPlayResult.Duration.TotalHours, autoPlayResult.Increment.ToShortNumber());
-                        }
-                        else
-                        {
-                            msg = string.Format(CommonHelper.CQCode_At(kun.PlayerID) + AppConfig.ReplyAutoPlayFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, autoPlayResult.Increment.ToShortNumber(), kun.Weight.ToShortNumber());
-                            if (autoPlayResult.WeightLimit)
-                            {
-                                msg += $"\n{AppConfig.ReplyWeightLimit}";
-                            }
-                        }
-                        break;
-                    case AutoPlayType.Coin:
-                        if (!kun.Alive)
-                        {
-                            return;
-                        }
-                        var player = Player.GetPlayer(kun.PlayerID);
-                        int currentCoin = player == null ? 0 : InventoryItem.GetItemCount(player, PublicInfos.Enums.Items.Coin);
-                        msg = string.Format(CommonHelper.CQCode_At(kun.PlayerID) + AppConfig.ReplyWorkingFinished, kun.ToString(), autoPlayResult.Duration.TotalHours, (int)autoPlayResult.Increment, currentCoin);
-                        break;
-                    default:
-                        break;
-                }
-                if (!string.IsNullOrEmpty(msg))
-                {
-                    MainSave.API.MessageApi.SendGroupMessage(autoPlay.GroupId, msg);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            MainSave.API.Logger.Error("挂机结算", $"异常发生：{ex.Message}\n{ex.StackTrace}");
-        }
     }
 }

@@ -12,11 +12,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove=".gitattributes" />
+    <None Remove=".gitignore" />
+    <None Remove="llms.txt" />
+    <None Remove="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Another-Mirai-Native.Abstractions" Version="1.2.4" />
-    <!-- 与框架 DependencyManifest 中的 SqlSugar 5.1.4.211 同名同版本，构建时去重不合并 -->
     <PackageReference Include="SqlSugarCore" Version="5.1.4.211" />
-    <!-- 框架内置 Newtonsoft.Json 13.x，构建时去重不合并 -->
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	  <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.11" />
+	  <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.13" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>
